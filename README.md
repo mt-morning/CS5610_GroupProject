@@ -2,7 +2,7 @@
 
 ## Current version: 
 Iter 1.0
-
+**Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
 ## Members:
 - Alice  Tilles
 - Miranda Tran
