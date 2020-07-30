@@ -61,6 +61,13 @@ Iter 1.0
 ### Alice
 
 ### Tran
+- At the beginning, I used a different boilerplate to set up the website, but then I decided to followed Pro MERN Stack 2's boilerplate starter code to set up the foundation and localhost for my teammates to work on.
+- Set up node modules and any other necessary libraries for usage (express, node.js, babel, etc.)
+- Set up package.json
+- Set up script files (jsx & js files; html, index file)
+- Set up the page structures: inventory list, inventories tables, inventories add, inventories create, inventories filter
+- Other miscellaneous: set up & manage github pages 
+
 
 ### Miranda
 #### Summary:
