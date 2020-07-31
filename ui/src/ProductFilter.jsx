@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import URLSearchParams from 'url-search-params';
 
 class ProductFilter extends React.Component {
   constructor() {
@@ -21,11 +22,14 @@ class ProductFilter extends React.Component {
   // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
+	const { location: { search } } = this.props;
+    const params = new URLSearchParams(search);
     return (
       <div>
         Filter by quantity:
         {' '}
-        <select onChange={this.onChangeStatus}>
+        <select value={params.get('status') || '' } 
+		onChange={this.onChangeStatus}>
           <option value="">(All Products)</option>
           <option value="1">Low Stock (1)</option>
           <option value="0">Out of Stock (0)</option>
