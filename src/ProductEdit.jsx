@@ -88,6 +88,7 @@ export default class ProductEdit extends React.Component {
       }
       return null;
     }
+<<<<<<< Updated upstream
     const { product: { description, quantity } } = this.state;
     const { product: { category, information } } = this.state;
     const { product: { createdDate, expirationDate } } = this.state;
@@ -116,6 +117,45 @@ export default class ProductEdit extends React.Component {
               <td>Expiration:</td>
               <td>{expirationDate.toDateString()}</td>
             </tr>
+=======
+    render() {
+        const { product: { id } } = this.state;
+        const { match: { params: { id: propsId } } } = this.props;
+        if (id == null) {
+            if (propsId != null) {
+                return <h3>{`Product with ID ${propsId} not found.`}</h3>;
+            }
+            return null;
+        }
+        const { product: { description, quantity } } = this.state;
+        const { product: { category, information } } = this.state;
+        const { product: { createdDate, expirationDate } } = this.state;
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <h3>{`Editing product: ${id}`}</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Description:</td>
+                            <td>
+                                <textarea
+                                    rows={8}
+                                    cols={50}
+                                    name="description"
+                                    value={description}
+                                    onChange={this.onChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Created:</td>
+                            <td>{createdDate.toDateString()}</td>
+                        </tr>
+                        <tr>
+                            <td>Expiration:</td>
+                            <td>{expirationDate.toDateString()}</td>
+                        </tr>
+>>>>>>> Stashed changes
 
             <tr>
               <td>Quantity:</td>
