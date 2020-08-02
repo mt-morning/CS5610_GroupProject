@@ -1,6 +1,7 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
+import { Panel } from 'react-bootstrap';
 
 import ProductFilter from './ProductFilter.jsx';
 import InventoryTable from './InventoryTable.jsx';
@@ -104,8 +105,15 @@ export default class InventoryList extends React.Component {
     const { inventory } = this.state;
     const { match } = this.props;
     return (
-      <React.Fragment>
-        <ProductFilter />
+        <React.Fragment>
+            <Panel>
+                <Panel.Heading>
+                    <Panel.Title toggle>Filter</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body collapsible>
+                    <ProductFilter />
+                </Panel.Body>
+            </Panel>
         <hr />
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
         <hr />
