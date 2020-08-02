@@ -16,7 +16,8 @@ export default class InventoryList extends React.Component {
   constructor() {
     super();
     this.state = { inventory: [] };
-    this.addProduct = this.addProduct.bind(this);
+      this.addProduct = this.addProduct.bind(this);
+      this.deleteProduct = this.deleteProduct.bind(this);
   }
 
   // Pg 64
@@ -77,6 +78,28 @@ export default class InventoryList extends React.Component {
     }
   }
 
+    //need to revise async delete
+    async deleteProduct(index) {
+        const query = `mutation productDelete($id: Int!) {
+      productDelete(id: $id)
+    }`;
+        const { inventory } = this.state;
+        const { location: { pathname, search }, history } = this.props;
+        const { id } = issues[index];
+        const data = await graphQLFetch(query, { id });
+        if (data && data.productDelete) {
+            this.setState((prevState) => {
+                const newList = [...prevState.inventory];
+                if (pathname === `/inventory/${id}`) {
+                    history.push({ pathname: '/inventory', search });
+                }
+                newList.splice(index, 1);
+                return { issues: newList };
+            });
+        } else {
+            this.loadData();
+        }
+    }
   render() {
     const { inventory } = this.state;
     const { match } = this.props;
@@ -85,7 +108,8 @@ export default class InventoryList extends React.Component {
         <h1><Label>InventoryTracker</Label></h1>
         <ProductFilter />
         <hr />
-        <InventoryTable inventory={inventory} />
+            <InventoryTable inventory={inventory}
+                deleteProduct={this.deleteProduct} />
         <hr />
         <ProductAdd addProduct={this.addProduct} />
         <hr />

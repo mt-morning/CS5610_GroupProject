@@ -6,7 +6,7 @@ import {
 /**
  * Represent a product listing in the table: "one row".
  */
-const InventoryRow = withRouter(({ product, location: { search } }) => {
+const InventoryRow = withRouter(({ product, location: { search }, deleteProduct, }) => {
   const selectLocation = { pathname: `/products/${product.id}`, search };
   return (
     <tr>
@@ -18,7 +18,11 @@ const InventoryRow = withRouter(({ product, location: { search } }) => {
       <td>
         <Link to={`/edit/${product.id}`}>Edit</Link>
         {' | '}
-        <NavLink to={selectLocation}>Select</NavLink>
+              <NavLink to={selectLocation}>Select</NavLink>
+              {' | '}
+              <button type="button" onClick={() => { deleteProduct(index); }}>
+                  Delete
+        </button>
       </td>
     </tr>
   );
@@ -27,9 +31,12 @@ const InventoryRow = withRouter(({ product, location: { search } }) => {
 /**
  * Return all the products in a table.
  */
-export default function InventoryTable({ inventory }) {
+export default function InventoryTable({ inventory, deleteProduct }) {
   const inventoryRows = inventory.map(product => (
-    <InventoryRow key={product.id} product={product} />
+      <InventoryRow key={product.id} product={product}
+          deleteProduct={deleteProduct}
+          index={index}
+      />
   ));
   return (
     <table className="bordered-table">
