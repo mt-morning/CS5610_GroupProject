@@ -12,7 +12,7 @@ const element = (
   </Router>
 );
 
-ReactDOM.render(element, document.getElementById('contents'));
+ReactDOM.render(element, document.getElementById('content'));
 
 if (module.hot) {
   module.hot.accept();
