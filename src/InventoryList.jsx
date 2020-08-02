@@ -57,7 +57,6 @@ export default class InventoryList extends React.Component {
       // eslint-disable-next-line no-console
       console.log('Data retrieved from server.');
       this.setState({ inventory: data.productList });
-	  console.log(data);
     }
   }
 

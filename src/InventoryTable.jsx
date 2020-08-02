@@ -6,8 +6,11 @@ import {
 /**
  * Represent a product listing in the table: "one row".
  */
-const InventoryRow = withRouter(({ product, location: { search }, deleteProduct, index }) => {
-  const selectLocation = { pathname: `/products/${product.id}`, search };
+const InventoryRow = withRouter(({ product, location: { search }, deleteProduct }) => {
+    const selectLocation = { pathname: `/products/${product.id}`, search };
+    const deleteTooltip = (
+        <Tooltip id="delete-tooltip" placement="top">Delete Inventory</Tooltip>
+    );
   return (
     <tr>
       <td>{product.id}</td>
@@ -18,11 +21,13 @@ const InventoryRow = withRouter(({ product, location: { search }, deleteProduct,
       <td>
         <Link to={`/edit/${product.id}`}>Edit</Link>
         {' | '}
-              <NavLink to={selectLocation}>Select</NavLink>
-              {' | '}
-              <button type="button" onClick={() => { deleteProduct(index); }}>
-                  Delete
-        </button>
+        <NavLink to={selectLocation}>Select</NavLink>
+        {' | '}
+              <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
+                  <Button bsSize="xsmall" onClick={() => { deleteProduct(index); }}>
+                  <Glyphicon glyph="trash" />
+               </Button>
+           </OverlayTrigger>
       </td>
     </tr>
   );
@@ -35,7 +40,7 @@ export default function InventoryTable({ inventory, deleteProduct }) {
   const inventoryRows = inventory.map(product => (
       <InventoryRow key={product.id} product={product}
           deleteProduct={deleteProduct}
-          index={index}  
+      
       />
   ));
   return (
