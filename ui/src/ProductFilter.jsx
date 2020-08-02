@@ -9,7 +9,7 @@ class ProductFilter extends React.Component {
     super();
 	const params = new URLSearchParams(search);
 	this.state = {
-        status: params.get('status') || ``,
+        status: params.get('status') || '',
 		changed: false,
 	};
 	
@@ -33,7 +33,7 @@ class ProductFilter extends React.Component {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
     this.setState({
-      status: params.get('status') || ``,
+      status: params.get('status') || '',
       changed: false,
     });
   }
@@ -42,7 +42,7 @@ class ProductFilter extends React.Component {
     const { history } = this.props;
     history.push({
       pathname: '/issues',
-      search: status ? `?status=${status}` : ``,
+      search: status ? `?status=${status}` : '',
     });
   }
   
@@ -50,8 +50,6 @@ class ProductFilter extends React.Component {
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
 	const { status } = this.state;
-	const { location: { search } } = this.props;
-    const params = new URLSearchParams(search);
     return (
       <div>
         Filter by quantity:
