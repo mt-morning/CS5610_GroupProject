@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
-
+import {
+    Button, Glyphicon, Tooltip, OverlayTrigger,
+} from 'react-bootstrap';
 /**
  * Represent a product listing in the table: "one row".
  */

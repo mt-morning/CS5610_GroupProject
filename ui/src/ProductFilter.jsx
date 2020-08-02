@@ -60,15 +60,17 @@ class ProductFilter extends React.Component {
           <option value="0">Out of Stock (0)</option>
         </select>
 		{' '}
-        <button type="button" onClick={this.applyFilter}>Apply</button>
+        <Button bsStyle="primary" type="button" onClick={this.applyFilter}>
+                Apply
+        </Button>
 		{' '}
-        <button
+        <Button
           type="button"
           onClick={this.showOriginalFilter}
           disabled={!changed}
         >
           Reset
-        </button>
+        </Button>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
+import { Label } from 'react-bootstrap';
 
 import ProductFilter from './ProductFilter.jsx';
 import InventoryTable from './InventoryTable.jsx';
@@ -81,7 +82,7 @@ export default class InventoryList extends React.Component {
     const { match } = this.props;
     return (
       <React.Fragment>
-        <h1>InventoryTracker</h1>
+        <h1><Label>InventoryTracker</Label></h1>
         <ProductFilter />
         <hr />
         <InventoryTable inventory={inventory} />
