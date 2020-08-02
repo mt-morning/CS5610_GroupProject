@@ -12,7 +12,7 @@ function NavBar() {
     return (
         <Navbar>
             <Navbar.Header>
-                <Navbar.Brand>Issue Tracker</Navbar.Brand>
+                <Navbar.Brand>Inventory Tracker</Navbar.Brand>
             </Navbar.Header>
 
             <Nav>
