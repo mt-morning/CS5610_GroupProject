@@ -6,7 +6,7 @@ import {
 /**
  * Represent a product listing in the table: "one row".
  */
-const InventoryRow = withRouter(({ product, location: { search }, deleteProduct }) => {
+const InventoryRow = withRouter(({ product, location: { search }, deleteProduct, index }) => {
   const selectLocation = { pathname: `/products/${product.id}`, search };
   return (
     <tr>
@@ -35,7 +35,7 @@ export default function InventoryTable({ inventory, deleteProduct }) {
   const inventoryRows = inventory.map(product => (
       <InventoryRow key={product.id} product={product}
           deleteProduct={deleteProduct}
-          
+          index={index}  
       />
   ));
   return (
