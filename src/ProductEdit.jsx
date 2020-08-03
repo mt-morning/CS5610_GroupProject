@@ -117,7 +117,6 @@ export default class ProductEdit extends React.Component {
               <td>Expiration:</td>
               <td>{expirationDate.toDateString()}</td>
             </tr>
- 
             <tr>
               <td>Quantity:</td>
               <td>
