@@ -7,7 +7,7 @@ export default class ProductEdit extends React.Component {
   constructor() {
     super();
     this.state = {
-      issue: {},
+      product: {},
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,7 +50,7 @@ export default class ProductEdit extends React.Component {
       }
     }`;
     const { id, created, ...changes } = product;
-    const data = await graphQLFetch(query, { changes, id });
+    const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) });
     if (data) {
       this.setState({ product: data.productUpdate });
       alert('Updated product successfully'); // eslint-disable-line no-alert
@@ -65,12 +65,12 @@ export default class ProductEdit extends React.Component {
       }
     }`;
     const { match: { params: { id } } } = this.props;
-    const data = await graphQLFetch(query, { id });
+    const data = await graphQLFetch(query, { id: parseInt(id, 10) });
     if (data) {
       const { product } = data;
       product.description = product.description != null ? product.description : '';
-      product.createdDate = product.createdDate ? product.toDateString() : '';
-      product.expirationDate = product.expirationDate ? product.due.toDateString() : '';
+      product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+      product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
       product.category = product.category != null ? product.category : '';
       product.information = product.information != null ? product.information : '';
       this.setState({ product });
