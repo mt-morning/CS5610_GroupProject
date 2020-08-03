@@ -17,6 +17,8 @@ function NavBar() {
 
             <Nav>
                 <LinkContainer exact to="/"><NavItem>Home</NavItem></LinkContainer>
+
+                <LinkContainer to="/about"><MenuItem>About</MenuItem></LinkContainer>
   
                 <LinkContainer to="/signin"><NavItem>Sign in</NavItem></LinkContainer>
   
