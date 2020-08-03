@@ -60,6 +60,7 @@ Iter 1.0
 ## Member Contributions:
 
 ### Alice
+I followed Pro MERN Stack 2's boilerplate starter code from chapters 4, 5, and 6. This included setting up most of the components and transferring state/props between them, creating the GraphQL schema, and creating the initial/local MongoDB connection. By the end of this section, we had the ability to add new products to the inventory and have them persist on refresh. The two main ways the code differed from book code is that the schema had different objects and operations and a product has different fields than an issue, requiring different methods to handle the data and data validation.
 
 ### Tran
 - At the beginning, I used a different boilerplate to set up the website, but then I decided to followed Pro MERN Stack 2's boilerplate starter code to set up the foundation and localhost for my teammates to work on.
