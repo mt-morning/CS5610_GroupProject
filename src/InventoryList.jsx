@@ -105,15 +105,15 @@ export default class InventoryList extends React.Component {
     const { inventory } = this.state;
     const { match } = this.props;
     return (
-        <React.Fragment>
-            <Panel>
-                <Panel.Heading>
-                    <Panel.Title toggle>Filter</Panel.Title>
-                </Panel.Heading>
-                <Panel.Body collapsible>
-                    <ProductFilter />
-                </Panel.Body>
-            </Panel>
+      <React.Fragment>
+        <Panel>
+          <Panel.Heading>
+            <Panel.Title toggle>Filter</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body collapsible>
+            <ProductFilter />
+          </Panel.Body>
+        </Panel>
         <hr />
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
         <hr />
