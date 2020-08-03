@@ -10,7 +10,7 @@ class ProductFilter extends React.Component {
     super();
     const params = new URLSearchParams(search);
     this.state = {
-      status: params.get('status') || '',
+      quantity: params.get('quantity') || '',
       changed: false,
     };
 
@@ -27,36 +27,36 @@ class ProductFilter extends React.Component {
   }
 
   onChangeStatus(e) {
-    this.setState({ status: e.target.value, changed: true });
+    this.setState({ quantity: e.target.value, changed: true });
   }
 
   showOriginalFilter() {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
     this.setState({
-      status: params.get('status') || '',
+      quantity: params.get('quantity') || '',
       changed: false,
     });
   }
 
   applyFilter() {
-    const { status } = this.state;
+    const { quantity } = this.state;
     const { history } = this.props;
     history.push({
-      pathname: '/issues',
-      search: status ? `?status=${status}` : '',
+      pathname: '/products',
+      search: quantity ? `?quantity=${quantity}` : '',
     });
   }
 
   // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
-    const { status } = this.state;
+    const { quantity } = this.state;
     return (
       <div>
         Filter by quantity:
         {' '}
-        <select value={status} onChange={this.onChangeStatus}>
+        <select value={quantity} onChange={this.onChangeStatus}>
           <option value="">(All Products)</option>
           <option value="1">Low Stock (1)</option>
           <option value="0">Out of Stock (0)</option>
@@ -69,7 +69,7 @@ class ProductFilter extends React.Component {
         <Button
           type="button"
           onClick={this.showOriginalFilter}
-          disabled={!status.changed}
+          disabled={!quantity.changed}
         >
           Reset
         </Button>
