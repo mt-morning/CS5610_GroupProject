@@ -16,6 +16,7 @@ class ProductFilter extends React.Component {
 
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
+    this.showOriginalFilter = this.showOriginalFilter.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -51,7 +52,7 @@ class ProductFilter extends React.Component {
   // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
-    const { quantity } = this.state;
+    const { quantity, changed } = this.state;
     return (
       <div>
         Filter by quantity:
@@ -69,7 +70,7 @@ class ProductFilter extends React.Component {
         <Button
           type="button"
           onClick={this.showOriginalFilter}
-          disabled={!quantity.changed}
+          disabled={!changed}
         >
           Reset
         </Button>
