@@ -19,6 +19,10 @@ export default class AccountCreate extends React.Component {
             password: form.password.value,
         };
         console.log(account);
+        this.setState({
+            username: form.username.value,
+            password: form.password.value,
+        })
         //form.username.value = ""; form.password.value = "";
     }
 
@@ -31,7 +35,7 @@ export default class AccountCreate extends React.Component {
                   <ControlLabel>Account Information</ControlLabel>
                   <FormControl  type="text" name="username" placeholder="username"/>
                   <FormControl type="password" name="password" placeholder="password" />
-                  <Radio unchecked readOnly>
+                  <Radio unchecked name="admin">
                       Admin Account
                   </Radio>
                       <button bsType="submit">Create</button>

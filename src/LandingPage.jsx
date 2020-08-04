@@ -1,6 +1,5 @@
 import React from 'react';
-import { Grid } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Grid,Row } from 'react-bootstrap';
 import AccountCreate from './AccountCreate.jsx';
 import Login from './Login.jsx';
 
@@ -8,15 +7,16 @@ import Login from './Login.jsx';
 export default function LandingPage() {
   return (
     <div>
-      <Grid fluid>
-          <div>
+      <Grid>
+          <Row>
               <h1>Create an Account</h1>
               <AccountCreate />
-          </div>
-          <div>
+          </Row>
+          <hr className="my-3"/>
+          <Row>
               <h1>Login with Existing Account</h1>
-            <Login />
-          </div>
+            <Login style={{alignSelf: 'flex-end'}}/>
+          </Row>
       </Grid>
     </div>
   );
