@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
+import DateInput from './DateInput.jsx';
 
 export default class ProductEdit extends React.Component {
   constructor() {
     super();
     this.state = {
       product: {},
+      invalidFields: {},
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onValidityChange = this.onValidityChange.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +34,15 @@ export default class ProductEdit extends React.Component {
     this.setState(prevState => ({
       product: { ...prevState.product, [name]: value },
     }));
+  }
+
+  onValidityChange(event, valid) {
+    const { name } = event.target;
+    this.setState((prevState) => {
+      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
+      if (valid) delete invalidFields[name];
+      return { invalidFields };
+    });
   }
 
   async handleSubmit(e) {
@@ -69,13 +81,13 @@ export default class ProductEdit extends React.Component {
     if (data) {
       const { product } = data;
       product.description = product.description != null ? product.description : '';
-      product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
-      product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
+      // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+      // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
       product.category = product.category != null ? product.category : '';
       product.information = product.information != null ? product.information : '';
-      this.setState({ product });
+      this.setState({ product, invalidFields: {} });
     } else {
-      this.setState({ product: {} });
+      this.setState({ product: {}, invalidFields: {} });
     }
   }
 
@@ -87,6 +99,17 @@ export default class ProductEdit extends React.Component {
         return <h3>{`Product with ID ${propsId} not found.`}</h3>;
       }
       return null;
+    }
+
+    const { invalidFields } = this.state;
+    let validationMessage;
+
+    if (Object.keys(invalidFields).length !== 0) {
+      validationMessage = (
+        <div className="error">
+          Please correct invalid fields before submitting.
+        </div>
+      );
     }
 
     const { product: { description, quantity } } = this.state;
@@ -111,11 +134,27 @@ export default class ProductEdit extends React.Component {
             </tr>
             <tr>
               <td>Created:</td>
-              <td>{createdDate.toDateString()}</td>
+              <td>
+                <DateInput
+                  name="createdDate"
+                  value={createdDate}
+                  onChange={this.onChange}
+                  onValidityChange={this.onValidityChange}
+                  key={id}
+                />
+              </td>
             </tr>
             <tr>
               <td>Expiration:</td>
-              <td>{expirationDate.toDateString()}</td>
+              <td>
+                <DateInput
+                  name="expirationDate"
+                  value={expirationDate}
+                  onChange={this.onChange}
+                  onValidityChange={this.onValidityChange}
+                  key={id}
+                />
+              </td>
             </tr>
             <tr>
               <td>Quantity:</td>
@@ -161,6 +200,7 @@ export default class ProductEdit extends React.Component {
             </tr>
           </tbody>
         </table>
+        {validationMessage}
         <Link to={`/edit/${id - 1}`}>Prev</Link>
         {' | '}
         <Link to={`/edit/${id + 1}`}>Next</Link>
