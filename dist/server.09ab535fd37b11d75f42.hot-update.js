@@ -24,8 +24,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ProductAdd_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ProductAdd.jsx */ "./src/ProductAdd.jsx");
 /* harmony import */ var _graphQLFetch_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./graphQLFetch.js */ "./src/graphQLFetch.js");
 /* harmony import */ var _ProductInformation_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ProductInformation.jsx */ "./src/ProductInformation.jsx");
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store.js */ "./src/store.js");
-
 
 
 
@@ -193,4 +191,4 @@ class InventoryList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
 /***/ })
 
 };
-//# sourceMappingURL=server.c426903d97833c57a4b0.hot-update.js.map
+//# sourceMappingURL=server.09ab535fd37b11d75f42.hot-update.js.map
