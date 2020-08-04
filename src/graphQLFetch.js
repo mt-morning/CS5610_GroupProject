@@ -1,3 +1,5 @@
+import fetch from 'isomorphic-fetch';
+
 /* eslint "no-alert": "off" */
 
 const dateRegex = new RegExp('^\\d\\d\\d\\d-\\d\\d-\\d\\d');
@@ -6,7 +8,7 @@ function jsonDateReviver(key, value) {
   if (dateRegex.test(value)) return new Date(value); return value;
 }
 
-export default async function graphQLFetch(query, variables = {}, showError = null) {
+export default async function graphQLFetch(query, variables = {}) {
     const apiEndpoint = (__isBrowser__) // eslint-disable-line no-undef
         ? window.ENV.UI_API_ENDPOINT
         : process.env.UI_SERVER_API_ENDPOINT;

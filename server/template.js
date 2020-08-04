@@ -1,4 +1,6 @@
-export default function template(body) {
+import serialize from 'serialize-javascript';
+
+export default function template(body, data) {
     return `< !DOCTYPE html >
         <html>
         <head>
@@ -21,6 +23,7 @@ export default function template(body) {
                         <body>
                             <!-- Page generated from template. -->
                             <div id="content">${body}</div>
+                            <script>window.__INITIAL_DATA__ = ${serialize(data)}</script>
                             <script src="/env.js"></script>
                             <script src="/vendor.bundle.js"></script>
                             <script src="/app.bundle.js"></script>

@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import path from 'path';
 import express from 'express';
 import proxy from 'http-proxy-middleware';
 import SourceMapSupport from 'source-map-support';
@@ -43,7 +42,7 @@ if (!process.env.UI_API_ENDPOINT) {
     process.env.UI_API_ENDPOINT = 'http://localhost:3000/graphql';
 }
 if (!process.env.UI_SERVER_API_ENDPOINT) {
-    process.env.UI_API_ENDPOINT = process.env.UI_API_ENDPOINT;
+    process.env.UI_SERVER_API_ENDPOINT = process.env.UI_API_ENDPOINT;
 }
 
 app.get('/env.js', (req, res) => {
@@ -51,7 +50,7 @@ app.get('/env.js', (req, res) => {
   res.send(`window.ENV = ${JSON.stringify(env)}`);
 });
 
-app.get('/about', (req, res, next) => {
+app.get('*', (req, res, next) => {
     render(req, res, next);
 });
 

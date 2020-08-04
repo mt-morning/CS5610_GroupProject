@@ -8,6 +8,7 @@ import InventoryTable from './InventoryTable.jsx';
 import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import ProductInformation from './ProductInformation.jsx';
+import store from './store.js';
 
 /**
  * Represent overall inventory list in webpage.

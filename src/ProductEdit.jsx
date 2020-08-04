@@ -2,19 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
+import store from './store.js';
 
 export default class ProductEdit extends React.Component {
+    static async fetchData(match, showError) {
+        const query = `query product($id: Int!) {
+      product(id: $id) {
+        id description createdDate expirationDate
+        quantity category information
+      }
+    }`;
+        const { params: { id } } = match;
+        const result = await graphQLFetch(query, { id }, showError);
+        return result;
+    }
   constructor() {
-    super();
+      super();
+      const product = store.initialData ? store.initialData.product : null;
+      delete store.initialData;
     this.state = {
-      issue: {},
+        product, invalidFields: {},
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.loadData();
+      const { product } = this.state;
+      if (product == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -58,14 +73,8 @@ export default class ProductEdit extends React.Component {
   }
 
   async loadData() {
-    const query = `query product($id: Int!) {
-      product(id: $id) {
-        id description createdDate expirationDate
-        quantity category information
-      }
-    }`;
-    const { match: { params: { id } } } = this.props;
-    const data = await graphQLFetch(query, { id });
+      const { match } = this.props;
+      const data = await ProductEdit.fetchData(match, null, this.showError);
     if (data) {
       const { product } = data;
       product.description = product.description != null ? product.description : '';
@@ -79,7 +88,9 @@ export default class ProductEdit extends React.Component {
     }
   }
 
-  render() {
+    render() {
+        const { product } = this.state;
+        if (product == null) return null;
     const { product: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;
     if (id == null) {
