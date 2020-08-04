@@ -7,6 +7,8 @@ import ProductEdit from './ProductEdit.jsx';
 import ProductAdd from './ProductAdd.jsx';
 import ProductRemove from './ProductRemove.jsx';
 import SignInNavItem from './SignInNavItem.jsx';
+import LandingPage from './LandingPage.jsx';
+
 
 const NotFound = () => <h1>Page Not Found</h1>;
 
@@ -15,6 +17,7 @@ export default function Contents() {
     <Switch>
       <Redirect exact from="/" to="/products" />
       <Route path="/products" component={InventoryList} />
+      <Route path="/signin" component={LandingPage} />
       <Route path="/edit/:id" component={ProductEdit} />
       <Route path="/report" component={ProductReport} />
       <Route path="/add" component={ProductAdd} />
