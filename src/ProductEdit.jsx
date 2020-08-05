@@ -72,26 +72,14 @@ export default class ProductEdit extends React.Component {
         id: $id
         changes: $changes
       ) {
-        description createdDate expirationDate 
+        id description createdDate expirationDate 
         quantity category information 
       }
     }`;
     const { id, created, ...changes } = product;
     const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) });
     if (data) {
-      console.log('this is the before state');
-      console.log(this.state);
-
-      // when logging state before we set it, we see that the id is still there
-      // and before call back function is run, we see forced rerendering 
-      // and see line 119 console.logs a new product WITHOUT an ID
-
-      this.setState({ product: data.productUpdate }, () => {
-        console.log('this is the product');
-        console.log(product); // this one has an id
-        console.log('this is the after state');
-        console.log(this.state); // this one does not
-      });
+      this.setState({ product: data.productUpdate });
       alert('Updated product successfully'); // eslint-disable-line no-alert
     }
   }
@@ -115,7 +103,6 @@ export default class ProductEdit extends React.Component {
 
   render() {
     const { product } = this.state;
-    console.log(product);
     if (product === null) return null;
     const { product: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;

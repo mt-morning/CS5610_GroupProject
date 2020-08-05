@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9a24674a13a54ed690fc";
+/******/ 	var hotCurrentHash = "6c19250d45d0096eb8b7";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -2012,7 +2012,7 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
         id: $id
         changes: $changes
       ) {
-        description createdDate expirationDate 
+        id description createdDate expirationDate 
         quantity category information 
       }
     }`;
@@ -2027,19 +2027,8 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
     });
 
     if (data) {
-      console.log('this is the before state');
-      console.log(this.state); // when logging state before we set it, we see that the id is still there
-      // and before call back function is run, we see forced rerendering 
-      // and see line 119 console.logs a new product WITHOUT an ID
-
       this.setState({
         product: data.productUpdate
-      }, () => {
-        console.log('this is the product');
-        console.log(product); // this one has an id
-
-        console.log('this is the after state');
-        console.log(this.state); // this one does not
       });
       alert('Updated product successfully'); // eslint-disable-line no-alert
     }
@@ -2070,7 +2059,6 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
     const {
       product
     } = this.state;
-    console.log(product);
     if (product === null) return null;
     const {
       product: {
