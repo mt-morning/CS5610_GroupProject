@@ -6,8 +6,6 @@ import { FormGroup, ControlLabel,
 import PropTypes from "prop-types";
 import graphQLFetch from "./graphQLFetch";
 
-
-
 export default class AccountCreate extends React.Component {
 
     constructor(props) {
@@ -49,11 +47,10 @@ export default class AccountCreate extends React.Component {
     }
 
 
-
   render() {
     return (
           <form onSubmit={this.handleSubmit} name="accountCreate">
-              <FormGroup controlId="formBasicText">
+              <FormGroup>
                   <Col sm={3}>
                   <ControlLabel>Account Information</ControlLabel>
                   <FormControl type="text" name="username" placeholder="username"/>
