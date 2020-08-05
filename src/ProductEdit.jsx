@@ -3,12 +3,26 @@ import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
 import DateInput from './DateInput.jsx';
+import store from './store.js';
 
 export default class ProductEdit extends React.Component {
+  static async fetchData(match, showError) {
+    const query = `query product($id: Int!) {
+      product(id: $id) {
+        id description createdDate expirationDate
+        quantity category information
+      }
+    }`;
+    const { params: { id } } = match;
+    const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
+    return result;
+  }
   constructor() {
     super();
+    const product = store.initialData ? store.initialData.product : null;
+    delete store.initialData;
     this.state = {
-      product: {},
+      product,
       invalidFields: {},
     };
     this.onChange = this.onChange.bind(this);
@@ -17,7 +31,8 @@ export default class ProductEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.loadData();
+    const { product } = this.state;
+    if (product == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -57,7 +72,7 @@ export default class ProductEdit extends React.Component {
         id: $id
         changes: $changes
       ) {
-        description createdDate expirationDate 
+        id description createdDate expirationDate 
         quantity category information 
       }
     }`;
@@ -70,33 +85,30 @@ export default class ProductEdit extends React.Component {
   }
 
   async loadData() {
-    const query = `query product($id: Int!) {
-      product(id: $id) {
-        id description createdDate expirationDate
-        quantity category information
-      }
-    }`;
-    const { match: { params: { id } } } = this.props;
-    const data = await graphQLFetch(query, { id: parseInt(id, 10) });
-    if (data) {
-      const { product } = data;
-      product.description = product.description != null ? product.description : '';
-      // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
-      // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
-      product.category = product.category != null ? product.category : '';
-      product.information = product.information != null ? product.information : '';
-      this.setState({ product, invalidFields: {} });
-    } else {
-      this.setState({ product: {}, invalidFields: {} });
-    }
+    const { match } = this.props;
+    const data = await ProductEdit.fetchData(match, null, this.showError);
+    this.setState({ product: data ? data.product : {}, invalidFields: {} });
+    // if (data) {
+    //   const { product } = data;
+    //   product.description = product.description != null ? product.description : '';
+    //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+    //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
+    //   product.category = product.category != null ? product.category : '';
+    //   product.information = product.information != null ? product.information : '';
+    //   this.setState({ product, invalidFields: {} });
+    // } else {
+    //   this.setState({ product: {}, invalidFields: {} });
+    // }
   }
 
   render() {
+    const { product } = this.state;
+    if (product === null) return null;
     const { product: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;
-    if (id == null) {
+    if (id === null) {
       if (propsId != null) {
-        return <h3>{`Product with ID ${propsId} not found.`}</h3>;
+        return <h3>{`Product with ID ${propsId} not found at all.`}</h3>;
       }
       return null;
     }

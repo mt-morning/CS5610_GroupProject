@@ -9,6 +9,7 @@ import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import ProductInformation from './ProductInformation.jsx';
 
+
 /**
  * Represent overall inventory list in webpage.
  */
