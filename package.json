@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "#start": "UI server. HMR is enabled in dev mode.",
+    "##start": "nodemon -w server -w .env server/uiserver.js",
     "start": "node dist/server.js",
     "#lint": "Runs ESLint on all relevant files",
     "lint": "eslint server src browser --ext js,jsx",
@@ -31,8 +32,7 @@
     "react-router-dom": "^4.3.1",
     "serialize-javascript": "^4.0.0",
     "source-map-support": "^0.5.19",
-    "url-search-params": "^1.1.0",
-    "whatwg-fetch": "^3.2.0"
+    "url-search-params": "^1.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
