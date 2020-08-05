@@ -10,8 +10,50 @@ import {
   ToggleButton,
   ToggleButtonGroup
 } from "react-bootstrap";
+import graphQLFetch from "./graphQLFetch";
+
 
 export default class Login extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    const form = document.forms.loginForm;
+
+
+    let username = form.username.value;
+    let password = form.password.value;
+
+
+    const query = `query ($username: String!, $password:String!) {
+        user (username: $username, password: $password) {
+          _id
+        }
+    }`;
+
+    // eslint-disable-next-line no-console
+    console.log('query:\t', query);
+    console.log('variables:\t', username, password);
+
+    const data = await graphQLFetch(query, { username, password });
+
+    if (data) {
+      alert("account exists!");
+    }
+    else {
+      alert("doesn't exist");
+    }
+    form.username.value = "";
+    form.password.value = "";
+  }
+
+
+
   render() {
     return (
         <form onSubmit={this.handleSubmit} name="loginForm">

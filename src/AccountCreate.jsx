@@ -17,7 +17,6 @@ export default class AccountCreate extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault();
-        console.log("submitted");
         const form = document.forms.accountCreate;
 
 
@@ -27,16 +26,13 @@ export default class AccountCreate extends React.Component {
             role: form.options.value,
         };
 
-        console.log(user);
-        console.log('adding user....');
+
         const query = `mutation createUser($user: UserInputs!) {
           userAdd(user: $user) {
             username password role
           }
         }`;
 
-        // eslint-disable-next-line no-console
-        console.log('add user query:', query);
 
         const data = await graphQLFetch(query, { user });
         if (data) {
@@ -44,6 +40,8 @@ export default class AccountCreate extends React.Component {
         }
         form.username.value = "";
         form.password.value = "";
+
+        //TODO adda  toast with 'success' or failure
     }
 
 
