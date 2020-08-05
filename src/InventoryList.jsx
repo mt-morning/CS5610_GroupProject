@@ -78,6 +78,7 @@ export default class InventoryList extends React.Component {
     }
   }
 
+
   // need to revise async delete
   async deleteProduct(index) {
     const query = `mutation productDelete($id: Int!) {
