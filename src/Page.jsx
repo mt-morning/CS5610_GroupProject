@@ -43,6 +43,8 @@ function NavBar() {
 }
 
 export default function Page() {
+
+
   return (
     <div>
       <NavBar />
