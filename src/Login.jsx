@@ -36,13 +36,9 @@ export default class Login extends React.Component {
         }
     }`;
 
-    // eslint-disable-next-line no-console
-    console.log('query:\t', query);
-    console.log('variables:\t', username, password);
-
     const data = await graphQLFetch(query, { username, password });
 
-    if (data) {
+    if (data.user !== null ) {
       alert("account exists!");
     }
     else {
@@ -54,7 +50,7 @@ export default class Login extends React.Component {
 
 
   onSuccess(username) {
-    this.props
+    this.state = { authenticated: true };
   }
 
 

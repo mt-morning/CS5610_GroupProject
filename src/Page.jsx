@@ -45,14 +45,16 @@ function NavBar() {
   );
 }
 
-export default function Page() {
+export default class Page extends React.Component {
 
-  return (
-    <div>
-      <NavBar />
-      <Grid fluid>
-        <Contents />
-      </Grid>
-    </div>
-  );
+    render() {
+        return (
+            <div>
+                <NavBar authenticated={this.props.authenticated} />
+                <Grid fluid>
+                    <Contents />
+                </Grid>
+            </div>
+        );
+    }
 }
