@@ -3,12 +3,12 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './routes.js';
 
+// <Route component={NotFound} />
 export default function Contents() {
   return (
     <Switch>
       <Redirect exact from="/" to="/products" />
           {routes.map(attrs => <Route {...attrs} key={attrs.path} />)}
-      <Route component={NotFound} />
     </Switch>
   );
 }
