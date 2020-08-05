@@ -12,17 +12,18 @@ import LandingPage from './LandingPage.jsx';
 
 const NotFound = () => <h1>Page Not Found</h1>;
 
+
 export default function Contents() {
   return (
     <Switch>
-      <Redirect exact from="/" to="/products" />
+      <Redirect exact from="/" to="/signin" />
       <Route path="/products" component={InventoryList} />
       <Route path="/signin" component={LandingPage} />
       <Route path="/edit/:id" component={ProductEdit} />
       <Route path="/report" component={ProductReport} />
       <Route path="/add" component={ProductAdd} />
       <Route path="/remove" component={ProductRemove} />
-      <Route path="/signin" component={SignInNavItem} />
+      <Route path="/signin" component={LandingPage} />
       <Route component={NotFound} />
     </Switch>
   );
