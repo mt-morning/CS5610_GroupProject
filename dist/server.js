@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9a2727e04a2e87590984";
+/******/ 	var hotCurrentHash = "9a24674a13a54ed690fc";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1255,6 +1255,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+ // <Route component={NotFound} />
 
 function Contents() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
@@ -1263,9 +1264,113 @@ function Contents() {
     to: "/products"
   }), _routes_js__WEBPACK_IMPORTED_MODULE_2__["default"].map(attrs => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, attrs, {
     key: attrs.path
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    component: NotFound
-  }));
+  }))));
+}
+
+/***/ }),
+
+/***/ "./src/DateInput.jsx":
+/*!***************************!*\
+  !*** ./src/DateInput.jsx ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DateInput; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function displayFormat(date) {
+  return date != null ? date.toDateString() : '';
+}
+
+function editFormat(date) {
+  return date != null ? date.toISOString().substr(0, 10) : '';
+}
+
+function unformat(str) {
+  const val = new Date(str);
+  return Number.isNaN(val.getTime()) ? null : val;
+}
+
+class DateInput extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: editFormat(props.value),
+      focused: false,
+      valid: true
+    };
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onFocus() {
+    this.setState({
+      focused: true
+    });
+  }
+
+  onBlur(e) {
+    const {
+      value,
+      valid: oldValid
+    } = this.state;
+    const {
+      onValidityChange,
+      onChange
+    } = this.props;
+    const dateValue = unformat(value);
+    const valid = value === '' || dateValue != null;
+
+    if (valid !== oldValid && onValidityChange) {
+      onValidityChange(e, valid);
+    }
+
+    this.setState({
+      focused: false,
+      valid
+    });
+    if (valid) onChange(e, dateValue);
+  }
+
+  onChange(e) {
+    if (e.target.value.match(/^[\d-]*$/)) {
+      this.setState({
+        value: e.target.value
+      });
+    }
+  }
+
+  render() {
+    const {
+      valid,
+      focused,
+      value
+    } = this.state;
+    const {
+      value: origValue,
+      name
+    } = this.props;
+    const className = !valid && !focused ? 'invalid' : null;
+    const displayValue = focused || !valid ? value : displayFormat(origValue);
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "text",
+      size: 20,
+      name: name,
+      className: className,
+      value: displayValue,
+      placeholder: focused ? 'yyyy-mm-dd' : null,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur,
+      onChange: this.onChange
+    });
+  }
+
 }
 
 /***/ }),
@@ -1409,23 +1514,23 @@ class InventoryList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
       id
     } = inventory[index];
     const data = await Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_7__["default"])(query, {
-      id
+      id: parseInt(id, 10)
     });
 
     if (data && data.productDelete) {
       this.setState(prevState => {
         const newList = [...prevState.inventory];
 
-        if (pathname === `/inventory/${id}`) {
+        if (pathname === `/products/${id}`) {
           history.push({
-            pathname: '/inventory',
+            pathname: '/products',
             search
           });
         }
 
         newList.splice(index, 1);
         return {
-          issues: newList
+          inventory: newList
         };
       });
     } else {
@@ -1490,7 +1595,8 @@ const InventoryRow = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withR
   location: {
     search
   },
-  deleteProduct
+  deleteProduct,
+  index
 }) => {
   const selectLocation = {
     pathname: `/products/${product.id}`,
@@ -1540,10 +1646,11 @@ function InventoryTable({
   inventory,
   deleteProduct
 }) {
-  const inventoryRows = inventory.map(product => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(InventoryRow, {
+  const inventoryRows = inventory.map((product, index) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(InventoryRow, {
     key: product.id,
     product: product,
-    deleteProduct: deleteProduct
+    deleteProduct: deleteProduct,
+    index: index
   }));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Table"], {
     bordered: true,
@@ -1794,7 +1901,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _graphQLFetch_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./graphQLFetch.js */ "./src/graphQLFetch.js");
 /* harmony import */ var _NumInput_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NumInput.jsx */ "./src/NumInput.jsx");
-/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store.js */ "./src/store.js");
+/* harmony import */ var _DateInput_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DateInput.jsx */ "./src/DateInput.jsx");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store.js */ "./src/store.js");
+
 
 
 
@@ -1814,21 +1923,22 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
       }
     } = match;
     const result = await Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_2__["default"])(query, {
-      id
+      id: parseInt(id, 10)
     }, showError);
     return result;
   }
 
   constructor() {
     super();
-    const product = _store_js__WEBPACK_IMPORTED_MODULE_4__["default"].initialData ? _store_js__WEBPACK_IMPORTED_MODULE_4__["default"].initialData.product : null;
-    delete _store_js__WEBPACK_IMPORTED_MODULE_4__["default"].initialData;
+    const product = _store_js__WEBPACK_IMPORTED_MODULE_5__["default"].initialData ? _store_js__WEBPACK_IMPORTED_MODULE_5__["default"].initialData.product : null;
+    delete _store_js__WEBPACK_IMPORTED_MODULE_5__["default"].initialData;
     this.state = {
       product,
       invalidFields: {}
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onValidityChange = this.onValidityChange.bind(this);
   }
 
   componentDidMount() {
@@ -1872,6 +1982,21 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
     }));
   }
 
+  onValidityChange(event, valid) {
+    const {
+      name
+    } = event.target;
+    this.setState(prevState => {
+      const invalidFields = { ...prevState.invalidFields,
+        [name]: !valid
+      };
+      if (valid) delete invalidFields[name];
+      return {
+        invalidFields
+      };
+    });
+  }
+
   async handleSubmit(e) {
     e.preventDefault();
     const {
@@ -1898,12 +2023,23 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
     } = product;
     const data = await Object(_graphQLFetch_js__WEBPACK_IMPORTED_MODULE_2__["default"])(query, {
       changes,
-      id
+      id: parseInt(id, 10)
     });
 
     if (data) {
+      console.log('this is the before state');
+      console.log(this.state); // when logging state before we set it, we see that the id is still there
+      // and before call back function is run, we see forced rerendering 
+      // and see line 119 console.logs a new product WITHOUT an ID
+
       this.setState({
         product: data.productUpdate
+      }, () => {
+        console.log('this is the product');
+        console.log(product); // this one has an id
+
+        console.log('this is the after state');
+        console.log(this.state); // this one does not
       });
       alert('Updated product successfully'); // eslint-disable-line no-alert
     }
@@ -1914,31 +2050,28 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
       match
     } = this.props;
     const data = await ProductEdit.fetchData(match, null, this.showError);
-
-    if (data) {
-      const {
-        product
-      } = data;
-      product.description = product.description != null ? product.description : '';
-      product.createdDate = product.createdDate ? product.toDateString() : '';
-      product.expirationDate = product.expirationDate ? product.due.toDateString() : '';
-      product.category = product.category != null ? product.category : '';
-      product.information = product.information != null ? product.information : '';
-      this.setState({
-        product
-      });
-    } else {
-      this.setState({
-        product: {}
-      });
-    }
+    this.setState({
+      product: data ? data.product : {},
+      invalidFields: {}
+    }); // if (data) {
+    //   const { product } = data;
+    //   product.description = product.description != null ? product.description : '';
+    //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+    //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
+    //   product.category = product.category != null ? product.category : '';
+    //   product.information = product.information != null ? product.information : '';
+    //   this.setState({ product, invalidFields: {} });
+    // } else {
+    //   this.setState({ product: {}, invalidFields: {} });
+    // }
   }
 
   render() {
     const {
       product
     } = this.state;
-    if (product == null) return null;
+    console.log(product);
+    if (product === null) return null;
     const {
       product: {
         id
@@ -1952,12 +2085,23 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
       }
     } = this.props;
 
-    if (id == null) {
+    if (id === null) {
       if (propsId != null) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, `Product with ID ${propsId} not found.`);
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, `Product with ID ${propsId} not found at all.`);
       }
 
       return null;
+    }
+
+    const {
+      invalidFields
+    } = this.state;
+    let validationMessage;
+
+    if (Object.keys(invalidFields).length !== 0) {
+      validationMessage = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "error"
+      }, "Please correct invalid fields before submitting.");
     }
 
     const {
@@ -1986,7 +2130,19 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
       name: "description",
       value: description,
       onChange: this.onChange
-    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Created:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, createdDate.toDateString())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Expiration:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, expirationDate.toDateString())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Quantity:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NumInput_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Created:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DateInput_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      name: "createdDate",
+      value: createdDate,
+      onChange: this.onChange,
+      onValidityChange: this.onValidityChange,
+      key: id
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Expiration:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_DateInput_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      name: "expirationDate",
+      value: expirationDate,
+      onChange: this.onChange,
+      onValidityChange: this.onValidityChange,
+      key: id
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Quantity:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NumInput_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
       name: "quantity",
       value: quantity,
       onChange: this.onChange,
@@ -2015,7 +2171,7 @@ class ProductEdit extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component
       onChange: this.onChange
     }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       type: "submit"
-    }, "Submit"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+    }, "Submit"))))), validationMessage, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
       to: `/edit/${id - 1}`
     }, "Prev"), ' | ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
       to: `/edit/${id + 1}`
@@ -2058,11 +2214,12 @@ class ProductFilter extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
     super();
     const params = new url_search_params__WEBPACK_IMPORTED_MODULE_2___default.a(search);
     this.state = {
-      status: params.get('status') || '',
+      quantity: params.get('quantity') || '',
       changed: false
     };
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
+    this.showOriginalFilter = this.showOriginalFilter.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -2084,7 +2241,7 @@ class ProductFilter extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
 
   onChangeStatus(e) {
     this.setState({
-      status: e.target.value,
+      quantity: e.target.value,
       changed: true
     });
   }
@@ -2097,21 +2254,21 @@ class ProductFilter extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
     } = this.props;
     const params = new url_search_params__WEBPACK_IMPORTED_MODULE_2___default.a(search);
     this.setState({
-      status: params.get('status') || '',
+      quantity: params.get('quantity') || '',
       changed: false
     });
   }
 
   applyFilter() {
     const {
-      status
+      quantity
     } = this.state;
     const {
       history
     } = this.props;
     history.push({
-      pathname: '/issues',
-      search: status ? `?status=${status}` : ''
+      pathname: '/products',
+      search: quantity ? `?quantity=${quantity}` : ''
     });
   } // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
@@ -2119,10 +2276,11 @@ class ProductFilter extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
 
   render() {
     const {
-      status
+      quantity,
+      changed
     } = this.state;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Filter by quantity:", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-      value: status,
+      value: quantity,
       onChange: this.onChangeStatus
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
       value: ""
@@ -2137,7 +2295,7 @@ class ProductFilter extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
     }, "Apply"), ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Button"], {
       type: "button",
       onClick: this.showOriginalFilter,
-      disabled: !status.changed
+      disabled: !changed
     }, "Reset"));
   }
 
