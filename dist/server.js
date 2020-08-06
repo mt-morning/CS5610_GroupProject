@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6c19250d45d0096eb8b7";
+/******/ 	var hotCurrentHash = "3bf8243fc9e639b850b0";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1052,7 +1052,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var serialize_javascript__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(serialize_javascript__WEBPACK_IMPORTED_MODULE_0__);
 
 function template(body, data) {
-  return `< !DOCTYPE html >
+  return `
         <html>
         <head>
            <meta charset="utf-8">
@@ -1236,6 +1236,97 @@ class About extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
 
 /***/ }),
 
+/***/ "./src/AccountCreate.jsx":
+/*!*******************************!*\
+  !*** ./src/AccountCreate.jsx ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AccountCreate; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "react-bootstrap");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "prop-types");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _graphQLFetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./graphQLFetch */ "./src/graphQLFetch.js");
+/* eslint "react/prefer-stateless-function": "off" */
+
+
+
+
+class AccountCreate extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    const form = document.forms.accountCreate;
+    const user = {
+      username: form.username.value,
+      password: form.password.value,
+      role: form.options.value
+    };
+    const query = `mutation createUser($user: UserInputs!) {
+          userAdd(user: $user) {
+            username password role
+          }
+        }`;
+    const data = await Object(_graphQLFetch__WEBPACK_IMPORTED_MODULE_3__["default"])(query, {
+      user
+    });
+
+    if (data) {
+      this.setState({
+        accountCreated: true
+      });
+    }
+
+    form.username.value = "";
+    form.password.value = ""; //TODO adda  toast with 'success' or failure
+  }
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      onSubmit: this.handleSubmit,
+      name: "accountCreate"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormGroup"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Col"], {
+      sm: 3
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["ControlLabel"], null, "Account Information"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormControl"], {
+      type: "text",
+      name: "username",
+      placeholder: "username"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormControl"], {
+      type: "password",
+      name: "password",
+      placeholder: "password"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["ButtonToolbar"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["ToggleButtonGroup"], {
+      justified: true,
+      type: "radio",
+      name: "options",
+      defaultValue: 'User'
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["ToggleButton"], {
+      name: "admin",
+      value: 'Admin'
+    }, "Admin"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["ToggleButton"], {
+      value: 'User'
+    }, "Non-Admin"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+      bsType: "submit"
+    }, "Create"))));
+  }
+
+}
+AccountCreate.propTypes = {
+  addUser: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+};
+
+/***/ }),
+
 /***/ "./src/Contents.jsx":
 /*!**************************!*\
   !*** ./src/Contents.jsx ***!
@@ -1257,14 +1348,24 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
  // <Route component={NotFound} />
 
-function Contents() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
-    exact: true,
-    from: "/",
-    to: "/products"
-  }), _routes_js__WEBPACK_IMPORTED_MODULE_2__["default"].map(attrs => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, attrs, {
-    key: attrs.path
-  }))));
+class Contents extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authenticated: false
+    };
+  }
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Redirect"], {
+      exact: true,
+      from: "/",
+      to: "/products"
+    }), _routes_js__WEBPACK_IMPORTED_MODULE_2__["default"].map(attrs => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, attrs, {
+      key: attrs.path
+    }))));
+  }
+
 }
 
 /***/ }),
@@ -1662,6 +1763,124 @@ function InventoryTable({
 
 /***/ }),
 
+/***/ "./src/LandingPage.jsx":
+/*!*****************************!*\
+  !*** ./src/LandingPage.jsx ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LandingPage; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "react-bootstrap");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _AccountCreate_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AccountCreate.jsx */ "./src/AccountCreate.jsx");
+/* harmony import */ var _Login_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Login.jsx */ "./src/Login.jsx");
+
+
+
+
+function LandingPage() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Grid"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Tabs"], {
+    defaultActiveKey: "Login",
+    id: "home"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Tab"], {
+    eventKey: "Create",
+    title: "Create Account"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Create an Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_AccountCreate_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Tab"], {
+    eventKey: "Login",
+    title: "Log-In"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Login with Existing Account"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Login_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    style: {
+      alignSelf: 'flex-end'
+    }
+  })))));
+}
+
+/***/ }),
+
+/***/ "./src/Login.jsx":
+/*!***********************!*\
+  !*** ./src/Login.jsx ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Login; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "react-bootstrap");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _graphQLFetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./graphQLFetch */ "./src/graphQLFetch.js");
+/* eslint "react/prefer-stateless-function": "off" */
+
+
+
+class Login extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    const form = document.forms.loginForm;
+    let username = form.username.value;
+    let password = form.password.value;
+    const query = `query ($username: String!, $password:String!) {
+        user (username: $username, password: $password) {
+          _id
+        }
+    }`;
+    const data = await Object(_graphQLFetch__WEBPACK_IMPORTED_MODULE_2__["default"])(query, {
+      username,
+      password
+    });
+
+    if (data.user !== null) {
+      alert("account exists!");
+    } else {
+      alert("doesn't exist");
+    }
+
+    form.username.value = "";
+    form.password.value = "";
+  }
+
+  onSuccess(username) {
+    this.state = {
+      authenticated: true
+    };
+  }
+
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      onSubmit: this.handleSubmit,
+      name: "loginForm"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormGroup"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Col"], {
+      sm: 3
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormControl"], {
+      type: "text",
+      name: "username",
+      placeholder: "username"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["FormControl"], {
+      type: "password",
+      name: "password",
+      placeholder: "password"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      bsType: "submit"
+    }, "Log-In"))));
+  }
+
+}
+
+/***/ }),
+
 /***/ "./src/NotFound.jsx":
 /*!**************************!*\
   !*** ./src/NotFound.jsx ***!
@@ -1785,7 +2004,7 @@ function NavBar() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["NavItem"], null, "Home")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_bootstrap__WEBPACK_IMPORTED_MODULE_3__["LinkContainer"], {
     to: "/about"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["MenuItem"], null, "About")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_bootstrap__WEBPACK_IMPORTED_MODULE_3__["LinkContainer"], {
-    to: "/signin"
+    to: "/sign-in"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["NavItem"], null, "Sign in")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_bootstrap__WEBPACK_IMPORTED_MODULE_3__["LinkContainer"], {
     to: "/products"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["NavItem"], null, "Inventory Overview ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_bootstrap__WEBPACK_IMPORTED_MODULE_3__["LinkContainer"], {
@@ -1805,10 +2024,15 @@ function NavBar() {
   })))));
 }
 
-function Page() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NavBar, null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-    fluid: true
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contents_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+class Page extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
+  render() {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NavBar, {
+      authenticated: this.props.authenticated
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+      fluid: true
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Contents_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
+  }
+
 }
 
 /***/ }),
@@ -2475,6 +2699,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ProductEdit_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ProductEdit.jsx */ "./src/ProductEdit.jsx");
 /* harmony import */ var _About_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./About.jsx */ "./src/About.jsx");
 /* harmony import */ var _NotFound_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NotFound.jsx */ "./src/NotFound.jsx");
+/* harmony import */ var _LandingPage_jsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./LandingPage.jsx */ "./src/LandingPage.jsx");
+
 
 
 
@@ -2492,6 +2718,9 @@ const routes = [{
 }, {
   path: '/about',
   component: _About_jsx__WEBPACK_IMPORTED_MODULE_3__["default"]
+}, {
+  path: '/sign-in',
+  component: _LandingPage_jsx__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
   path: '*',
   component: _NotFound_jsx__WEBPACK_IMPORTED_MODULE_4__["default"]

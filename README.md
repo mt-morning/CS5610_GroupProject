@@ -4,6 +4,7 @@
 Iter 1.0
 - Link to API repo: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_Croissant_API
 - Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
+
 ## Members:
 - Alice  Tilles
 - Miranda Tran
@@ -35,10 +36,14 @@ Iter 1.0
 - slider [demo](https://react-smooth-range-input.now.sh/) [documentation](https://reactlibraries.com/library/1ef75821-4286-493d-8ac9-3f04b184e171)
 
 ### How to run: 
-#### Localhost: 8000
+Go to 'localhost:8000' in the browser.
+
 ```
 > npm run start
 ```
+
+GroupProject_Croissant_UI$ npx eslint . --fix
+
  Dependencies (please refer to package.json for the most up-to-date libraries and versions)
     <br> * `"babel-polyfill": "^6.26.0"`,
     <br> * `"dotenv": "^6.2.0"`,
