@@ -24,9 +24,6 @@ function NavBar() {
 
         <LinkContainer to="/products"><NavItem>Inventory Overview </NavItem></LinkContainer>
 
-        <LinkContainer to="/report"><NavItem>Report</NavItem></LinkContainer>
-
-        <LinkContainer to="/remove"><NavItem>Remove Product</NavItem></LinkContainer>
 
       </Nav>
 
