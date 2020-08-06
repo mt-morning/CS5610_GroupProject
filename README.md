@@ -18,6 +18,10 @@ Iter 2.0
 ### Alice
 
 ### Tran
+- Implement navigation bar 
+- Implement bootstrap to navigation bar, tables, title header, buttons, edit/delete buttons
+- Create MongoDB database
+- Implement About page, About API, and data fetch 
 
 ### Miranda
 
