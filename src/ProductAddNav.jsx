@@ -38,6 +38,7 @@ class ProductAddNav extends React.Component {
       description: form.description.value,
       quantity: isNaN(quantity) ? 0 : quantity,
       createdDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      category: form.category.value,
     }
 
     const query = `mutation productAdd($product: ProductInputs!) {
