@@ -17,7 +17,6 @@ export default class InventoryList extends React.Component {
   constructor() {
     super();
     this.state = { inventory: [] };
-    this.addProduct = this.addProduct.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
   }
 
@@ -49,7 +48,7 @@ export default class InventoryList extends React.Component {
     const query = `query productList($quantity: Int) {
       productList(quantity: $quantity) {
         id description createdDate
-        expirationDate quantity
+        expirationDate quantity category
       }
     }`;
 
@@ -60,25 +59,6 @@ export default class InventoryList extends React.Component {
       this.setState({ inventory: data.productList });
     }
   }
-
-  /* addIssue() issueAdd() */
-  async addProduct(product) {
-    product.quantity = 1; // TODO convert string to int and remove this line
-    const query = `mutation productAdd($product: ProductInputs!) {
-          productAdd(product: $product) {
-            id
-          }
-        }`;
-
-    // eslint-disable-next-line no-console
-    console.log('add issue query:', query);
-
-    const data = await graphQLFetch(query, { product });
-    if (data) {
-      this.loadData();
-    }
-  }
-
 
   // need to revise async delete
   async deleteProduct(index) {
@@ -118,8 +98,6 @@ export default class InventoryList extends React.Component {
         </Panel>
         <hr />
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
-        <hr />
-        <ProductAdd addProduct={this.addProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
       </React.Fragment>
