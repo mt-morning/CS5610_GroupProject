@@ -20,7 +20,7 @@ function NavBar() {
 
         <LinkContainer to="/about"><MenuItem>About</MenuItem></LinkContainer>
 
-        <LinkContainer to="/signin"><NavItem>Sign in</NavItem></LinkContainer>
+        <LinkContainer to="/sign-in"><NavItem>Sign in</NavItem></LinkContainer>
 
         <LinkContainer to="/products"><NavItem>Inventory Overview </NavItem></LinkContainer>
 

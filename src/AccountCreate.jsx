@@ -1,7 +1,7 @@
 /* eslint "react/prefer-stateless-function": "off" */
 
 import React from 'react';
-import { FormGroup, ControlLabel,
+import { FormGroup, ControlLabel,Button,
     FormControl, Col, ButtonToolbar, ToggleButton, ToggleButtonGroup}  from 'react-bootstrap';
 import PropTypes from "prop-types";
 import graphQLFetch from "./graphQLFetch";
@@ -59,7 +59,7 @@ export default class AccountCreate extends React.Component {
                               <ToggleButton value={'User'}>Non-Admin</ToggleButton>
                           </ToggleButtonGroup>
                       </ButtonToolbar>
-                      <button bsType="submit">Create</button>
+                      <Button bsType="submit">Create</Button>
                   </Col>
               </FormGroup>
           </form>
@@ -68,5 +68,5 @@ export default class AccountCreate extends React.Component {
 }
 
 AccountCreate.propTypes = {
-    addUser: PropTypes.func.isRequired,
+    addUser: PropTypes.func,
 };
