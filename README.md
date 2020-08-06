@@ -16,6 +16,10 @@ Iter 2.0
 ## Member Contributions:
 
 ### Alice
+- Created create user and query user functionality in API
+- Created 'created account' and 'login' panels in UI using boottrap
+- Fixed some misc bugs
+- Helped deploy to Heroku
 
 ### Tran
 - Implement navigation bar 
