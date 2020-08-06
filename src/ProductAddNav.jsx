@@ -1,58 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
-import NumInput from './NumInput.jsx';
-import DateInput from './DateInput.jsx';
 import store from './store.js';
 import {
-  NavItem, Glyphicon, Tooltip, OverlayTrigger
+  Modal, NavItem, Glyphicon, Tooltip, OverlayTrigger,
+  Form, FormGroup, FormControl, ControlLabel, 
+  Button, ButtonToolbar
 } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 
-export default class ProductAddNav extends React.Component {
+class ProductAddNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showing: false,
     };
-    this.onChange = this.onChange.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onValidityChange = this.onValidityChange.bind(this);
   }
 
-  onChange(event, naturalValue) {
-    const { name, value: textValue } = event.target;
-    const value = naturalValue === undefined ? textValue : naturalValue;
-    this.setState(prevState => ({
-      product: { ...prevState.product, [name]: value },
-    }));
+  showModal() {
+    this.setState({ showing: true });
   }
 
-  onValidityChange(event, valid) {
-    const { name } = event.target;
-    this.setState((prevState) => {
-      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
-      if (valid) delete invalidFields[name];
-      return { invalidFields };
-    });
+  hideModal() {
+    this.setState({ showing: false });
   }
 
   async handleSubmit(e) {
     e.preventDefault();
-    const { product, invalidFields } = this.state;
+    this.hideModal();
 
-    if (Object.keys(invalidFields).length !== 0) return;
-    const query = `mutation productUpdate(
-      $id: Int!
-      $changes: ProductUpdateInputs!
-    ) {
-      productUpdate(
-        id: $id
-        changes: $changes
-      ) {
-        id description createdDate expirationDate 
-        quantity category information 
+    const form = document.forms.productAdd;
+    const quantity = parseInt(form.quantity.value); 
+    // quantity can have negative value rn
+    const product = {
+      description: form.description.value,
+      quantity: isNaN(quantity) ? 0 : quantity,
+      createdDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+    }
+
+    const query = `mutation productAdd($product: ProductInputs!) {
+      productAdd(product: $product) {
+        id
       }
     }`;
+
+    const data = await graphQLFetch(query, { product });
+
+    // TODO: find a way to rerender without relying on routing back to home pg
+    if (data) {
+      const { history } = this.props;
+      history.push(`/`);
+    }
   }
 
   render() {
@@ -60,7 +60,7 @@ export default class ProductAddNav extends React.Component {
 
     return (
       <React.Fragment>
-        <NavItem>
+        <NavItem onClick={this.showModal}>
           <OverlayTrigger
             placement="left"
             delayShow={1000}
@@ -69,7 +69,53 @@ export default class ProductAddNav extends React.Component {
             <Glyphicon glyph="plus" />
           </OverlayTrigger>
         </NavItem>
+        <Modal keyboard show={showing} onHide={this.hideModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add New Product</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form name="productAdd">
+              <FormGroup>
+                <ControlLabel>Product name: </ControlLabel>
+                <FormControl name="description" type="text" />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Quantity: </ControlLabel>
+                <FormControl name="quantity" type="number" />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Category: </ControlLabel>
+                <FormControl name="category" componentClass="select" placeholder="select">
+                  <option value="Muffin">Muffin</option>
+                  <option value="Cupcake">Cupcake</option>
+                  <option value="Cake">Cake</option>
+                  <option value="Cookie">Cookie</option>
+                  <option value="Pastry">Pastry</option>
+                  <option value="Other">Other</option>
+                </FormControl>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Information</ControlLabel>
+                <FormControl name="information" componentClass="textarea" placeholder="Product information" />
+              </FormGroup>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <ButtonToolbar>
+              <Button
+                type="button"
+                bsStyle="primary"
+                onClick={this.handleSubmit}
+              >
+                Submit
+              </Button>
+              <Button bsStyle="link" onClick={this.hideModal}>Cancel</Button>
+            </ButtonToolbar>
+          </Modal.Footer>
+        </Modal>
       </React.Fragment>
     );
   }
 }
+
+export default withRouter(ProductAddNav);
