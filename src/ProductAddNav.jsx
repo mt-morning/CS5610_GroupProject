@@ -4,32 +4,19 @@ import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
 import DateInput from './DateInput.jsx';
 import store from './store.js';
+import {
+  NavItem, Glyphicon, Tooltip, OverlayTrigger
+} from 'react-bootstrap';
 
-
-// UNUSED RIGHT NOW 
-// dev
-class ProductAddNav extends React.Component {
-  constructor() {
-    super();
+export default class ProductAddNav extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      invalidFields: {},
+      showing: false,
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onValidityChange = this.onValidityChange.bind(this);
-  }
-
-  componentDidMount() {
-    const { product } = this.state;
-    if (product == null) this.loadData();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { match: { params: { id: prevId } } } = prevProps;
-    const { match: { params: { id } } } = this.props;
-    if (id !== prevId) {
-      this.loadData();
-    }
   }
 
   onChange(event, naturalValue) {
@@ -66,5 +53,23 @@ class ProductAddNav extends React.Component {
         quantity category information 
       }
     }`;
+  }
+
+  render() {
+    const { showing } = this.state;
+
+    return (
+      <React.Fragment>
+        <NavItem>
+          <OverlayTrigger
+            placement="left"
+            delayShow={1000}
+            overlay={<Tooltip id="/products">Add Product</Tooltip>}
+          >
+            <Glyphicon glyph="plus" />
+          </OverlayTrigger>
+        </NavItem>
+      </React.Fragment>
+    );
   }
 }

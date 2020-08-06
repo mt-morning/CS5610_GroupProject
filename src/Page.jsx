@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  Navbar, Nav, NavItem, NavDropdown,
-  MenuItem, Glyphicon, Tooltip, OverlayTrigger, Grid,
+  Navbar, Nav, NavItem, MenuItem, Grid,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import Contents from './Contents.jsx';
+import ProductAddNav from './ProductAddNav.jsx'
 
 function NavBar() {
   return (
@@ -28,15 +28,7 @@ function NavBar() {
       </Nav>
 
       <Nav pullRight>
-        <NavItem>
-          <OverlayTrigger
-            placement="left"
-            delayShow={1000}
-            overlay={<Tooltip id="/products">Add Product</Tooltip>}
-          >
-            <Glyphicon glyph="plus" />
-          </OverlayTrigger>
-        </NavItem>
+        <ProductAddNav />
       </Nav>
     </Navbar>
   );
@@ -44,14 +36,14 @@ function NavBar() {
 
 export default class Page extends React.Component {
 
-    render() {
-        return (
-            <div>
-                <NavBar authenticated={this.props.authenticated} />
-                <Grid fluid>
-                    <Contents />
-                </Grid>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <NavBar authenticated={this.props.authenticated} />
+        <Grid fluid>
+          <Contents />
+        </Grid>
+      </div>
+    );
+  }
 }
