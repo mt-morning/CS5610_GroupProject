@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6c19250d45d0096eb8b7";
+/******/ 	var hotCurrentHash = "b6103e45ced0d8dbc7ca";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1477,7 +1477,8 @@ class InventoryList extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Compone
 
 
   async addProduct(product) {
-    product.quantity = 1; // TODO convert string to int and remove this line
+    console.log("adding product with equantity");
+    console.log(product.quantity); // product.quantity = 1; // TODO convert string to int and remove this line
 
     const query = `mutation productAdd($product: ProductInputs!) {
           productAdd(product: $product) {
