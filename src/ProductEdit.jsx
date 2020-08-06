@@ -2,19 +2,37 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
+import DateInput from './DateInput.jsx';
+import store from './store.js';
 
 export default class ProductEdit extends React.Component {
+  static async fetchData(match, showError) {
+    const query = `query product($id: Int!) {
+      product(id: $id) {
+        id description createdDate expirationDate
+        quantity category information
+      }
+    }`;
+    const { params: { id } } = match;
+    const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
+    return result;
+  }
   constructor() {
     super();
+    const product = store.initialData ? store.initialData.product : null;
+    delete store.initialData;
     this.state = {
-      issue: {},
+      product,
+      invalidFields: {},
     };
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onValidityChange = this.onValidityChange.bind(this);
   }
 
   componentDidMount() {
-    this.loadData();
+    const { product } = this.state;
+    if (product == null) this.loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -33,6 +51,15 @@ export default class ProductEdit extends React.Component {
     }));
   }
 
+  onValidityChange(event, valid) {
+    const { name } = event.target;
+    this.setState((prevState) => {
+      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
+      if (valid) delete invalidFields[name];
+      return { invalidFields };
+    });
+  }
+
   async handleSubmit(e) {
     e.preventDefault();
     const { product, invalidFields } = this.state;
@@ -45,12 +72,12 @@ export default class ProductEdit extends React.Component {
         id: $id
         changes: $changes
       ) {
-        description createdDate expirationDate 
+        id description createdDate expirationDate 
         quantity category information 
       }
     }`;
     const { id, created, ...changes } = product;
-    const data = await graphQLFetch(query, { changes, id });
+    const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) });
     if (data) {
       this.setState({ product: data.productUpdate });
       alert('Updated product successfully'); // eslint-disable-line no-alert
@@ -58,35 +85,43 @@ export default class ProductEdit extends React.Component {
   }
 
   async loadData() {
-    const query = `query product($id: Int!) {
-      product(id: $id) {
-        id description createdDate expirationDate
-        quantity category information
-      }
-    }`;
-    const { match: { params: { id } } } = this.props;
-    const data = await graphQLFetch(query, { id });
-    if (data) {
-      const { product } = data;
-      product.description = product.description != null ? product.description : '';
-      product.createdDate = product.createdDate ? product.toDateString() : '';
-      product.expirationDate = product.expirationDate ? product.due.toDateString() : '';
-      product.category = product.category != null ? product.category : '';
-      product.information = product.information != null ? product.information : '';
-      this.setState({ product });
-    } else {
-      this.setState({ product: {} });
-    }
+    const { match } = this.props;
+    const data = await ProductEdit.fetchData(match, null, this.showError);
+    this.setState({ product: data ? data.product : {}, invalidFields: {} });
+    // if (data) {
+    //   const { product } = data;
+    //   product.description = product.description != null ? product.description : '';
+    //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+    //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
+    //   product.category = product.category != null ? product.category : '';
+    //   product.information = product.information != null ? product.information : '';
+    //   this.setState({ product, invalidFields: {} });
+    // } else {
+    //   this.setState({ product: {}, invalidFields: {} });
+    // }
   }
 
   render() {
+    const { product } = this.state;
+    if (product === null) return null;
     const { product: { id } } = this.state;
     const { match: { params: { id: propsId } } } = this.props;
-    if (id == null) {
+    if (id === null) {
       if (propsId != null) {
-        return <h3>{`Product with ID ${propsId} not found.`}</h3>;
+        return <h3>{`Product with ID ${propsId} not found at all.`}</h3>;
       }
       return null;
+    }
+
+    const { invalidFields } = this.state;
+    let validationMessage;
+
+    if (Object.keys(invalidFields).length !== 0) {
+      validationMessage = (
+        <div className="error">
+          Please correct invalid fields before submitting.
+        </div>
+      );
     }
 
     const { product: { description, quantity } } = this.state;
@@ -111,13 +146,28 @@ export default class ProductEdit extends React.Component {
             </tr>
             <tr>
               <td>Created:</td>
-              <td>{createdDate.toDateString()}</td>
+              <td>
+                <DateInput
+                  name="createdDate"
+                  value={createdDate}
+                  onChange={this.onChange}
+                  onValidityChange={this.onValidityChange}
+                  key={id}
+                />
+              </td>
             </tr>
             <tr>
               <td>Expiration:</td>
-              <td>{expirationDate.toDateString()}</td>
+              <td>
+                <DateInput
+                  name="expirationDate"
+                  value={expirationDate}
+                  onChange={this.onChange}
+                  onValidityChange={this.onValidityChange}
+                  key={id}
+                />
+              </td>
             </tr>
- 
             <tr>
               <td>Quantity:</td>
               <td>
@@ -162,6 +212,7 @@ export default class ProductEdit extends React.Component {
             </tr>
           </tbody>
         </table>
+        {validationMessage}
         <Link to={`/edit/${id - 1}`}>Prev</Link>
         {' | '}
         <Link to={`/edit/${id + 1}`}>Next</Link>

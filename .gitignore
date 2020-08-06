@@ -3,3 +3,6 @@ package-lock.json
 public/App.js
 .env
 dist
+public/*.js
+public/*.map
+dist
