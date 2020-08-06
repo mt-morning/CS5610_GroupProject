@@ -5,3 +5,5 @@ public/App.js
 dist
 public/*.js
 public/*.map
+dist/*.map
+dist/*.js
