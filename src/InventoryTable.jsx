@@ -2,54 +2,57 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
-    Button, Glyphicon, Tooltip, OverlayTrigger, Table,
+  Button, Glyphicon, Tooltip, OverlayTrigger, Table,
 } from 'react-bootstrap';
+
 /**
  * Represent a product listing in the table: "one row".
  */
-const InventoryRow = withRouter(({ product, location: { search }, deleteProduct }) => {
-    const selectLocation = { pathname: `/products/${product.id}`, search };
-    const editTooltip = (
-        <Tooltip id="close-tooltip" placement="top">Edit Inventory</Tooltip>
-    );
-    const deleteTooltip = (
-        <Tooltip id="delete-tooltip" placement="top">Delete Inventory</Tooltip>
-    );
+const InventoryRow = withRouter(({
+  product, location: { search }, deleteProduct, index,
+}) => {
+  const selectLocation = { pathname: `/products/${product.id}`, search };
+  const editTooltip = (
+    <Tooltip id="close-tooltip" placement="top">Edit Inventory</Tooltip>
+  );
+  const deleteTooltip = (
+    <Tooltip id="delete-tooltip" placement="top">Delete Inventory</Tooltip>
+  );
 
-    function onDelete(e) {
-        e.preventDefault();
-        deleteProduct(index);
-    }
+  function onDelete(e) {
+    e.preventDefault();
+    deleteProduct(index);
+  }
 
-    const tableRow = (
+  const tableRow = (
     <tr>
       <td>{product.id}</td>
       <td>{product.description}</td>
       <td>{product.createdDate ? product.createdDate.toDateString() : ' '}</td>
-      <td>{product.expirationDate ? product.expirationDate.toDateString() : ' ' }</td>
+      <td>{product.expirationDate ? product.expirationDate.toDateString() : ' '}</td>
       <td>{product.quantity}</td>
-            <td>
-                <LinkContainer to={`/edit/${product.id}`}>
-                    <OverlayTrigger delayShow={1000} overlay={editTooltip}>
-                        <Button bsSize="xsmall">
-                            <Glyphicon glyph="edit" />
-                        </Button>
-                    </OverlayTrigger>
-                </LinkContainer>
-                {' '}
-              <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
-                    <Button bsSize="xsmall" onClick={onDelete}>
-                  <Glyphicon glyph="trash" />
-               </Button>
-           </OverlayTrigger>
+      <td>
+        <LinkContainer to={`/edit/${product.id}`}>
+          <OverlayTrigger delayShow={1000} overlay={editTooltip}>
+            <Button bsSize="xsmall">
+              <Glyphicon glyph="edit" />
+            </Button>
+          </OverlayTrigger>
+        </LinkContainer>
+        {' '}
+        <OverlayTrigger delayShow={1000} overlay={deleteTooltip}>
+          <Button bsSize="xsmall" onClick={onDelete}>
+            <Glyphicon glyph="trash" />
+          </Button>
+        </OverlayTrigger>
       </td>
     </tr>
-    );
-    return (
-        <LinkContainer to={selectLocation}>
-            {tableRow}
-        </LinkContainer>
-    );
+  );
+  return (
+    <LinkContainer to={selectLocation}>
+      {tableRow}
+    </LinkContainer>
+  );
 });
 
 
@@ -57,14 +60,16 @@ const InventoryRow = withRouter(({ product, location: { search }, deleteProduct 
  * Return all the products in a table.
  */
 export default function InventoryTable({ inventory, deleteProduct }) {
-  const inventoryRows = inventory.map(product => (
-      <InventoryRow key={product.id} product={product}
-          deleteProduct={deleteProduct}
-      
-      />
+  const inventoryRows = inventory.map((product, index) => (
+    <InventoryRow
+      key={product.id}
+      product={product}
+      deleteProduct={deleteProduct}
+      index={index}
+    />
   ));
   return (
-      <Table bordered condensed hover responsive>
+    <Table bordered condensed hover responsive>
       <thead>
         <tr>
           <th>ID</th>

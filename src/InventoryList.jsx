@@ -9,6 +9,7 @@ import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import ProductInformation from './ProductInformation.jsx';
 
+
 /**
  * Represent overall inventory list in webpage.
  */
@@ -78,6 +79,7 @@ export default class InventoryList extends React.Component {
     }
   }
 
+
   // need to revise async delete
   async deleteProduct(index) {
     const query = `mutation productDelete($id: Int!) {
@@ -86,15 +88,15 @@ export default class InventoryList extends React.Component {
     const { inventory } = this.state;
     const { location: { pathname, search }, history } = this.props;
     const { id } = inventory[index];
-    const data = await graphQLFetch(query, { id });
+    const data = await graphQLFetch(query, { id: parseInt(id, 10) });
     if (data && data.productDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.inventory];
-        if (pathname === `/inventory/${id}`) {
-          history.push({ pathname: '/inventory', search });
+        if (pathname === `/products/${id}`) {
+          history.push({ pathname: '/products', search });
         }
         newList.splice(index, 1);
-        return { issues: newList };
+        return { inventory: newList };
       });
     } else {
       this.loadData();
@@ -105,15 +107,15 @@ export default class InventoryList extends React.Component {
     const { inventory } = this.state;
     const { match } = this.props;
     return (
-        <React.Fragment>
-            <Panel>
-                <Panel.Heading>
-                    <Panel.Title toggle>Filter</Panel.Title>
-                </Panel.Heading>
-                <Panel.Body collapsible>
-                    <ProductFilter />
-                </Panel.Body>
-            </Panel>
+      <React.Fragment>
+        <Panel>
+          <Panel.Heading>
+            <Panel.Title toggle>Filter</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body collapsible>
+            <ProductFilter />
+          </Panel.Body>
+        </Panel>
         <hr />
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
         <hr />
