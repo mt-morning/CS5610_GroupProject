@@ -1,7 +1,8 @@
 # Team Croissant: UI
 
 ## Current version: 
-Iter 1.0
+Iter 2.0
+- link to UI deployment: https://croissant-ui.herokuapp.com/products
 - Link to API repo: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_Croissant_API
 - Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
 
@@ -9,6 +10,16 @@ Iter 1.0
 - Alice  Tilles
 - Miranda Tran
 - Tran Pham
+
+## Iter 2.0 Notes: 
+
+## Member Contributions:
+
+### Alice
+
+### Tran
+
+### Miranda
 
 ## Iter 1.0 Notes:
 
