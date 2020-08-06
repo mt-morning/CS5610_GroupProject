@@ -4,6 +4,7 @@
 Iter 1.0
 - Link to API repo: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_Croissant_API
 - Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
+
 ## Members:
 - Alice  Tilles
 - Miranda Tran
@@ -35,10 +36,14 @@ Iter 1.0
 - slider [demo](https://react-smooth-range-input.now.sh/) [documentation](https://reactlibraries.com/library/1ef75821-4286-493d-8ac9-3f04b184e171)
 
 ### How to run: 
-#### Localhost: 8000
+Go to 'localhost:8000' in the browser.
+
 ```
 > npm run start
 ```
+
+GroupProject_Croissant_UI$ npx eslint . --fix
+
  Dependencies (please refer to package.json for the most up-to-date libraries and versions)
     <br> * `"babel-polyfill": "^6.26.0"`,
     <br> * `"dotenv": "^6.2.0"`,
@@ -60,6 +65,7 @@ Iter 1.0
 ## Member Contributions:
 
 ### Alice
+I followed Pro MERN Stack 2's boilerplate starter code from chapters 4, 5, and 6. This included setting up most of the components and transferring state/props between them, creating the GraphQL schema, and creating the initial/local MongoDB connection. By the end of this section, we had the ability to add new products to the inventory and have them persist on refresh. The two main ways the code differed from book code is that the schema had different objects and operations and a product has different fields than an issue, requiring different methods to handle the data and data validation.
 
 ### Tran
 - At the beginning, I used a different boilerplate to set up the website, but then I decided to followed Pro MERN Stack 2's boilerplate starter code to set up the foundation and localhost for my teammates to work on.
