@@ -13,6 +13,22 @@ Iter 2.0
 
 ## Iter 2.0 Notes: 
 
+### Screenshots:
+
+#### UI: create, read
+![upgraded product creation form utilizing bootstrap](resources/ReadMeImages/iter2/add.png)
+![read with category](resources/ReadMeImages/iter2/read.png)
+
+#### UI: about, login
+![about page of inventory tracker](resources/ReadMeImages/iter2/about.png)
+![confirmation that account exists](resources/ReadMeImages/iter2/login.png)
+
+#### UI: edit
+![product editing form](resources/ReadMeImages/iter2/edit.png)
+
+#### API/graphQL playground:
+![successfully deployed API server showing functioning graphQL playground](resources/ReadMeImages/iter2/api.png)
+
 ## Member Contributions:
 
 ### Alice
@@ -28,6 +44,11 @@ Iter 2.0
 - Implement About page, About API: install HMR, redirect, setup data sending and data fetch from API 
 
 ### Miranda
+- Helped deploy to Heroku
+- Moved product add to the navigation bar from the inventory table
+  - added more fields for product creation form (react-bootstrap)
+  - added category as another read field for inventory table
+- Fix filter for products and some errors (parseInt)
 
 ## Iter 1.0 Notes:
 
