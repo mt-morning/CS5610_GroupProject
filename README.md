@@ -11,6 +11,27 @@ Iter 2.0
 - Miranda Tran
 - Tran Pham
 
+## Iter 3.0 Notes:
+### Implementation assignments:
+- sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
+- toasts in lieu of alerts: Tran
+- quick update button + React Table: Miranda
+#### further goals:
+- expand about page (more info + version; talk about developing? idk whatever you want)
+- add "last updated" to product info tied to actual last update
+- give an option to set expiration date (edit + add)
+- add category as option for filter
+  - use icons to represent categories
+  - allow for an accumulator sort of filter: all the checked/clicked categories are shown
+- favicon
+- implement an order tracker
+  - allow for orders to be created based on what products are available 
+    - optional field for special notes?
+    - order should have created date, due date, customer name or ID or order number [thinking of square...]
+    - have cost? total cost? requires products to have an associated cost then...
+  - tie orders to products such that product quantity mutates with a FILLED order
+  - view past/future/current orders (filtering)
+
 ## Iter 2.0 Notes: 
 
 ### Screenshots:
