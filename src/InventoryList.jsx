@@ -18,6 +18,7 @@ export default class InventoryList extends React.Component {
     super();
     this.state = { inventory: [] };
     this.deleteProduct = this.deleteProduct.bind(this);
+    this.updateProduct = this.updateProduct.bind(this);
   }
 
   // Pg 64
@@ -66,6 +67,7 @@ export default class InventoryList extends React.Component {
       productDelete(id: $id)
     }`;
     const { inventory } = this.state;
+    // console.log(inventory);
     const { location: { pathname, search }, history } = this.props;
     const { id } = inventory[index];
     const data = await graphQLFetch(query, { id: parseInt(id, 10) });
@@ -76,6 +78,41 @@ export default class InventoryList extends React.Component {
           history.push({ pathname: '/products', search });
         }
         newList.splice(index, 1);
+        return { inventory: newList };
+      });
+    } else {
+      this.loadData();
+    }
+  }
+
+  async updateProduct(index, incrAmt) {
+    const query = `mutation productUpdate(
+      $id: Int!
+      $changes: ProductUpdateInputs!
+    ) {
+      productUpdate(
+        id: $id
+        changes: $changes
+      ) {
+        id description createdDate expirationDate 
+        quantity category information 
+      }
+    }`;
+
+    const { inventory } = this.state;   // populated by child component InventoryTable
+    
+    const { location: { pathname, search }, history } = this.props;
+    const { id } = inventory[index];
+    const { quantity: oldQuantity } = inventory[index];
+    const data = await graphQLFetch(query, {
+      id: parseInt(id, 10), 
+      changes: {"quantity": incrAmt + oldQuantity 
+    } });
+
+    if (data && data.productUpdate) {
+      this.setState((prevState) => {
+        const newList = [...prevState.inventory];
+        newList.splice(index, 1, data.productUpdate);
         return { inventory: newList };
       });
     } else {
@@ -97,7 +134,7 @@ export default class InventoryList extends React.Component {
           </Panel.Body>
         </Panel>
         <hr />
-        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
+        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
       </React.Fragment>
