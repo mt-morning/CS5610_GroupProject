@@ -3,7 +3,7 @@ import graphQLFetch from './graphQLFetch.js';
 import store from './store.js';
 import {
   Modal, NavItem, Glyphicon, Tooltip, OverlayTrigger,
-  Form, FormGroup, FormControl, ControlLabel, 
+  Form, FormGroup, FormControl, ControlLabel,
   Button, ButtonToolbar
 } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
@@ -32,7 +32,7 @@ class ProductAddNav extends React.Component {
     this.hideModal();
 
     const form = document.forms.productAdd;
-    const quantity = parseInt(form.quantity.value); 
+    const quantity = parseInt(form.quantity.value);
     // quantity can have negative value rn
     const product = {
       description: form.description.value,
@@ -40,7 +40,7 @@ class ProductAddNav extends React.Component {
       createdDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
       category: form.category.value,
       information: form.information.value,
-    }
+    };
 
     const query = `mutation productAdd($product: ProductInputs!) {
       productAdd(product: $product) {

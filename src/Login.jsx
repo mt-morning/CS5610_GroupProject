@@ -15,13 +15,46 @@ import graphQLFetch from "./graphQLFetch";
 
 export default class Login extends React.Component {
 
+
+
   constructor(props) {
     super(props);
+    this.state =  {
+      showing: false,
+      user: { signedIn: false, username: ''},
+      username:'',
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.signOut = this.signOut.bind(this);
+    this.signIn = this.signIn.bind(this);
+    console.log("Constructor LOGIN props:", props);
+
   }
 
+  onStateChange(){
+    console.log("LOGIN - State has been changed.");
+  }
+
+  componentDidUpdate(){
+    console.log("LOGIN - Component did update.");
+    console.log("LOGIN props:", this.props);
+    console.log("***LOGIN state.username:", this.state.user.username);
+
+  }
+
+  signIn(username) {
+    super.setState({user: {signedIn: true, username: username } });
+    this.setState({user: {signedIn: true, username: username } });
+    console.log("From Login: Signed In.");
+  }
+
+  signOut() {
+    this.setState({user: {signedIn: false, username: ' ' } });
+    console.log("From Login: Signed Out.");
+  }
 
   async handleSubmit(e) {
+    const {showError} = this.props;
     e.preventDefault();
     const form = document.forms.loginForm;
 
@@ -39,7 +72,9 @@ export default class Login extends React.Component {
     const data = await graphQLFetch(query, { username, password });
 
     if (data.user !== null ) {
-      alert("account exists!");
+      //this.props.username = username;
+      //this.props.loggedIn = true;
+      this.signIn(username);
     }
     else {
       alert("doesn't exist");
@@ -55,6 +90,14 @@ export default class Login extends React.Component {
 
 
   render() {
+
+    const { user } = this.state;
+    if (user.signedIn) {
+      return (
+          <div>Successful login.</div>
+      )
+    }
+
     return (
         <form onSubmit={this.handleSubmit} name="loginForm">
           <FormGroup>

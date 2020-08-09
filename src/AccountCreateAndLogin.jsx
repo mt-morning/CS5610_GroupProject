@@ -6,6 +6,19 @@ import Login from './Login.jsx';
 
 export default class AccountCreateAndLogin extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state =  {
+            showing: false,
+            user: { signedIn: false, username: ''},
+            username:'',
+        };
+    }
+
+    componentDidUpdate() {
+        console.log("Account Create and Login - component did update");
+    }
+
     render() {
         return (
             <div>

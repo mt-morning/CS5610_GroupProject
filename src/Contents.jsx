@@ -8,8 +8,19 @@ export default class Contents extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { authenticated: false };
+        this.state =  {
+            showing: false,
+            user: { signedIn: false, username: ''},
+            username:'',
+        };
     }
+
+
+    componentDidUpdate(){
+        console.log("CONTENTS ComponentDidUpdate.");
+    }
+
+
 
 
     render() {
