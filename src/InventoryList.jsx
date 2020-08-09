@@ -5,7 +5,6 @@ import { Panel } from 'react-bootstrap';
 
 import ProductFilter from './ProductFilter.jsx';
 import InventoryTable from './InventoryTable.jsx';
-import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import ProductInformation from './ProductInformation.jsx';
 
