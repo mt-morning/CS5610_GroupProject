@@ -3,7 +3,66 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import URLSearchParams from 'url-search-params';
-import { Button } from 'react-bootstrap';
+import { ToggleButton, ToggleButtonGroup, Button } from 'react-bootstrap';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import './fontawesome';
+
+
+class CategoryFilter extends React.Component {
+
+  constructor(props, context) {
+    super(props, context);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      activeCategories: ["cake", "pastry"]
+    };
+  }
+
+  handleChange(e) {
+    console.log("Category - change handled. Event: ", e);
+    this.setState({ value: this.state.activeCategories.push(e[1]) });
+    console.log("This.state: ", this.state);
+  }
+
+
+  render() {
+    return (
+        <div>
+          Filter by category:
+          <ToggleButtonGroup size="large"
+          type="checkbox"
+          value="this.state.value"
+          onChange={this.handleChange}>
+            <ToggleButton value="cake">
+              <FontAwesomeIcon icon={['fas', 'birthday-cake']} />
+              {' '}
+              Cakes & Muffins
+            </ToggleButton>
+            <ToggleButton value="cookie">
+              <FontAwesomeIcon icon={['fas', 'cookie-bite']} />
+              {' '}
+              Cookies
+            </ToggleButton>
+            <ToggleButton value="pastry">
+              <FontAwesomeIcon icon={['fas', 'stroopwafel']} />
+              {' '}
+              Pastries
+            </ToggleButton>
+            <ToggleButton value="savory">
+              <FontAwesomeIcon icon={['fas', 'bread-slice']} />
+              {' '}
+              Savory
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+        </div>
+    )
+  }
+
+
+
+}
 
 class ProductFilter extends React.Component {
   constructor({ location: { search } }) {
@@ -11,10 +70,11 @@ class ProductFilter extends React.Component {
     const params = new URLSearchParams(search);
     this.state = {
       quantity: params.get('quantity') || '',
+      category: params.get('category') || '',
       changed: false,
     };
 
-    this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onChangeQuantityStatus = this.onChangeQuantityStatus.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
     this.showOriginalFilter = this.showOriginalFilter.bind(this);
   }
@@ -27,7 +87,7 @@ class ProductFilter extends React.Component {
     }
   }
 
-  onChangeStatus(e) {
+  onChangeQuantityStatus(e) {
     this.setState({ quantity: e.target.value, changed: true });
   }
 
@@ -49,32 +109,36 @@ class ProductFilter extends React.Component {
     });
   }
 
+
+
+
   // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
     const { quantity, changed } = this.state;
     return (
-      <div>
-        Filter by quantity:
-        {' '}
-        <select value={quantity} onChange={this.onChangeStatus}>
-          <option value="">(All Products)</option>
-          <option value="1">Low Stock (1)</option>
-          <option value="0">Out of Stock (0)</option>
-        </select>
-        {' '}
-        <Button bsStyle="primary" type="button" onClick={this.applyFilter}>
-          Apply
-        </Button>
-        {' '}
-        <Button
-          type="button"
-          onClick={this.showOriginalFilter}
-          disabled={!changed}
-        >
-          Reset
-        </Button>
-      </div>
+        <div>
+          <div>
+            Filter by quantity:
+            {' '}
+            <select value={quantity} onChange={this.onChangeQuantityStatus}>
+              <option value="">(All Products)</option>
+              <option value="1">Low Stock (1)</option>
+              <option value="0">Out of Stock (0)</option>
+            </select>
+            {' '}
+            <Button bsStyle="primary" type="button" onClick={this.applyFilter}>
+              Apply
+            </Button>
+            {' '}
+            <Button type="button" onClick={this.showOriginalFilter} disabled={!changed}>
+              Reset
+            </Button>
+
+          </div>
+          <CategoryFilter/>
+        </div>
+
     );
   }
 }
