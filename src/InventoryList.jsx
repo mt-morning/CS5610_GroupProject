@@ -3,7 +3,7 @@ import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
 
-import ProductFilter from './ProductFilter.jsx';
+import Filters from './Filters.jsx';
 import InventoryTable from './InventoryTable.jsx';
 import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -27,6 +27,7 @@ export default class InventoryList extends React.Component {
 
   // pg 245
   componentDidUpdate(prevProps) {
+    console.log("InventoryList - Component did update.");
     const { location: { search: prevSearch } } = prevProps;
     const { location: { search } } = this.props;
     if (prevSearch !== search) {
@@ -44,7 +45,6 @@ export default class InventoryList extends React.Component {
 
     console.log("params.getAll('category'):", params.getAll('category'));
     console.log("params.get('quantity'):", params.get('quantity'));
-
     console.log("queryVariables:", queryVariables);
 
 
@@ -100,7 +100,7 @@ export default class InventoryList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter />
+            <Filters />
           </Panel.Body>
         </Panel>
         <hr />
