@@ -7,6 +7,7 @@ import ProductFilter from './ProductFilter.jsx';
 import InventoryTable from './InventoryTable.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import ProductInformation from './ProductInformation.jsx';
+import InventoryTableComp from './InventoryTableComp.jsx'
 
 
 /**
@@ -15,7 +16,7 @@ import ProductInformation from './ProductInformation.jsx';
 export default class InventoryList extends React.Component {
   constructor() {
     super();
-    this.state = { inventory: [] };
+    this.state = { inventory: [], inventoryL: [] };
     this.deleteProduct = this.deleteProduct.bind(this);
     this.updateProduct = this.updateProduct.bind(this);
   }
@@ -56,7 +57,7 @@ export default class InventoryList extends React.Component {
     if (data) {
       // eslint-disable-next-line no-console
       console.log('Data retrieved from server.');
-      this.setState({ inventory: data.productList });
+      this.setState({ inventory: data.productList, inventoryL: data.productList });
     }
   }
 
@@ -119,8 +120,43 @@ export default class InventoryList extends React.Component {
     }
   }
 
+  async updateProduct1(index, incrAmt) {
+    const query = `mutation productUpdate(
+      $id: Int!
+      $changes: ProductUpdateInputs!
+    ) {
+      productUpdate(
+        id: $id
+        changes: $changes
+      ) {
+        id description createdDate expirationDate 
+        quantity category information 
+      }
+    }`;
+
+    const { inventory } = this.state;   // populated by child component InventoryTable
+    
+    const { location: { pathname, search }, history } = this.props;
+    const { id } = inventory[index];
+    const { quantity: oldQuantity } = inventory[index];
+    const data = await graphQLFetch(query, {
+      id: parseInt(id, 10), 
+      changes: {"quantity": incrAmt + oldQuantity 
+    } });
+
+    if (data && data.productUpdate) {
+      this.setState((prevState) => {
+        const newList = [...prevState.inventory];
+        newList.splice(index, 1, data.productUpdate);
+        return { inventory: newList };
+      });
+    } else {
+      this.loadData();
+    }
+  }
+
   render() {
-    const { inventory } = this.state;
+    const { inventory, inventoryL } = this.state;
     const { match } = this.props;
     return (
       <React.Fragment>
@@ -136,6 +172,11 @@ export default class InventoryList extends React.Component {
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
+        <hr />
+        <InventoryTableComp
+          inventoryL={inventoryL}
+          updateProduct={this.updateProduct1}
+        />
       </React.Fragment>
     );
   }
