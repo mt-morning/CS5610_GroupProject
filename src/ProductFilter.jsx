@@ -15,7 +15,7 @@ class CategoryFilter extends React.Component {
     super(props, context);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
-      activeCategories: ["cake", "pastry"]
+      activeCategories: ["Muffin", "Cupcake"]
     };
   }
 
@@ -23,6 +23,8 @@ class CategoryFilter extends React.Component {
     console.log("Category - change handled. Event: ", e);
     this.setState({ value: this.state.activeCategories.push(e[1]) });
     console.log("This.state: ", this.state);
+    //http://localhost:8000/products?categories=hi&categories=bye
+    // Goal is: category=e is pushed onto url
   }
 
 
@@ -34,22 +36,22 @@ class CategoryFilter extends React.Component {
           type="checkbox"
           value="this.state.value"
           onChange={this.handleChange}>
-            <ToggleButton value="cake">
+            <ToggleButton value="Muffin">
               <FontAwesomeIcon icon={['fas', 'birthday-cake']} />
               {' '}
               Cakes & Muffins
             </ToggleButton>
-            <ToggleButton value="cookie">
+            <ToggleButton value="Cookie">
               <FontAwesomeIcon icon={['fas', 'cookie-bite']} />
               {' '}
               Cookies
             </ToggleButton>
-            <ToggleButton value="pastry">
+            <ToggleButton value="Pastry">
               <FontAwesomeIcon icon={['fas', 'stroopwafel']} />
               {' '}
               Pastries
             </ToggleButton>
-            <ToggleButton value="savory">
+            <ToggleButton value="Other">
               <FontAwesomeIcon icon={['fas', 'bread-slice']} />
               {' '}
               Savory

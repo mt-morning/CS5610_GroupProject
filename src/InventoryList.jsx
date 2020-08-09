@@ -38,24 +38,31 @@ export default class InventoryList extends React.Component {
   async loadData() {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
-    const vars = {};
-    if (params.get('quantity')) vars.quantity = parseInt(params.get('quantity'), 10);
+    const queryVariables = {};
+    if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
+    if (params.get('category')) queryVariables.category = params.getAll('category');
+
+    console.log("params.getAll('category'):", params.getAll('category'));
+    console.log("params.get('quantity'):", params.get('quantity'));
+
+    console.log("queryVariables:", queryVariables);
+
 
     // eslint-disable-next-line no-console
     console.log('Loading data....');
 
     // Pg 105
-    const query = `query productList($quantity: Int) {
-      productList(quantity: $quantity) {
+    const query = `query productList($quantity: Int, $category: [Category]) {
+      productList(quantity: $quantity, category: $category) {
         id description createdDate
         expirationDate quantity category
       }
     }`;
 
-    const data = await graphQLFetch(query, vars);
+
+    const data = await graphQLFetch(query, queryVariables);
     if (data) {
       // eslint-disable-next-line no-console
-      console.log('Data retrieved from server.');
       this.setState({ inventory: data.productList });
     }
   }
