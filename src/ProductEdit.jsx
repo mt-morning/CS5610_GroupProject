@@ -3,68 +3,75 @@ import { Link } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
 import DateInput from './DateInput.jsx';
+import Toast from './Toast.jsx';
 import store from './store.js';
 
 export default class ProductEdit extends React.Component {
-  static async fetchData(match, showError) {
-    const query = `query product($id: Int!) {
+    static async fetchData(match, showError) {
+        const query = `query product($id: Int!) {
       product(id: $id) {
         id description createdDate expirationDate
         quantity category information
       }
     }`;
-    const { params: { id } } = match;
-    const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-    return result;
-  }
-  constructor() {
-    super();
-    const product = store.initialData ? store.initialData.product : null;
-    delete store.initialData;
-    this.state = {
-      product,
-      invalidFields: {},
-    };
-    this.onChange = this.onChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onValidityChange = this.onValidityChange.bind(this);
-  }
-
-  componentDidMount() {
-    const { product } = this.state;
-    if (product == null) this.loadData();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { match: { params: { id: prevId } } } = prevProps;
-    const { match: { params: { id } } } = this.props;
-    if (id !== prevId) {
-      this.loadData();
+        const { params: { id } } = match;
+        const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
+        return result;
     }
-  }
+    constructor() {
+        super();
+        const product = store.initialData ? store.initialData.product : null;
+        delete store.initialData;
+        this.state = {
+            product,
+            invalidFields: {},
+            toastVisible: false,
+            toastMessage: ' ',
+            toastType: 'success',
+        };
+        this.onChange = this.onChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onValidityChange = this.onValidityChange.bind(this);
+        this.showSuccess = this.showSuccess.bind(this);
+        this.showError = this.showError.bind(this);
+        this.dismissToast = this.dismissToast.bind(this);
+    }
 
-  onChange(event, naturalValue) {
-    const { name, value: textValue } = event.target;
-    const value = naturalValue === undefined ? textValue : naturalValue;
-    this.setState(prevState => ({
-      product: { ...prevState.product, [name]: value },
-    }));
-  }
+    componentDidMount() {
+        const { product } = this.state;
+        if (product == null) this.loadData();
+    }
 
-  onValidityChange(event, valid) {
-    const { name } = event.target;
-    this.setState((prevState) => {
-      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
-      if (valid) delete invalidFields[name];
-      return { invalidFields };
-    });
-  }
+    componentDidUpdate(prevProps) {
+        const { match: { params: { id: prevId } } } = prevProps;
+        const { match: { params: { id } } } = this.props;
+        if (id !== prevId) {
+            this.loadData();
+        }
+    }
 
-  async handleSubmit(e) {
-    e.preventDefault();
-    const { product, invalidFields } = this.state;
-    if (Object.keys(invalidFields).length !== 0) return;
-    const query = `mutation productUpdate(
+    onChange(event, naturalValue) {
+        const { name, value: textValue } = event.target;
+        const value = naturalValue === undefined ? textValue : naturalValue;
+        this.setState(prevState => ({
+            product: { ...prevState.product, [name]: value },
+        }));
+    }
+
+    onValidityChange(event, valid) {
+        const { name } = event.target;
+        this.setState((prevState) => {
+            const invalidFields = { ...prevState.invalidFields, [name]: !valid };
+            if (valid) delete invalidFields[name];
+            return { invalidFields };
+        });
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        const { product, invalidFields } = this.state;
+        if (Object.keys(invalidFields).length !== 0) return;
+        const query = `mutation productUpdate(
       $id: Int!
       $changes: ProductUpdateInputs!
     ) {
@@ -76,30 +83,44 @@ export default class ProductEdit extends React.Component {
         quantity category information 
       }
     }`;
-    const { id, created, ...changes } = product;
-    const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) });
-    if (data) {
-      this.setState({ product: data.productUpdate });
-      alert('Updated product successfully'); // eslint-disable-line no-alert
+        const { id, created, ...changes } = product;
+        const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
+        if (data) {
+            this.setState({ product: data.productUpdate });
+            this.showSuccess('Updated issue successfully');
+        }
     }
-  }
 
-  async loadData() {
-    const { match } = this.props;
-    const data = await ProductEdit.fetchData(match, null, this.showError);
-    this.setState({ product: data ? data.product : {}, invalidFields: {} });
-    // if (data) {
-    //   const { product } = data;
-    //   product.description = product.description != null ? product.description : '';
-    //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
-    //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
-    //   product.category = product.category != null ? product.category : '';
-    //   product.information = product.information != null ? product.information : '';
-    //   this.setState({ product, invalidFields: {} });
-    // } else {
-    //   this.setState({ product: {}, invalidFields: {} });
-    // }
-  }
+    async loadData() {
+        const { match } = this.props;
+        const data = await ProductEdit.fetchData(match, null, this.showError);
+        this.setState({ product: data ? data.product : {}, invalidFields: {} });
+    }
+        // if (data) {
+        //   const { product } = data;
+        //   product.description = product.description != null ? product.description : '';
+        //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
+        //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
+        //   product.category = product.category != null ? product.category : '';
+        //   product.information = product.information != null ? product.information : '';
+        //   this.setState({ product, invalidFields: {} });
+        // } else {
+        //   this.setState({ product: {}, invalidFields: {} });
+        // }
+        showSuccess(message) {
+            this.setState({
+                toastVisible: true, toastMessage: message, toastType: 'success',
+            });
+        }
+        showError(message) {
+            this.setState({
+                toastVisible: true, toastMessage: message, toastType: 'danger',
+            });
+        }
+        dismissToast() {
+            this.setState({ toastVisible: false });
+        }
+
 
   render() {
     const { product } = this.state;
@@ -127,6 +148,7 @@ export default class ProductEdit extends React.Component {
     const { product: { description, quantity } } = this.state;
     const { product: { category, information } } = this.state;
     const { product: { createdDate, expirationDate } } = this.state;
+    const { toastVisible, toastMessage, toastType } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>{`Editing product: ${id}`}</h3>
@@ -215,7 +237,14 @@ export default class ProductEdit extends React.Component {
         {validationMessage}
         <Link to={`/edit/${id - 1}`}>Prev</Link>
         {' | '}
-        <Link to={`/edit/${id + 1}`}>Next</Link>
+            <Link to={`/edit/${id + 1}`}>Next</Link>
+            <Toast
+                showing={toastVisible}
+                onDismiss={this.dismissToast}
+                bsStyle={toastType}
+            >
+                {toastMessage}
+            </Toast>
       </form>
     );
   }
