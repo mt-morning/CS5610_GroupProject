@@ -1,7 +1,8 @@
 # Team Croissant: UI
 
 ## Current version: 
-Iter 1.0
+Iter 2.0
+- link to UI deployment: https://croissant-ui.herokuapp.com/products
 - Link to API repo: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_Croissant_API
 - Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
 
@@ -9,6 +10,73 @@ Iter 1.0
 - Alice  Tilles
 - Miranda Tran
 - Tran Pham
+
+## Iter 3.0 Notes:
+### Implementation assignments:
+- Alice:
+  - add category as option for filter
+    - use icons to represent categories
+    - allow for an accumulator sort of filter: all the checked/clicked categories are shown
+  - sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
+- Tran:
+  - toasts in lieu of alerts: Tran
+  - product edit: prev/next links broken when id is not contiguous
+- Miranda: 
+  - Quick update button
+  - reactable
+  - last updated: add + format
+
+#### further goals:
+- expand about page (more info + version; talk about developing? idk whatever you want)
+- NULL CHECK
+- give an option to set expiration date (edit + add)
+- favicon
+- implement an order tracker
+  - allow for orders to be created based on what products are available 
+    - optional field for special notes?
+    - order should have created date, due date, customer name or ID or order number [thinking of square...]
+    - have cost? total cost? requires products to have an associated cost then...
+  - tie orders to products such that product quantity mutates with a FILLED order
+  - view past/future/current orders (filtering)
+
+## Iter 2.0 Notes: 
+
+### Screenshots:
+
+#### UI: create, read
+![upgraded product creation form utilizing bootstrap](resources/ReadMeImages/iter2/add.png)
+![read with category](resources/ReadMeImages/iter2/read.png)
+
+#### UI: about, login
+![about page of inventory tracker](resources/ReadMeImages/iter2/about.png)
+![confirmation that account exists](resources/ReadMeImages/iter2/login.png)
+
+#### UI: edit
+![product editing form](resources/ReadMeImages/iter2/edit.png)
+
+#### API/graphQL playground:
+![successfully deployed API server showing functioning graphQL playground](resources/ReadMeImages/iter2/api.png)
+
+## Member Contributions:
+
+### Alice
+- Created create user and query user functionality in API
+- Created 'created account' and 'login' panels in UI using boottrap
+- Fixed some misc bugs
+- Helped deploy to Heroku
+
+### Tran
+- Implement navigation bar 
+- Implement bootstrap to navigation bar, tables, title header, buttons, edit/delete buttons
+- Create MongoDB database
+- Implement About page, About API: install HMR, redirect, setup data sending and data fetch from API 
+
+### Miranda
+- Helped deploy to Heroku
+- Moved product add to the navigation bar from the inventory table
+  - added more fields for product creation form (react-bootstrap)
+  - added category as another read field for inventory table
+- Fix filter for products and some errors (parseInt)
 
 ## Iter 1.0 Notes:
 

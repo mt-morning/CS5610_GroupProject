@@ -59,7 +59,7 @@ export default class AccountCreate extends React.Component {
                               <ToggleButton value={'User'}>Non-Admin</ToggleButton>
                           </ToggleButtonGroup>
                       </ButtonToolbar>
-                      <Button Type="submit">Create</Button>
+                      <Button type="submit">Create</Button>
                   </Col>
               </FormGroup>
           </form>
