@@ -44,8 +44,11 @@ const InventoryRow = withRouter(({
 
   const updatedDate = product.updatedDate;
   const formattedUpdatedDate = updatedDate 
-    ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
-      + ` ${updatedDate.toLocaleTimeString('en-US')}`)
+    ? updatedDate.toDateString() + ' ' + updatedDate.toTimeString().substr(0,8)
+    : ' ';
+  const expirationDate = product.expirationDate;
+  const formattedExpiration = expirationDate
+    ? expirationDate.toDateString() + ' ' + expirationDate.toTimeString().substr(0,8) 
     : ' ';
 
   const tableRow = (
@@ -55,7 +58,7 @@ const InventoryRow = withRouter(({
       <td>{product.category}</td>
       <td>{formattedUpdatedDate}</td>
       <td>{product.createdDate ? product.createdDate.toDateString() : ' '}</td>
-      <td>{product.expirationDate ? product.expirationDate.toDateString() : ' '}</td>
+      <td>{formattedExpiration}</td>
       <td>{product.quantity}</td>
       <td>
         <OverlayTrigger delayShow={1000} overlay={smUpdateTooltip}>
