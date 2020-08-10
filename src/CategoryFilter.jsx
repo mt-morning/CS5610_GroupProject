@@ -27,19 +27,14 @@ class CategoryFilter extends React.Component {
     }
 
     showOriginalFilter() {
-        console.log("ShowOriginalFilter from QualityFilter fired.");
         const { location: { search } } = this.props;
         const params = new URLSearchParams(search);
         this.setState({
             category: params.get('category') || '',
         });
-        console.log("\tCurrent State Category: ", this.state.category);
     }
 
     onChangeStatus(e) {
-        console.log("\tPrevious status:", this.state.category);
-        console.log("\tOn Status Change - new category", e);
-
         // If there are no categories selected, then initialize a new array.
         let newCategories;
         if (this.state.categories === undefined) {
@@ -55,7 +50,6 @@ class CategoryFilter extends React.Component {
         this.setState({
             category: newCategories
         });
-        console.log("\tNew Categories:", newCategories);
 
         const { history } = this.props;
         const { category } = this.state;
@@ -66,9 +60,6 @@ class CategoryFilter extends React.Component {
             search: `?category=${e}`,
         });
 
-        // search: category ? `?category=${e}` : '',
-
-        console.log('\t\tQUERY STRING PARAMS:', location.search);
 
     }
 

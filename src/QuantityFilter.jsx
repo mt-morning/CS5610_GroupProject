@@ -43,7 +43,6 @@ class QuantityFilter extends React.Component {
   }
 
   applyFilter() {
-    console.log("ApplyFilter from QualityFilter fired.");
     const { quantity } = this.state;
     const { history } = this.props;
     history.push({
