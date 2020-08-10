@@ -42,12 +42,18 @@ const InventoryRow = withRouter(({
     updateProduct(index, incrAmt);
   }
 
+  const updatedDate = product.updatedDate;
+  const formattedUpdatedDate = updatedDate 
+    ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
+      + ` ${updatedDate.toLocaleTimeString('en-US')}`)
+    : ' ';
+
   const tableRow = (
     <tr>
       <td>{product.id}</td>
       <td>{product.description}</td>
       <td>{product.category}</td>
-      <td>{product.updatedDate ? product.updatedDate.toDateString() : ' '}</td>
+      <td>{formattedUpdatedDate}</td>
       <td>{product.createdDate ? product.createdDate.toDateString() : ' '}</td>
       <td>{product.expirationDate ? product.expirationDate.toDateString() : ' '}</td>
       <td>{product.quantity}</td>
