@@ -10,7 +10,7 @@ export default class ProductEdit extends React.Component {
     const query = `query product($id: Int!) {
       product(id: $id) {
         id description createdDate expirationDate
-        quantity category information
+        quantity category information updatedDate
       }
     }`;
     const { params: { id } } = match;
@@ -73,7 +73,7 @@ export default class ProductEdit extends React.Component {
         changes: $changes
       ) {
         id description createdDate expirationDate 
-        quantity category information
+        quantity category information updatedDate
       }
     }`;
     const { id, created, ...changes } = product;
@@ -117,6 +117,12 @@ export default class ProductEdit extends React.Component {
     const { product: { description, quantity } } = this.state;
     const { product: { category, information } } = this.state;
     const { product: { createdDate, expirationDate } } = this.state;
+    const { product: {updatedDate} } = this.state;
+    const formattedUpdatedDate = updatedDate 
+    ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
+      + ` ${updatedDate.toLocaleTimeString('en-US')}`)
+    : ' ';
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>{`Editing product: ${id}`}</h3>
@@ -144,6 +150,12 @@ export default class ProductEdit extends React.Component {
                   onValidityChange={this.onValidityChange}
                   key={id}
                 />
+              </td>
+            </tr>
+            <tr>
+              <td>Updated:</td>
+              <td>
+                 {formattedUpdatedDate}
               </td>
             </tr>
             <tr>
