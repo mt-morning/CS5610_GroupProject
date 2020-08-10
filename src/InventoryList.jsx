@@ -48,7 +48,7 @@ export default class InventoryList extends React.Component {
     // Pg 105
     const query = `query productList($quantity: Int) {
       productList(quantity: $quantity) {
-        id description createdDate
+        id description createdDate updatedDate
         expirationDate quantity category
       }
     }`;
@@ -95,7 +95,7 @@ export default class InventoryList extends React.Component {
         changes: $changes
       ) {
         id description createdDate expirationDate 
-        quantity category information 
+        quantity category information updatedDate
       }
     }`;
 
@@ -106,42 +106,9 @@ export default class InventoryList extends React.Component {
     const { quantity: oldQuantity } = inventory[index];
     const data = await graphQLFetch(query, {
       id: parseInt(id, 10), 
-      changes: {"quantity": incrAmt + oldQuantity 
-    } });
-
-    if (data && data.productUpdate) {
-      this.setState((prevState) => {
-        const newList = [...prevState.inventory];
-        newList.splice(index, 1, data.productUpdate);
-        return { inventory: newList };
-      });
-    } else {
-      this.loadData();
-    }
-  }
-
-  async updateProduct1(index, incrAmt) {
-    const query = `mutation productUpdate(
-      $id: Int!
-      $changes: ProductUpdateInputs!
-    ) {
-      productUpdate(
-        id: $id
-        changes: $changes
-      ) {
-        id description createdDate expirationDate 
-        quantity category information 
-      }
-    }`;
-
-    const { inventory } = this.state;   // populated by child component InventoryTable
-    
-    const { location: { pathname, search }, history } = this.props;
-    const { id } = inventory[index];
-    const { quantity: oldQuantity } = inventory[index];
-    const data = await graphQLFetch(query, {
-      id: parseInt(id, 10), 
-      changes: {"quantity": incrAmt + oldQuantity 
+      changes: {
+        "quantity": incrAmt + oldQuantity,
+        "updatedDate": new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
     } });
 
     if (data && data.productUpdate) {

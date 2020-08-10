@@ -47,6 +47,7 @@ const InventoryRow = withRouter(({
       <td>{product.id}</td>
       <td>{product.description}</td>
       <td>{product.category}</td>
+      <td>{product.updatedDate ? product.updatedDate.toDateString() : ' '}</td>
       <td>{product.createdDate ? product.createdDate.toDateString() : ' '}</td>
       <td>{product.expirationDate ? product.expirationDate.toDateString() : ' '}</td>
       <td>{product.quantity}</td>
@@ -112,6 +113,7 @@ export default function InventoryTable({ inventory, deleteProduct, updateProduct
           <th>ID</th>
           <th>Description</th>
           <th>Category</th>
+          <th>Last Updated</th>
           <th>Created</th>
           <th>Expiration Date</th>
           <th>Quantity</th>

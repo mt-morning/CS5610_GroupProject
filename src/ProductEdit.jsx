@@ -73,10 +73,11 @@ export default class ProductEdit extends React.Component {
         changes: $changes
       ) {
         id description createdDate expirationDate 
-        quantity category information 
+        quantity category information
       }
     }`;
     const { id, created, ...changes } = product;
+    changes["updatedDate"] = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
     const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) });
     if (data) {
       this.setState({ product: data.productUpdate });
@@ -88,17 +89,6 @@ export default class ProductEdit extends React.Component {
     const { match } = this.props;
     const data = await ProductEdit.fetchData(match, null, this.showError);
     this.setState({ product: data ? data.product : {}, invalidFields: {} });
-    // if (data) {
-    //   const { product } = data;
-    //   product.description = product.description != null ? product.description : '';
-    //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
-    //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
-    //   product.category = product.category != null ? product.category : '';
-    //   product.information = product.information != null ? product.information : '';
-    //   this.setState({ product, invalidFields: {} });
-    // } else {
-    //   this.setState({ product: {}, invalidFields: {} });
-    // }
   }
 
   render() {
