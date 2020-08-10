@@ -9,20 +9,25 @@ import { Table } from "reactable";
 /**
  * Implement inventory data with Reactable.
  */
- 
-// var Sample = Reactable.Table;
 
 var Sample = Table;
 
-
-export default function InventoryTableComp({ inventoryL, updateProduct }) {
-  const inventoryRows = inventoryL.map((product, index) => (
+const inventoryRow = (product, index) => {
+  return (
     { ID: product.id, 
       Name: product.description,
       Category: product.category, 
       Quantity: product.quantity,
       "Created Date": (product.createdDate ? product.createdDate.toDateString() : ' ')
     }
+  )
+}
+
+
+export default function InventoryTableComp({ inventoryL, updateProduct }) {
+
+  const inventoryRows = inventoryL.map((product, index) => (
+    inventoryRow(product, index)
   ));
   return (
     <Sample 

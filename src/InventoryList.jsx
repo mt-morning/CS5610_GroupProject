@@ -172,11 +172,11 @@ export default class InventoryList extends React.Component {
         <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
-        <hr />
+        {/* <hr />
         <InventoryTableComp
           inventoryL={inventoryL}
           updateProduct={this.updateProduct1}
-        />
+        /> */}
       </React.Fragment>
     );
   }
