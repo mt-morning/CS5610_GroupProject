@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import graphQLFetch from './graphQLFetch.js';
 import NumInput from './NumInput.jsx';
 import DateInput from './DateInput.jsx';
@@ -235,9 +236,8 @@ export default class ProductEdit extends React.Component {
           </tbody>
         </table>
         {validationMessage}
-        <Link to={`/edit/${id - 1}`}>Prev</Link>
-        {' | '}
-            <Link to={`/edit/${id + 1}`}>Next</Link>
+        <Link to={`/products/${id - 1}`}>Back to Home</Link>
+       
             <Toast
                 showing={toastVisible}
                 onDismiss={this.dismissToast}
