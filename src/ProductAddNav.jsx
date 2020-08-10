@@ -34,12 +34,17 @@ class ProductAddNav extends React.Component {
     const form = document.forms.productAdd;
     const quantity = parseInt(form.quantity.value); 
     // quantity can have negative value rn
+
+    const expirationDate = (form.expirationDate.value) 
+      ? new Date(form.expirationDate.value + ' ' + form.expirationTime.value) 
+      : new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
     const product = {
       description: form.description.value,
       quantity: isNaN(quantity) ? 0 : quantity,
       createdDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
       category: form.category.value,
       information: form.information.value,
+      expirationDate,
     }
 
     const query = `mutation productAdd($product: ProductInputs!) {
@@ -59,6 +64,8 @@ class ProductAddNav extends React.Component {
 
   render() {
     const { showing } = this.state;
+    const defaultExpiration = new Date(
+      new Date().getTime() + 1000 * 60 * 60 * 12).toTimeString().substr(0, 8);
 
     return (
       <React.Fragment>
@@ -84,6 +91,19 @@ class ProductAddNav extends React.Component {
               <FormGroup>
                 <ControlLabel>Quantity: </ControlLabel>
                 <FormControl name="quantity" type="number" />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Expiration date: </ControlLabel>
+                <FormControl
+                  name="expirationDate"
+                  type="date"
+                  value={new Date().toISOString().substr(0, 10)}
+                />
+                <FormControl
+                  name="expirationTime"
+                  type="time"
+                  value={defaultExpiration}
+                />
               </FormGroup>
               <FormGroup>
                 <ControlLabel>Category: </ControlLabel>
