@@ -1,5 +1,5 @@
 import React from "react";
-import ProductFilter from "./ProductFilter.jsx";
+import ProductFilter from "./QuantityFilter.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
 
 

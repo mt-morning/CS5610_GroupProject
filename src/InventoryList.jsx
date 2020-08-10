@@ -27,7 +27,7 @@ export default class InventoryList extends React.Component {
 
   // pg 245
   componentDidUpdate(prevProps) {
-    console.log("InventoryList - Component did update.");
+    console.log("*****InventoryList - Component did update.");
     const { location: { search: prevSearch } } = prevProps;
     const { location: { search } } = this.props;
     if (prevSearch !== search) {
@@ -41,17 +41,15 @@ export default class InventoryList extends React.Component {
     const params = new URLSearchParams(search);
     const queryVariables = {};
     if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
-    if (params.get('category')) queryVariables.category = params.getAll('category');
+    if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
-    console.log("params.getAll('category'):", params.getAll('category'));
-    console.log("params.get('quantity'):", params.get('quantity'));
-    console.log("queryVariables:", queryVariables);
-
+    // Convert the category param to an array.
+    console.log("******Category in URL: ", params.get('category'));
+    console.log("params.get('category'):", params.get('category'));
 
     // eslint-disable-next-line no-console
     console.log('Loading data....');
 
-    // Pg 105
     const query = `query productList($quantity: Int, $category: [Category]) {
       productList(quantity: $quantity, category: $category) {
         id description createdDate
@@ -63,7 +61,11 @@ export default class InventoryList extends React.Component {
     const data = await graphQLFetch(query, queryVariables);
     if (data) {
       // eslint-disable-next-line no-console
+      console.log("Query returned data.");
       this.setState({ inventory: data.productList });
+    }
+    else {
+      console.log("Query returned no data/error.");
     }
   }
 

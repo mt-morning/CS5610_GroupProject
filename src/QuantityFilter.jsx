@@ -6,13 +6,13 @@ import { Button } from 'react-bootstrap';
 import URLSearchParams from 'url-search-params';
 import './fontawesome';
 
-class ProductFilter extends React.Component {
+class QuantityFilter extends React.Component {
+
   constructor({ location: { search } }) {
     super();
     const params = new URLSearchParams(search);
     this.state = {
       quantity: params.get('quantity') || '',
-      activeCategories: params.getAll('category') || '',
       changed: false,
     };
 
@@ -43,6 +43,7 @@ class ProductFilter extends React.Component {
   }
 
   applyFilter() {
+    console.log("ApplyFilter from QualityFilter fired.");
     const { quantity } = this.state;
     const { history } = this.props;
     history.push({
@@ -57,7 +58,7 @@ class ProductFilter extends React.Component {
   // TODO: replace select with React component for slider or selector
   // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
-    const { quantity, changed, activeCategories } = this.state;
+    const { quantity, changed } = this.state;
     return (
         <div>
           <div>
@@ -84,4 +85,4 @@ class ProductFilter extends React.Component {
   }
 }
 
-export default withRouter(ProductFilter);
+export default withRouter(QuantityFilter);
