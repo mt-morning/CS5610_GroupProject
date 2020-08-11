@@ -24,14 +24,15 @@ class AccountCreateAndLogin extends React.Component {
             loggedIn: this.props.location.state.loggedIn,
         }
 
-
-
     }
-
 
 
     componentDidUpdate(){
         console.log("AccountCreateAndLogin did update. New state:", this.state);
+    }
+
+    handleSuccessfulLoginGlobal(username){
+        this.props.location.state.handleSuccessfulLoginGlobal(username);
     }
 
     handleSuccessfulLogin(username){
@@ -47,6 +48,7 @@ class AccountCreateAndLogin extends React.Component {
             loggedIn: true,
         });
 
+        this.handleSuccessfulLoginGlobal(username);
     }
 
 

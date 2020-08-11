@@ -20,7 +20,7 @@ function handleSuccessfulLogin(username){
 
 export default class Login extends React.Component {
 
-  constructor(props, handleSuccessfulLogin) {
+  constructor(props) {
     super(props);
 
     //this.state  = {loggedIn: '', user: {username: '', role: ''} };

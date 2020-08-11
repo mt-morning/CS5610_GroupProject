@@ -12,6 +12,7 @@ class NavBar extends React.Component {
 
     constructor(props){
         super(props);
+        this.handleSuccessfulLoginGlobal = this.handleSuccessfulLoginGlobal.bind(this);
 
     }
 
@@ -20,7 +21,20 @@ class NavBar extends React.Component {
         const { loggedIn }  = this.props;
         console.log("\t Logged In? ", loggedIn);
 
+    }
 
+    handleSuccessfulLoginGlobal(username){
+        console.log("PAGE - handleSuccessfulLoginGlobal - ", username);
+
+        const { user } = this.state;
+        const { loggedIn } = this.state;
+        this.setState({
+            user: {
+                username: username,
+                role: 'user',
+            },
+            loggedIn: true,
+        });
     }
 
     render() {
@@ -46,11 +60,14 @@ class NavBar extends React.Component {
                         pathname: '/sign-in',
                         state: {
                             user: this.props.user,
-                            loggedIn: this.props.loggedIn} }}>
+                            loggedIn: this.props.loggedIn,
+                            handleSuccessfulLoginGlobal: this.handleSuccessfulLoginGlobal } }}>
                         <NavItem>Sign in</NavItem>
                     </LinkContainer>
 
-                    <LinkContainer to="/products"><NavItem>Inventory Overview </NavItem></LinkContainer>
+                    <LinkContainer to="/products">
+                        <NavItem>Inventory Overview </NavItem>
+                    </LinkContainer>
 
                 </Nav>
 
