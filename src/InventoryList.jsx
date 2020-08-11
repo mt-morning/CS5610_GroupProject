@@ -5,10 +5,10 @@ import { Panel } from 'react-bootstrap';
 
 import Filters from './Filters.jsx';
 import InventoryTable from './InventoryTable.jsx';
-import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import Toast from './Toast.jsx';
 import ProductInformation from './ProductInformation.jsx';
+import InventoryTableComp from './InventoryTableComp.jsx'
 
 
 /**
@@ -51,8 +51,12 @@ export default class InventoryList extends React.Component {
     if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
     if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
-    const query = `query productList($quantity: Int, $category: [Category]) {
-      productList(quantity: $quantity, category: $category) {
+    // eslint-disable-next-line no-console
+    console.log('Loading data....');
+
+    // Pg 105
+    const query = `query productList($quantity: Int) {
+      productList(quantity: $quantity) {
         id description createdDate
         expirationDate quantity category
       }
@@ -60,6 +64,8 @@ export default class InventoryList extends React.Component {
 
       const data = await graphQLFetch(query, vars, queryVariables, this.showError);
     if (data) {
+      // eslint-disable-next-line no-console
+      console.log('Data retrieved from server.');
       this.setState({ inventory: data.productList });
     }
     else {
@@ -73,6 +79,7 @@ export default class InventoryList extends React.Component {
       productDelete(id: $id)
     }`;
     const { inventory } = this.state;
+    // console.log(inventory);
     const { location: { pathname, search }, history } = this.props;
       const { id } = inventory[index];
       const data = await graphQLFetch(query, { id: parseInt(id, 10) }, this.showError);
@@ -91,25 +98,8 @@ export default class InventoryList extends React.Component {
     }
   }
 
-    showSuccess(message) {
-        this.setState({
-            toastVisible: true, toastMessage: message, toastType: 'success',
-        });
-    }
-
-    showError(message) {
-        this.setState({
-            toastVisible: true, toastMessage: message, toastType: 'danger',
-        });
-    }
-
-    dismissToast() {
-        this.setState({ toastVisible: false });
-    }
-
   render() {
-      const { inventory } = this.state;
-      const { toastVisible, toastType, toastMessage } = this.state;
+    const { inventory } = this.state;
     const { match } = this.props;
     return (
       <React.Fragment>
@@ -122,17 +112,10 @@ export default class InventoryList extends React.Component {
           </Panel.Body>
         </Panel>
         <hr />
-        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
+        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
-            <Toast
-                showing={toastVisible}
-                onDismiss={this.dismissToast}
-                bsStyle={toastType}
-            >
-                {toastMessage}
-            </Toast>
-        </React.Fragment>
+      </React.Fragment>
     );
   }
 }
