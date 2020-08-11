@@ -18,7 +18,17 @@ export default class Login extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      user: {
+        username: '',
+        role: '',
+      },
+      loggedIn: false,
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
 
@@ -36,11 +46,13 @@ export default class Login extends React.Component {
           _id
         }
     }`;
+    // TODO - get role from database
 
     const data = await graphQLFetch(query, { username, password });
 
     if (data.user !== null ) {
-      alert("account exists!");
+      console.log("Account exists!, username is: ", username);
+      this.onSuccess(username);
     }
     else {
       alert("doesn't exist");
@@ -51,11 +63,27 @@ export default class Login extends React.Component {
 
 
   onSuccess(username) {
-    this.state = { authenticated: true };
+    //TODO get role as an argument
+    console.log("LOGIN. onSuccess fired.");
+    this.setState({
+      loggedIn: true,
+      user: {
+        username: username,
+        role: 'user',
+      }});
   }
 
 
   render() {
+
+    if (this.state.loggedIn) {
+      return (
+          <div>
+            You have successfully logged in, {this.state.user.username}.
+          </div>
+      )
+    }
+
     return (
         <form onSubmit={this.handleSubmit} name="loginForm">
           <FormGroup>
