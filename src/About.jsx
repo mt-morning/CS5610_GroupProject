@@ -28,6 +28,7 @@ export default class About extends React.Component {
                 <h4>
                     {apiAbout}
                 </h4>
+
             </div>
         );
     }
