@@ -89,7 +89,7 @@ export default class ProductEdit extends React.Component {
         const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
         if (data) {
             this.setState({ product: data.productUpdate });
-            alert('Updated product successfully'); // eslint-disable-line no-alert
+            this.showSuccess('Updated issue successfully');
         }
 
     }
