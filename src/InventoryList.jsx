@@ -62,7 +62,7 @@ export default class InventoryList extends React.Component {
       }
     }`;
 
-      const data = await graphQLFetch(query, vars, queryVariables, this.showError);
+      const data = await graphQLFetch(query, queryVariables, this.showError);
     if (data) {
       // eslint-disable-next-line no-console
       console.log('Data retrieved from server.');

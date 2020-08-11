@@ -84,29 +84,33 @@ export default class ProductEdit extends React.Component {
         quantity category information updatedDate
       }
     }`;
-    const { id, created, ...changes } = product;
-    changes["updatedDate"] = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
-    const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
-    if (data) {
-      this.setState({ product: data.productUpdate });
-      alert('Updated product successfully'); // eslint-disable-line no-alert
-    }
+        const { id, created, ...changes } = product;
+        changes["updatedDate"] = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
+        const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
+        if (data) {
+            this.setState({ product: data.productUpdate });
+            alert('Updated product successfully'); // eslint-disable-line no-alert
+        }
 
+    }
   async loadData() {
     const { match } = this.props;
     const data = await ProductEdit.fetchData(match, null, this.showError);
     this.setState({ product: data ? data.product : {}, invalidFields: {} });
-  }
-        showSuccess(message) {
-            this.setState({
-                toastVisible: true, toastMessage: message, toastType: 'danger',
-            this.setState({
-        showError(message) {
-        }
-            });
-                toastVisible: true, toastMessage: message, toastType: 'success',
-        }
-            });
+    }
+
+    showSuccess(message) {
+        this.setState({
+            toastVisible: true, toastMessage: message, toastType: 'danger',
+        });
+    }
+
+    showError(message) {
+        this.setState({
+        toastVisible: true, toastMessage: message, toastType: 'success',
+                  });
+            }
+
         dismissToast() {
             this.setState({ toastVisible: false });
         }
