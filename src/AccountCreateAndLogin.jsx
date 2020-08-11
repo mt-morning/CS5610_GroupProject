@@ -3,7 +3,6 @@ import { Grid,Tabs,Tab } from 'react-bootstrap';
 import AccountCreate from './AccountCreate.jsx';
 import Login from './Login.jsx';
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
-import routes from "./routes";
 
 
 class AccountCreateAndLogin extends React.Component {
@@ -12,26 +11,30 @@ class AccountCreateAndLogin extends React.Component {
         super(props);
         this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
         console.log("Constructor of AccountCreateAndLogin.");
-        console.log("\tthis.props is :", this.props);
-        console.log("\tthis.props.location is :", this.props.location);
-        console.log("\tthis.props.location.state is :", this.props.location.state);
 
-        this.state = {
-            user: {
-                username: this.props.location.state.user.username,
-                role: this.props.location.state.user.role,
-            },
-            loggedIn: this.props.location.state.loggedIn,
+        if (this.props.location.state === undefined) {
+            this.state = {
+                user: {
+                    username: '',
+                    role: '',
+                },
+                loggedIn: false,
+            }
         }
-
+        else {
+            this.state = {
+                user: {
+                    username: this.props.location.state.user.username,
+                    role: this.props.location.state.user.role,
+                },
+                loggedIn: this.props.location.state.loggedIn,
+            }
+        }
     }
 
 
     handleSuccessfulLogin(username){
-        console.log("AccountCreateAndLogin - HandleSuccessfulLogin - ", username);
 
-        const { user } = this.state;
-        const { loggedIn } = this.state;
         this.setState({
             user: {
                 username: username,

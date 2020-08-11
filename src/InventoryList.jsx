@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import URLSearchParams from 'url-search-params';
-import { Route } from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
 
 import Filters from './Filters.jsx';
@@ -15,14 +15,18 @@ import InventoryTableComp from './InventoryTableComp.jsx'
  * Represent overall inventory list in webpage.
  */
 export default class InventoryList extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+      console.log("Constructing InventoryList");
+      super(props);
       this.state = {
           inventory: [],
           toastVisible: false,
           toastMessage: ' ',
           toastType: 'info',
       };
+
+      console.log("\tProps:", this.props);
+
       this.deleteProduct = this.deleteProduct.bind(this);
       this.updateProduct = this.updateProduct.bind(this);
       this.showSuccess = this.showSuccess.bind(this);
@@ -32,7 +36,21 @@ export default class InventoryList extends React.Component {
 
   // Pg 64
   componentDidMount() {
-    this.loadData();
+      console.log("INVENTORY LIST. props - Logged In?", this.props.loggedIn);
+      console.log("INVENTORY LIST. state - Logged In?", this.state.loggedIn);
+      // console.log("\tthis.props.location.state.loggedIn", this.props.location.state.loggedIn);
+
+      console.log("INVENTORYLIST. this.props.location = ", this.props.location);
+
+      if (this.props.location.state === undefined) {
+          return;
+      }
+
+      const loggedIn = this.props.location.state.loggedIn;
+      if (loggedIn === true) {
+          this.loadData();
+      }
+
   }
 
   // pg 245
@@ -158,6 +176,14 @@ export default class InventoryList extends React.Component {
   render() {
     const { inventory } = this.state;
     const { match } = this.props;
+
+    if (this.props.location.state === undefined || this.props.location.state.loggedIn === false
+        || this.props.location.state.loggedIn === undefined ) {
+        return (
+            <Redirect to={{pathname: '/sign-in',
+                state: { loggedIn: false, user: {username: '', role: ''}} }} />);
+    }
+
     return (
       <React.Fragment>
         <Panel>

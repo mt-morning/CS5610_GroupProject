@@ -15,32 +15,17 @@ class NavBar extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("PAGE did update.");
+        console.log("NAVBAR did update.");
         const { loggedIn }  = this.props;
         console.log("\t Logged In? ", loggedIn);
 
-    }
-
-    handleSuccessfulLoginGlobal(username){
-        console.log("PAGE - handleSuccessfulLoginGlobal - ", username);
-
-        const { user } = this.state;
-        const { loggedIn } = this.state;
-        this.setState({
-            user: {
-                username: username,
-                role: 'user',
-            },
-            loggedIn: true,
-        });
     }
 
     render() {
 
         const { loggedIn }  = this.props;
 
-
-        console.log("Rendering Page.");
+        console.log("NAVBAR rendering..");
         console.log("\t Logged In? ", loggedIn);
 
 
@@ -51,8 +36,16 @@ class NavBar extends React.Component {
                 </Navbar.Header>
 
                 <Nav>
-                    <LinkContainer exact to="/"><NavItem>Home</NavItem></LinkContainer>
-                    <LinkContainer to="/about"><MenuItem>About</MenuItem></LinkContainer>
+                    {/*<LinkContainer exact from='/' to={{*/}
+                    {/*    pathname: '/products',*/}
+                    {/*    state: {*/}
+                    {/*        user: {username: '', role: ''},*/}
+                    {/*        loggedIn: false } }}><NavItem>Home</NavItem>*/}
+                    {/*</LinkContainer>*/}
+
+                    <LinkContainer to="/about">
+                        <MenuItem>About</MenuItem>
+                    </LinkContainer>
 
                     <LinkContainer to={{
                         pathname: '/sign-in',
@@ -62,8 +55,12 @@ class NavBar extends React.Component {
                         <NavItem>Sign in</NavItem>
                     </LinkContainer>
 
-                    <LinkContainer to="/products">
-                        <NavItem>Inventory Overview </NavItem>
+                    <LinkContainer to={{
+                        pathname: '/products',
+                        state: {
+                            user: {username: 'TestingFromNavBar', role: 'User'},
+                            loggedIn: false } }}>
+                        <NavItem>Inventory Overview</NavItem>
                     </LinkContainer>
 
                 </Nav>
@@ -92,14 +89,15 @@ export default class Page extends React.Component {
     }
 
   render() {
-    return (
-      <div>
-        <NavBar user={this.state.user} loggedIn={this.state.loggedIn} />
-        <Grid fluid>
-          <Contents loggedIn={this.state.loggedIn}
-                    user={this.state.user} />
-        </Grid>
-      </div>
-    );
+        console.log("PAGE rendering.");
+        return (
+          <div>
+            <NavBar />
+            <Grid fluid>
+              <Contents loggedIn={this.state.loggedIn}
+                        user={this.state.user} />
+            </Grid>
+          </div>
+        );
   }
 }
