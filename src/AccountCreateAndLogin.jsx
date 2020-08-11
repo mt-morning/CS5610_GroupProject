@@ -2,14 +2,14 @@ import React from 'react';
 import { Grid,Tabs,Tab } from 'react-bootstrap';
 import AccountCreate from './AccountCreate.jsx';
 import Login from './Login.jsx';
-import {withRouter} from "react-router-dom";
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import routes from "./routes";
 
 
 class AccountCreateAndLogin extends React.Component {
 
     constructor(props){
         super(props);
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
         console.log("Constructor of AccountCreateAndLogin.");
         console.log("\tthis.props is :", this.props);
@@ -27,14 +27,6 @@ class AccountCreateAndLogin extends React.Component {
     }
 
 
-    componentDidUpdate(){
-        console.log("AccountCreateAndLogin did update. New state:", this.state);
-    }
-
-    handleSuccessfulLoginGlobal(username){
-        this.props.location.state.handleSuccessfulLoginGlobal(username);
-    }
-
     handleSuccessfulLogin(username){
         console.log("AccountCreateAndLogin - HandleSuccessfulLogin - ", username);
 
@@ -47,12 +39,21 @@ class AccountCreateAndLogin extends React.Component {
             },
             loggedIn: true,
         });
-
-        this.handleSuccessfulLoginGlobal(username);
     }
 
 
     render() {
+
+        const { loggedIn, user } = this.state;
+
+        console.log("AccountCreateAndLoggedIn - Logged in? ", loggedIn);
+        if (loggedIn === true) {
+
+            return (
+                <Redirect to={{pathname: '/products',
+                                  state: { user: user,
+                                      loggedIn: true} }} />);
+        }
 
         return (
             <div>

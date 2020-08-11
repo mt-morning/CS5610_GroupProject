@@ -43,7 +43,6 @@ export default class Login extends React.Component {
     e.preventDefault();
     const form = document.forms.loginForm;
 
-
     let username = form.username.value;
     let password = form.password.value;
 
@@ -62,7 +61,7 @@ export default class Login extends React.Component {
       this.onSuccess(username);
     }
     else {
-      alert("doesn't exist");
+      alert("Sorry, that account could not be authenticated. Please try again.");
     }
 
     form.username.value = "";
@@ -74,9 +73,6 @@ export default class Login extends React.Component {
     //TODO get role as an argument
     console.log("LOGIN. onSuccess fired.");
 
-    // this.props.loggedIn = true;
-    // this.props.user = {username: username, role: 'User'};
-
     this.setState({
       loggedIn: true,
       user: {
@@ -86,7 +82,6 @@ export default class Login extends React.Component {
     });
 
     this.props.handleSuccessfulLogin(username);
-    console.log("LOGIN finished onSuccess.");
 
   }
 
