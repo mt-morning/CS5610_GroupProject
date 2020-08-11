@@ -24,6 +24,7 @@ export default class InventoryList extends React.Component {
           toastType: 'info',
       };
       this.deleteProduct = this.deleteProduct.bind(this);
+      this.updateProduct = this.updateProduct.bind(this);
       this.showSuccess = this.showSuccess.bind(this);
       this.showError = this.showError.bind(this);
       this.dismissToast = this.dismissToast.bind(this);
@@ -96,8 +97,46 @@ export default class InventoryList extends React.Component {
     } else {
       this.loadData();
     }
-  }
+    }
 
+
+    async updateProduct(index, incrAmt) {
+        const query = `mutation productUpdate(
+      $id: Int!
+      $changes: ProductUpdateInputs!
+    ) {
+      productUpdate(
+        id: $id
+        changes: $changes
+      ) {
+        id description createdDate expirationDate 
+        quantity category information updatedDate
+      }
+    }`;
+
+        const { inventory } = this.state;   // populated by child component InventoryTable
+
+        const { location: { pathname, search }, history } = this.props;
+        const { id } = inventory[index];
+        const { quantity: oldQuantity } = inventory[index];
+        const data = await graphQLFetch(query, {
+            id: parseInt(id, 10),
+            changes: {
+                "quantity": incrAmt + oldQuantity,
+                "updatedDate": new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
+            }
+        });
+
+        if (data && data.productUpdate) {
+            this.setState((prevState) => {
+                const newList = [...prevState.inventory];
+                newList.splice(index, 1, data.productUpdate);
+                return { inventory: newList };
+            });
+        } else {
+            this.loadData();
+        }
+    }
 
 
     showSuccess(message) {
