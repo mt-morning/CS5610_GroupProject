@@ -57,8 +57,6 @@ export default class AccountCreate extends React.Component {
 
   render() {
 
-        console.log('State:', this.state);
-
         if (this.state.accountCreated) {
             return (
                 <div>

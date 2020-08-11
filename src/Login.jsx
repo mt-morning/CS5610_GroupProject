@@ -14,21 +14,28 @@ import {
 import graphQLFetch from "./graphQLFetch";
 
 
+function handleSuccessfulLogin(username){
+  handleSuccessfulLogin(username);
+}
+
 export default class Login extends React.Component {
 
-  constructor(props) {
+  constructor(props, handleSuccessfulLogin) {
     super(props);
 
-    this.state = {
-      user: {
-        username: '',
-        role: '',
-      },
-      loggedIn: false,
-    };
+    //this.state  = {loggedIn: '', user: {username: '', role: ''} };
+    console.log("LOGIN. Constructor.");
+    console.log("\tthis.props: ", this.props);
+    console.log("\tthis.state: ", this.state);
+
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSuccess = this.onSuccess.bind(this);
 
+  }
+
+  componentDidMount(){
+    this.setState({loggedIn: this.props.loggedIn, user: this.props.user });
   }
 
 
@@ -57,6 +64,7 @@ export default class Login extends React.Component {
     else {
       alert("doesn't exist");
     }
+
     form.username.value = "";
     form.password.value = "";
   }
@@ -65,24 +73,36 @@ export default class Login extends React.Component {
   onSuccess(username) {
     //TODO get role as an argument
     console.log("LOGIN. onSuccess fired.");
+
+    // this.props.loggedIn = true;
+    // this.props.user = {username: username, role: 'User'};
+
     this.setState({
       loggedIn: true,
       user: {
         username: username,
         role: 'user',
-      }});
+      }
+    });
+
+    this.props.handleSuccessfulLogin(username);
+    console.log("LOGIN finished onSuccess.");
+
   }
 
 
   render() {
 
-    if (this.state.loggedIn) {
-      return (
-          <div>
-            You have successfully logged in, {this.state.user.username}.
-          </div>
-      )
-    }
+    // const {loggedIn} = this.state;
+
+
+    // if (loggedIn) {
+    //   return (
+    //       <div>
+    //         You have successfully logged in, {user.username}.
+    //       </div>
+    //   )
+    // }
 
     return (
         <form onSubmit={this.handleSubmit} name="loginForm">

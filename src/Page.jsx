@@ -8,40 +8,82 @@ import { LinkContainer } from 'react-router-bootstrap';
 import Contents from './Contents.jsx';
 import ProductAddNav from './ProductAddNav.jsx'
 
-function NavBar() {
-  return (
-    <Navbar>
-      <Navbar.Header>
-        <Navbar.Brand>Inventory Tracker</Navbar.Brand>
-      </Navbar.Header>
+class NavBar extends React.Component {
 
-      <Nav>
-        <LinkContainer exact to="/"><NavItem>Home</NavItem></LinkContainer>
+    constructor(props){
+        super(props);
 
-        <LinkContainer to="/about"><MenuItem>About</MenuItem></LinkContainer>
+    }
 
-        <LinkContainer to="/sign-in"><NavItem>Sign in</NavItem></LinkContainer>
-
-        <LinkContainer to="/products"><NavItem>Inventory Overview </NavItem></LinkContainer>
+    componentDidUpdate() {
+        console.log("PAGE did update.");
+        const { loggedIn }  = this.props;
+        console.log("\t Logged In? ", loggedIn);
 
 
-      </Nav>
+    }
 
-      <Nav pullRight>
-        <ProductAddNav />
-      </Nav>
-    </Navbar>
-  );
+    render() {
+
+        const { loggedIn }  = this.props;
+
+
+        console.log("Rendering Page.");
+        console.log("\t Logged In? ", loggedIn);
+
+
+        return (
+            <Navbar>
+                <Navbar.Header>
+                    <Navbar.Brand>Inventory Tracker</Navbar.Brand>
+                </Navbar.Header>
+
+                <Nav>
+                    <LinkContainer exact to="/"><NavItem>Home</NavItem></LinkContainer>
+                    <LinkContainer to="/about"><MenuItem>About</MenuItem></LinkContainer>
+
+                    <LinkContainer to={{
+                        pathname: '/sign-in',
+                        state: {
+                            user: this.props.user,
+                            loggedIn: this.props.loggedIn} }}>
+                        <NavItem>Sign in</NavItem>
+                    </LinkContainer>
+
+                    <LinkContainer to="/products"><NavItem>Inventory Overview </NavItem></LinkContainer>
+
+                </Nav>
+
+                <Nav pullRight>
+                    <ProductAddNav />
+                </Nav>
+            </Navbar>
+        );
+    }
+
 }
 
 export default class Page extends React.Component {
 
+
+    constructor(props){
+        super(props);
+        this.state  = {
+            loggedIn: 'false',
+            user: {
+                username: '',
+                role: '',
+            }
+        }
+    }
+
   render() {
     return (
       <div>
-        <NavBar authenticated={this.props.authenticated} />
+        <NavBar user={this.state.user} loggedIn={this.state.loggedIn} />
         <Grid fluid>
-          <Contents />
+          <Contents loggedIn={this.state.loggedIn}
+                    user={this.state.user} />
         </Grid>
       </div>
     );

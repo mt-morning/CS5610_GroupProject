@@ -95,7 +95,6 @@ class CategoryFilter extends React.Component {
                         Savory
                     </ToggleButton>
                 </ToggleButtonGroup>
-
             </div>
         )
     }
