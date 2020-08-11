@@ -98,6 +98,24 @@ export default class InventoryList extends React.Component {
     }
   }
 
+
+
+    showSuccess(message) {
+        this.setState({
+            toastVisible: true, toastMessage: message, toastType: 'success',
+        });
+    }
+
+    showError(message) {
+        this.setState({
+            toastVisible: true, toastMessage: message, toastType: 'danger',
+        });
+    }
+
+    dismissToast() {
+        this.setState({ toastVisible: false });
+    }
+
   render() {
     const { inventory } = this.state;
     const { match } = this.props;
