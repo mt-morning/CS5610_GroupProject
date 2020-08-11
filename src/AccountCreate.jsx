@@ -11,7 +11,7 @@ export default class AccountCreate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: false,
+            accountCreated: false,
             user: {
                 username: '',
                 role: '',
@@ -59,10 +59,10 @@ export default class AccountCreate extends React.Component {
 
         console.log('State:', this.state);
 
-        if (this.state.loggedIn) {
+        if (this.state.accountCreated) {
             return (
                 <div>
-                    You are logged in.
+                    You have successfully created a new account.
                 </div>
             )
         }
