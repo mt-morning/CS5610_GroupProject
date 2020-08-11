@@ -6,6 +6,11 @@ import Login from './Login.jsx';
 
 export default class AccountCreateAndLogin extends React.Component {
 
+    constructor(props){
+        super(props);
+
+    }
+
     render() {
         return (
             <div>

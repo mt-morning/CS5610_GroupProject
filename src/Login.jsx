@@ -3,6 +3,7 @@
 import React from 'react';
 import {
   ButtonToolbar,
+    Button,
   Col,
   ControlLabel,
   FormControl,
@@ -61,7 +62,7 @@ export default class Login extends React.Component {
             <Col sm={3}>
               <FormControl type="text" name="username" placeholder="username"/>
               <FormControl type="password" name="password" placeholder="password" />
-              <button bsType="submit">Log-In</button>
+              <Button type="submit">Log-In</Button>
             </Col>
           </FormGroup>
         </form>

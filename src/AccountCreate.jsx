@@ -10,6 +10,13 @@ export default class AccountCreate extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            loggedIn: false,
+            user: {
+                username: '',
+                role: '',
+            }
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -36,7 +43,10 @@ export default class AccountCreate extends React.Component {
 
         const data = await graphQLFetch(query, { user });
         if (data) {
-            this.setState({ accountCreated: true });
+            this.setState({
+                    accountCreated: true,
+                    user: user
+            });
         }
         form.username.value = "";
         form.password.value = "";
@@ -46,6 +56,17 @@ export default class AccountCreate extends React.Component {
 
 
   render() {
+
+        console.log('State:', this.state);
+
+        if (this.state.loggedIn) {
+            return (
+                <div>
+                    You are logged in.
+                </div>
+            )
+        }
+
     return (
           <form onSubmit={this.handleSubmit} name="accountCreate">
               <FormGroup>
