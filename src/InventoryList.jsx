@@ -3,12 +3,12 @@ import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
 
-import ProductFilter from './ProductFilter.jsx';
+import Filters from './Filters.jsx';
 import InventoryTable from './InventoryTable.jsx';
-import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import Toast from './Toast.jsx';
 import ProductInformation from './ProductInformation.jsx';
+import InventoryTableComp from './InventoryTableComp.jsx'
 
 
 /**
@@ -24,6 +24,7 @@ export default class InventoryList extends React.Component {
           toastType: 'info',
       };
       this.deleteProduct = this.deleteProduct.bind(this);
+      this.updateProduct = this.updateProduct.bind(this);
       this.showSuccess = this.showSuccess.bind(this);
       this.showError = this.showError.bind(this);
       this.dismissToast = this.dismissToast.bind(this);
@@ -47,8 +48,9 @@ export default class InventoryList extends React.Component {
   async loadData() {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
-    const vars = {};
-    if (params.get('quantity')) vars.quantity = parseInt(params.get('quantity'), 10);
+    const queryVariables = {};
+    if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
+    if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
     // eslint-disable-next-line no-console
     console.log('Loading data....');
@@ -56,16 +58,19 @@ export default class InventoryList extends React.Component {
     // Pg 105
     const query = `query productList($quantity: Int) {
       productList(quantity: $quantity) {
-        id description createdDate
+        id description createdDate updatedDate
         expirationDate quantity category
       }
     }`;
 
-      const data = await graphQLFetch(query, vars, this.showError);
+      const data = await graphQLFetch(query, queryVariables, this.showError);
     if (data) {
       // eslint-disable-next-line no-console
       console.log('Data retrieved from server.');
       this.setState({ inventory: data.productList });
+    }
+    else {
+      console.log("Query returned no data/error.");
     }
   }
 
@@ -75,6 +80,7 @@ export default class InventoryList extends React.Component {
       productDelete(id: $id)
     }`;
     const { inventory } = this.state;
+    // console.log(inventory);
     const { location: { pathname, search }, history } = this.props;
       const { id } = inventory[index];
       const data = await graphQLFetch(query, { id: parseInt(id, 10) }, this.showError);
@@ -91,7 +97,47 @@ export default class InventoryList extends React.Component {
     } else {
       this.loadData();
     }
-  }
+    }
+
+
+    async updateProduct(index, incrAmt) {
+        const query = `mutation productUpdate(
+      $id: Int!
+      $changes: ProductUpdateInputs!
+    ) {
+      productUpdate(
+        id: $id
+        changes: $changes
+      ) {
+        id description createdDate expirationDate 
+        quantity category information updatedDate
+      }
+    }`;
+
+        const { inventory } = this.state;   // populated by child component InventoryTable
+
+        const { location: { pathname, search }, history } = this.props;
+        const { id } = inventory[index];
+        const { quantity: oldQuantity } = inventory[index];
+        const data = await graphQLFetch(query, {
+            id: parseInt(id, 10),
+            changes: {
+                "quantity": incrAmt + oldQuantity,
+                "updatedDate": new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
+            }
+        });
+
+        if (data && data.productUpdate) {
+            this.setState((prevState) => {
+                const newList = [...prevState.inventory];
+                newList.splice(index, 1, data.productUpdate);
+                return { inventory: newList };
+            });
+        } else {
+            this.loadData();
+        }
+    }
+
 
     showSuccess(message) {
         this.setState({
@@ -110,8 +156,7 @@ export default class InventoryList extends React.Component {
     }
 
   render() {
-      const { inventory } = this.state;
-      const { toastVisible, toastType, toastMessage } = this.state;
+    const { inventory } = this.state;
     const { match } = this.props;
     return (
       <React.Fragment>
@@ -120,21 +165,14 @@ export default class InventoryList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter />
+            <Filters />
           </Panel.Body>
         </Panel>
         <hr />
-        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} />
+        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
-            <Toast
-                showing={toastVisible}
-                onDismiss={this.dismissToast}
-                bsStyle={toastType}
-            >
-                {toastMessage}
-            </Toast>
-        </React.Fragment>
+      </React.Fragment>
     );
   }
 }

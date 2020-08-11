@@ -22,6 +22,10 @@
     "heroku-postbuild": "npm run compile && ln -sf ../node_modules/bootstrap/dist public/bootstrap"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-regular-svg-icons": "^5.14.0",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.4.1",
     "dotenv": "^6.2.0",
@@ -30,11 +34,13 @@
     "isomorphic-fetch": "^2.2.1",
     "nodemon": "^2.0.4",
     "prop-types": "^15.7.2",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-dom": "^16.13.1",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^4.3.1",
+    "reactable": "^1.1.0",
     "serialize-javascript": "^4.0.0",
     "source-map-support": "^0.5.19",
     "url-search-params": "^1.1.0"

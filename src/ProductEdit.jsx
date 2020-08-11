@@ -12,7 +12,7 @@ export default class ProductEdit extends React.Component {
         const query = `query product($id: Int!) {
       product(id: $id) {
         id description createdDate expirationDate
-        quantity category information
+        quantity category information updatedDate
       }
     }`;
         const { params: { id } } = match;
@@ -81,43 +81,36 @@ export default class ProductEdit extends React.Component {
         changes: $changes
       ) {
         id description createdDate expirationDate 
-        quantity category information 
+        quantity category information updatedDate
       }
     }`;
         const { id, created, ...changes } = product;
+        changes["updatedDate"] = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
         const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
         if (data) {
             this.setState({ product: data.productUpdate });
             this.showSuccess('Updated issue successfully');
         }
+
+    }
+  async loadData() {
+    const { match } = this.props;
+    const data = await ProductEdit.fetchData(match, null, this.showError);
+    this.setState({ product: data ? data.product : {}, invalidFields: {} });
     }
 
-    async loadData() {
-        const { match } = this.props;
-        const data = await ProductEdit.fetchData(match, null, this.showError);
-        this.setState({ product: data ? data.product : {}, invalidFields: {} });
+    showSuccess(message) {
+        this.setState({
+            toastVisible: true, toastMessage: message, toastType: 'danger',
+        });
     }
-        // if (data) {
-        //   const { product } = data;
-        //   product.description = product.description != null ? product.description : '';
-        //   // product.createdDate = product.createdDate ? product.createdDate.toDateString() : '';
-        //   // product.expirationDate = product.expirationDate ? product.expirationDate.toDateString() : '';
-        //   product.category = product.category != null ? product.category : '';
-        //   product.information = product.information != null ? product.information : '';
-        //   this.setState({ product, invalidFields: {} });
-        // } else {
-        //   this.setState({ product: {}, invalidFields: {} });
-        // }
-        showSuccess(message) {
-            this.setState({
-                toastVisible: true, toastMessage: message, toastType: 'success',
-            });
-        }
-        showError(message) {
-            this.setState({
-                toastVisible: true, toastMessage: message, toastType: 'danger',
-            });
-        }
+
+    showError(message) {
+        this.setState({
+        toastVisible: true, toastMessage: message, toastType: 'success',
+                  });
+            }
+
         dismissToast() {
             this.setState({ toastVisible: false });
         }
@@ -150,6 +143,12 @@ export default class ProductEdit extends React.Component {
     const { product: { category, information } } = this.state;
     const { product: { createdDate, expirationDate } } = this.state;
     const { toastVisible, toastMessage, toastType } = this.state;
+    const { product: {updatedDate} } = this.state;
+    const formattedUpdatedDate = updatedDate 
+    ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
+      + ` ${updatedDate.toLocaleTimeString('en-US')}`)
+    : ' ';
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>{`Editing product: ${id}`}</h3>
@@ -177,6 +176,12 @@ export default class ProductEdit extends React.Component {
                   onValidityChange={this.onValidityChange}
                   key={id}
                 />
+              </td>
+            </tr>
+            <tr>
+              <td>Updated:</td>
+              <td>
+                 {formattedUpdatedDate}
               </td>
             </tr>
             <tr>

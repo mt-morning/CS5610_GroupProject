@@ -3,14 +3,12 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './routes.js';
 
-// <Route component={NotFound} />
 export default class Contents extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = { authenticated: false };
     }
-
 
     render() {
         return (

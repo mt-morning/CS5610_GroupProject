@@ -24,7 +24,7 @@ export default class ProductInformation extends React.Component {
     const { match: { params: { id } } } = this.props;
     const query = `query product($id: Int!) {
       product (id: $id) {
-        id information
+        id information createdDate
       }
     }`;
 
@@ -37,11 +37,15 @@ export default class ProductInformation extends React.Component {
   }
 
   render() {
-    const { product: { information } } = this.state;
+    const { product: { information, createdDate } } = this.state;
+    const formattedCreated = createdDate 
+    ? createdDate.toDateString() + ' ' + createdDate.toTimeString().substr(0,8)
+    : ' ';
     return (
       <div>
-        <h3>Information</h3>
-        <pre>{information}</pre>
+        <h3>Information:</h3>
+        <pre>Details: {information}</pre>
+        <pre>Date created: {formattedCreated}</pre>
       </div>
     );
   }
