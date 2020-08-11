@@ -57,7 +57,7 @@ export default class InventoryList extends React.Component {
     // Pg 105
     const query = `query productList($quantity: Int) {
       productList(quantity: $quantity) {
-        id description createdDate
+        id description createdDate updatedDate
         expirationDate quantity category
       }
     }`;
