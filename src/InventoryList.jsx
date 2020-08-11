@@ -3,7 +3,7 @@ import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
 
-import ProductFilter from './ProductFilter.jsx';
+import Filters from './Filters.jsx';
 import InventoryTable from './InventoryTable.jsx';
 import ProductAdd from './ProductAdd.jsx';
 import graphQLFetch from './graphQLFetch.js';
@@ -38,25 +38,24 @@ export default class InventoryList extends React.Component {
   async loadData() {
     const { location: { search } } = this.props;
     const params = new URLSearchParams(search);
-    const vars = {};
-    if (params.get('quantity')) vars.quantity = parseInt(params.get('quantity'), 10);
+    const queryVariables = {};
+    if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
+    if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
-    // eslint-disable-next-line no-console
-    console.log('Loading data....');
-
-    // Pg 105
-    const query = `query productList($quantity: Int) {
-      productList(quantity: $quantity) {
+    const query = `query productList($quantity: Int, $category: [Category]) {
+      productList(quantity: $quantity, category: $category) {
         id description createdDate
         expirationDate quantity category
       }
     }`;
 
-    const data = await graphQLFetch(query, vars);
+
+    const data = await graphQLFetch(query, queryVariables);
     if (data) {
-      // eslint-disable-next-line no-console
-      console.log('Data retrieved from server.');
       this.setState({ inventory: data.productList });
+    }
+    else {
+      console.log("Query returned no data/error.");
     }
   }
 
@@ -93,7 +92,7 @@ export default class InventoryList extends React.Component {
             <Panel.Title toggle>Filter</Panel.Title>
           </Panel.Heading>
           <Panel.Body collapsible>
-            <ProductFilter />
+            <Filters />
           </Panel.Body>
         </Panel>
         <hr />
