@@ -52,7 +52,6 @@ class CategoryFilter extends React.Component {
         });
 
         const { history } = this.props;
-        const { category } = this.state;
 
         // Update the query param.
         history.push({

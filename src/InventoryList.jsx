@@ -32,13 +32,18 @@ export default class InventoryList extends React.Component {
       this.dismissToast = this.dismissToast.bind(this);
   }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
   // Pg 64
   componentDidMount() {
-      console.log("INVENTORY LIST. props - Logged In?", this.props.loggedIn);
-      console.log("INVENTORY LIST. state - Logged In?", this.state.loggedIn);
+      this.mounted = true;
+      // console.log("INVENTORY LIST. props - Logged In?", this.props.loggedIn);
+      // console.log("INVENTORY LIST. state - Logged In?", this.state.loggedIn);
       // console.log("\tthis.props.location.state.loggedIn", this.props.location.state.loggedIn);
 
-      console.log("INVENTORYLIST. this.props.location = ", this.props.location);
+      // console.log("INVENTORYLIST. this.props.location = ", this.props.location);
 
       if (this.props.location.state === undefined) {
           return;
@@ -67,9 +72,8 @@ export default class InventoryList extends React.Component {
     const queryVariables = {};
     if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
     if (params.get('category')) queryVariables.category = params.get('category').split(',');
+    console.log("INVENTORYLIST. Params are:", params);
 
-    // eslint-disable-next-line no-console
-    console.log('Loading data....');
 
     // Pg 105
     const query = `query productList($quantity: Int) {

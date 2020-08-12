@@ -15,8 +15,8 @@ class NavBar extends React.Component {
 
     componentDidUpdate() {
         console.log("NAVBAR did update.");
-        const { loggedIn }  = this.props;
-        console.log("\t Logged In? ", loggedIn);
+        // const { loggedIn }  = this.props;
+        // console.log("\t Logged In? ", loggedIn);
     }
 
     render() {
@@ -72,7 +72,7 @@ class NavBar extends React.Component {
 
 
                 </Nav>
-                <Nav fluid>
+                <Nav pullRight>
                     <Navbar.Brand>Welcome, {username}.</Navbar.Brand>
                 </Nav>
 
