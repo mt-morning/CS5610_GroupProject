@@ -22,8 +22,10 @@ Iter 3.0
     - allow for an accumulator sort of filter: all the checked/clicked categories are shown
   - sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
 - Tran:
-  - toasts in lieu of alerts: Tran
-  - product edit: prev/next links broken when id is not contiguous
+  - Implement toast
+  - Update prev/next option to "back to home" option 
+  - Clean up Bootstrap for Product Edit page 
+  
 - Miranda: 
   - Added quick update buttons to products (representing +1, +5, -1)
   - Used React library Reactable to display read-only orders, which 
