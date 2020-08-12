@@ -37,7 +37,6 @@ export default class InventoryList extends React.Component {
 
   // pg 245
   componentDidUpdate(prevProps) {
-      console.log("InventoryList updated.");
       const { location: { search: prevSearch } } = prevProps;
       const { location: { search } } = this.props;
       if (prevSearch !== search) {
@@ -53,10 +52,9 @@ export default class InventoryList extends React.Component {
     if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
     if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
-    console.log("InventoryList, params:", params);
 
     // eslint-disable-next-line no-console
-    console.log('Loading data....');
+    // console.log('Loading data....');
 
     // Pg 105
       const query = `query productList($quantity: Int, $category: [Category]) {
@@ -68,8 +66,7 @@ export default class InventoryList extends React.Component {
 
       const data = await graphQLFetch(query, queryVariables, this.showError);
     if (data) {
-      // eslint-disable-next-line no-console
-      console.log('Data retrieved from server.');
+
       this.setState({ inventory: data.productList });
     }
     else {
@@ -83,7 +80,6 @@ export default class InventoryList extends React.Component {
       productDelete(id: $id)
     }`;
     const { inventory } = this.state;
-    // console.log(inventory);
     const { location: { pathname, search }, history } = this.props;
       const { id } = inventory[index];
       const data = await graphQLFetch(query, { id: parseInt(id, 10) }, this.showError);

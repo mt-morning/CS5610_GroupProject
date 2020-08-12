@@ -7,6 +7,7 @@ import {
   ControlLabel,
   FormControl,
   FormGroup,
+    Button,
   ToggleButton,
   ToggleButtonGroup
 } from "react-bootstrap";
@@ -17,6 +18,10 @@ export default class Login extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loggedIn: false,
+      attempted: false,
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -39,29 +44,36 @@ export default class Login extends React.Component {
     const data = await graphQLFetch(query, { username, password });
 
     if (data.user !== null ) {
-      alert("account exists!");
+      this.setState({
+        loggedIn: true,
+      })
     }
     else {
-      alert("doesn't exist");
+      this.setState({
+        attempted: true,
+      })
     }
     form.username.value = "";
     form.password.value = "";
   }
 
-
-  onSuccess(username) {
-    this.state = { authenticated: true };
-  }
-
-
   render() {
+
+    if ( this.state.loggedIn === true ) {
+      return (
+          <div>
+            Congratulations! You have logged in successfully.
+          </div>
+      )
+    }
+
     return (
         <form onSubmit={this.handleSubmit} name="loginForm">
           <FormGroup>
             <Col sm={3}>
               <FormControl type="text" name="username" placeholder="username"/>
               <FormControl type="password" name="password" placeholder="password" />
-              <button bsType="submit">Log-In</button>
+              <Button type="submit">Log-In</Button>
             </Col>
           </FormGroup>
         </form>
