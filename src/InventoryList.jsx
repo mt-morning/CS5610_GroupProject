@@ -16,17 +16,17 @@ import ProductInformation from './ProductInformation.jsx';
 export default class InventoryList extends React.Component {
   constructor() {
     super();
-      this.state = {
-          inventory: [],
-          toastVisible: false,
-          toastMessage: ' ',
-          toastType: 'info',
-      };
-      this.deleteProduct = this.deleteProduct.bind(this);
-      this.updateProduct = this.updateProduct.bind(this);
-      this.showSuccess = this.showSuccess.bind(this);
-      this.showError = this.showError.bind(this);
-      this.dismissToast = this.dismissToast.bind(this);
+    this.state = {
+      inventory: [],
+      toastVisible: false,
+      toastMessage: ' ',
+      toastType: 'info',
+    };
+    this.deleteProduct = this.deleteProduct.bind(this);
+    this.updateProduct = this.updateProduct.bind(this);
+    this.showSuccess = this.showSuccess.bind(this);
+    this.showError = this.showError.bind(this);
+    this.dismissToast = this.dismissToast.bind(this);
   }
 
   // Pg 64
@@ -36,11 +36,11 @@ export default class InventoryList extends React.Component {
 
   // pg 245
   componentDidUpdate(prevProps) {
-      const { location: { search: prevSearch } } = prevProps;
-      const { location: { search } } = this.props;
-      if (prevSearch !== search) {
-          this.loadData();
-      }
+    const { location: { search: prevSearch } } = prevProps;
+    const { location: { search } } = this.props;
+    if (prevSearch !== search) {
+      this.loadData();
+    }
   }
 
   // Pg 64
@@ -51,25 +51,23 @@ export default class InventoryList extends React.Component {
     if (params.get('quantity')) queryVariables.quantity = parseInt(params.get('quantity'), 10);
     if (params.get('category')) queryVariables.category = params.get('category').split(',');
 
-
     // eslint-disable-next-line no-console
     // console.log('Loading data....');
 
     // Pg 105
-      const query = `query productList($quantity: Int, $category: [Category]) {
+    const query = `query productList($quantity: Int, $category: [Category]) {
       productList(quantity: $quantity, category: $category) {
         id description createdDate updatedDate
         expirationDate quantity category
       }
     }`;
 
-      const data = await graphQLFetch(query, queryVariables, this.showError);
+    const data = await graphQLFetch(query, queryVariables, this.showError);
     if (data) {
-
       this.setState({ inventory: data.productList });
-    }
-    else {
-      console.log("Query returned no data/error.");
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('Query returned no data/error.');
     }
   }
 
@@ -80,8 +78,8 @@ export default class InventoryList extends React.Component {
     }`;
     const { inventory } = this.state;
     const { location: { pathname, search }, history } = this.props;
-      const { id } = inventory[index];
-      const data = await graphQLFetch(query, { id: parseInt(id, 10) }, this.showError);
+    const { id } = inventory[index];
+    const data = await graphQLFetch(query, { id: parseInt(id, 10) }, this.showError);
     if (data && data.productDelete) {
       this.setState((prevState) => {
         const newList = [...prevState.inventory];
@@ -91,15 +89,14 @@ export default class InventoryList extends React.Component {
         newList.splice(index, 1);
         return { inventory: newList };
       });
-        this.showSuccess(`Deleted product ${id} successfully.`);
+      this.showSuccess(`Deleted product ${id} successfully.`);
     } else {
       this.loadData();
     }
-    }
+  }
 
-
-    async updateProduct(index, incrAmt) {
-        const query = `mutation productUpdate(
+  async updateProduct(index, incrAmt) {
+    const query = `mutation productUpdate(
           $id: Int!
           $changes: ProductUpdateInputs!
         ) {
@@ -112,49 +109,53 @@ export default class InventoryList extends React.Component {
           }
         }`;
 
-        const { inventory } = this.state;   // populated by child component InventoryTable
+    const { inventory } = this.state; // populated by child component InventoryTable
+    const { id } = inventory[index];
+    const { quantity: oldQuantity } = inventory[index];
+    const data = await graphQLFetch(query, {
+      id: parseInt(id, 10),
+      changes: {
+        quantity: incrAmt + oldQuantity,
+        updatedDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      },
+    });
 
-        const { location: { pathname, search }, history } = this.props;
-        const { id } = inventory[index];
-        const { quantity: oldQuantity } = inventory[index];
-        const data = await graphQLFetch(query, {
-            id: parseInt(id, 10),
-            changes: {
-                "quantity": incrAmt + oldQuantity,
-                "updatedDate": new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10)
-            }
-        });
-
-        if (data && data.productUpdate) {
-            this.setState((prevState) => {
-                const newList = [...prevState.inventory];
-                newList.splice(index, 1, data.productUpdate);
-                return { inventory: newList };
-            });
-        } else {
-            this.loadData();
-        }
+    if (data && data.productUpdate) {
+      this.setState((prevState) => {
+        const newList = [...prevState.inventory];
+        newList.splice(index, 1, data.productUpdate);
+        return { inventory: newList };
+      });
+      this.showSuccess(`Updated product ${id} successfully.`);
+    } else {
+      this.loadData();
     }
+  }
 
-    showSuccess(message) {
-        this.setState({
-            toastVisible: true, toastMessage: message, toastType: 'success',
-        });
-    }
+  showSuccess(message) {
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: 'success',
+    });
+  }
 
-    showError(message) {
-        this.setState({
-            toastVisible: true, toastMessage: message, toastType: 'danger',
-        });
-    }
+  showError(message) {
+    this.setState({
+      toastVisible: true,
+      toastMessage: message,
+      toastType: 'danger',
+    });
+  }
 
-    dismissToast() {
-        this.setState({ toastVisible: false });
-    }
+  dismissToast() {
+    this.setState({ toastVisible: false });
+  }
 
   render() {
     const { inventory } = this.state;
     const { match } = this.props;
+    const { toastVisible, toastType, toastMessage } = this.state;
     return (
       <React.Fragment>
         <Panel>
@@ -166,9 +167,20 @@ export default class InventoryList extends React.Component {
           </Panel.Body>
         </Panel>
         <hr />
-        <InventoryTable inventory={inventory} deleteProduct={this.deleteProduct} updateProduct={this.updateProduct} />
+        <InventoryTable
+          inventory={inventory}
+          deleteProduct={this.deleteProduct}
+          updateProduct={this.updateProduct}
+        />
         <hr />
         <Route path={`${match.path}/:id`} component={ProductInformation} />
+        <Toast
+          showing={toastVisible}
+          onDismiss={this.dismissToast}
+          bsStyle={toastType}
+        >
+          {toastMessage}
+        </Toast>
       </React.Fragment>
     );
   }
