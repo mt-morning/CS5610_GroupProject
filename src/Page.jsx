@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import {
   Navbar, Nav, NavItem, MenuItem, Grid,
 } from 'react-bootstrap';
@@ -18,12 +17,18 @@ class NavBar extends React.Component {
         console.log("NAVBAR did update.");
         const { loggedIn }  = this.props;
         console.log("\t Logged In? ", loggedIn);
-
     }
 
     render() {
 
         const { loggedIn }  = this.props;
+        let username;
+        if (this.props.user === undefined) {
+            username = "friend";
+        }
+        else {
+            username = this.props.user.username;
+        }
 
         console.log("NAVBAR rendering..");
         console.log("\t Logged In? ", loggedIn);
@@ -43,16 +48,13 @@ class NavBar extends React.Component {
                     {/*        loggedIn: false } }}><NavItem>Home</NavItem>*/}
                     {/*</LinkContainer>*/}
 
-                    <LinkContainer to="/about">
-                        <MenuItem>About</MenuItem>
-                    </LinkContainer>
 
                     <LinkContainer to={{
                         pathname: '/sign-in',
                         state: {
                             user: this.props.user,
                             loggedIn: this.props.loggedIn } }}>
-                        <NavItem>Sign in</NavItem>
+                        <NavItem>Sign in/Sign Out</NavItem>
                     </LinkContainer>
 
                     <LinkContainer to={{
@@ -63,7 +65,17 @@ class NavBar extends React.Component {
                         <NavItem>Inventory Overview</NavItem>
                     </LinkContainer>
 
+                    <LinkContainer to="/about">
+                        <MenuItem>About</MenuItem>
+                    </LinkContainer>
+
+
+
                 </Nav>
+                <Nav fluid>
+                    <Navbar.Brand>Welcome, {username}.</Navbar.Brand>
+                </Nav>
+
 
                 <Nav pullRight>
                     <ProductAddNav />
@@ -90,6 +102,7 @@ export default class Page extends React.Component {
 
   render() {
         console.log("PAGE rendering.");
+
         return (
           <div>
             <NavBar />
