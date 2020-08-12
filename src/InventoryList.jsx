@@ -100,17 +100,17 @@ export default class InventoryList extends React.Component {
 
     async updateProduct(index, incrAmt) {
         const query = `mutation productUpdate(
-      $id: Int!
-      $changes: ProductUpdateInputs!
-    ) {
-      productUpdate(
-        id: $id
-        changes: $changes
-      ) {
-        id description createdDate expirationDate 
-        quantity category information updatedDate
-      }
-    }`;
+          $id: Int!
+          $changes: ProductUpdateInputs!
+        ) {
+          productUpdate(
+            id: $id
+            changes: $changes
+          ) {
+            id description createdDate expirationDate 
+            quantity category information updatedDate
+          }
+        }`;
 
         const { inventory } = this.state;   // populated by child component InventoryTable
 
@@ -135,7 +135,6 @@ export default class InventoryList extends React.Component {
             this.loadData();
         }
     }
-
 
     showSuccess(message) {
         this.setState({
