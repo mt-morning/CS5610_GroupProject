@@ -74,7 +74,7 @@ class CategoryFilter extends React.Component {
                 <ToggleButtonGroup size="large"
                                    type="checkbox"
                                    onChange={this.onChangeStatus}>
-                    <ToggleButton value="Cake">
+                    <ToggleButton value="Cake,Muffin,Cupcake">
                         <FontAwesomeIcon icon={['fas', 'birthday-cake']} />
                         {' '}
                         Cakes & Muffins
