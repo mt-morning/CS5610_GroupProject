@@ -8,7 +8,6 @@ import InventoryTable from './InventoryTable.jsx';
 import graphQLFetch from './graphQLFetch.js';
 import Toast from './Toast.jsx';
 import ProductInformation from './ProductInformation.jsx';
-import InventoryTableComp from './InventoryTableComp.jsx'
 
 
 /**
