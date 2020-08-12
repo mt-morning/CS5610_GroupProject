@@ -8,71 +8,72 @@ import Toast from './Toast.jsx';
 import store from './store.js';
 
 export default class ProductEdit extends React.Component {
-    static async fetchData(match, showError) {
-        const query = `query product($id: Int!) {
+  static async fetchData(match, showError) {
+    const query = `query product($id: Int!) {
       product(id: $id) {
         id description createdDate expirationDate
         quantity category information updatedDate
       }
     }`;
-        const { params: { id } } = match;
-        const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
-        return result;
-    }
-    constructor() {
-        super();
-        const product = store.initialData ? store.initialData.product : null;
-        delete store.initialData;
-        this.state = {
-            product,
-            invalidFields: {},
-            toastVisible: false,
-            toastMessage: ' ',
-            toastType: 'success',
-        };
-        this.onChange = this.onChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.onValidityChange = this.onValidityChange.bind(this);
-        this.showSuccess = this.showSuccess.bind(this);
-        this.showError = this.showError.bind(this);
-        this.dismissToast = this.dismissToast.bind(this);
-    }
+    const { params: { id } } = match;
+    const result = await graphQLFetch(query, { id: parseInt(id, 10) }, showError);
+    return result;
+  }
 
-    componentDidMount() {
-        const { product } = this.state;
-        if (product == null) this.loadData();
-    }
+  constructor() {
+    super();
+    const product = store.initialData ? store.initialData.product : null;
+    delete store.initialData;
+    this.state = {
+      product,
+      invalidFields: {},
+      toastVisible: false,
+      toastMessage: ' ',
+      toastType: 'success',
+    };
+    this.onChange = this.onChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onValidityChange = this.onValidityChange.bind(this);
+    this.showSuccess = this.showSuccess.bind(this);
+    this.showError = this.showError.bind(this);
+    this.dismissToast = this.dismissToast.bind(this);
+  }
 
-    componentDidUpdate(prevProps) {
-        const { match: { params: { id: prevId } } } = prevProps;
-        const { match: { params: { id } } } = this.props;
-        if (id !== prevId) {
-            this.loadData();
-        }
-    }
+  componentDidMount() {
+    const { product } = this.state;
+    if (product == null) this.loadData();
+  }
 
-    onChange(event, naturalValue) {
-        const { name, value: textValue } = event.target;
-        const value = naturalValue === undefined ? textValue : naturalValue;
-        this.setState(prevState => ({
-            product: { ...prevState.product, [name]: value },
-        }));
+  componentDidUpdate(prevProps) {
+    const { match: { params: { id: prevId } } } = prevProps;
+    const { match: { params: { id } } } = this.props;
+    if (id !== prevId) {
+      this.loadData();
     }
+  }
 
-    onValidityChange(event, valid) {
-        const { name } = event.target;
-        this.setState((prevState) => {
-            const invalidFields = { ...prevState.invalidFields, [name]: !valid };
-            if (valid) delete invalidFields[name];
-            return { invalidFields };
-        });
-    }
+  onChange(event, naturalValue) {
+    const { name, value: textValue } = event.target;
+    const value = naturalValue === undefined ? textValue : naturalValue;
+    this.setState(prevState => ({
+      product: { ...prevState.product, [name]: value },
+    }));
+  }
 
-    async handleSubmit(e) {
-        e.preventDefault();
-        const { product, invalidFields } = this.state;
-        if (Object.keys(invalidFields).length !== 0) return;
-        const query = `mutation productUpdate(
+  onValidityChange(event, valid) {
+    const { name } = event.target;
+    this.setState((prevState) => {
+      const invalidFields = { ...prevState.invalidFields, [name]: !valid };
+      if (valid) delete invalidFields[name];
+      return { invalidFields };
+    });
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    const { product, invalidFields } = this.state;
+    if (Object.keys(invalidFields).length !== 0) return;
+    const query = `mutation productUpdate(
       $id: Int!
       $changes: ProductUpdateInputs!
     ) {
@@ -84,36 +85,36 @@ export default class ProductEdit extends React.Component {
         quantity category information updatedDate
       }
     }`;
-        const { id, created, ...changes } = product;
-        changes["updatedDate"] = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
-        const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
-        if (data) {
-            this.setState({ product: data.productUpdate });
-            this.showSuccess('Updated issue successfully');
-        }
-
+    const { id, created, ...changes } = product;
+    changes.updatedDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
+    const data = await graphQLFetch(query, { changes, id: parseInt(id, 10) }, this.showError);
+    if (data) {
+      this.setState({ product: data.productUpdate });
+      this.showSuccess('Updated issue successfully');
     }
+  }
+
   async loadData() {
     const { match } = this.props;
     const data = await ProductEdit.fetchData(match, null, this.showError);
     this.setState({ product: data ? data.product : {}, invalidFields: {} });
-    }
+  }
 
-    showSuccess(message) {
-        this.setState({
-            toastVisible: true, toastMessage: message, toastType: 'danger',
-        });
-    }
+  showSuccess(message) {
+    this.setState({
+      toastVisible: true, toastMessage: message, toastType: 'success',
+    });
+  }
 
-    showError(message) {
-        this.setState({
-        toastVisible: true, toastMessage: message, toastType: 'success',
-                  });
-            }
+  showError(message) {
+    this.setState({
+      toastVisible: true, toastMessage: message, toastType: 'danger',
+    });
+  }
 
-        dismissToast() {
-            this.setState({ toastVisible: false });
-        }
+  dismissToast() {
+    this.setState({ toastVisible: false });
+  }
 
 
   render() {
@@ -143,11 +144,11 @@ export default class ProductEdit extends React.Component {
     const { product: { category, information } } = this.state;
     const { product: { createdDate, expirationDate } } = this.state;
     const { toastVisible, toastMessage, toastType } = this.state;
-    const { product: {updatedDate} } = this.state;
-    const formattedUpdatedDate = updatedDate 
-    ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
-      + ` ${updatedDate.toLocaleTimeString('en-US')}`)
-    : ' ';
+    const { product: { updatedDate } } = this.state;
+    const formattedUpdatedDate = updatedDate
+      ? (`${updatedDate.getMonth() + 1}/${updatedDate.getDate()}/${updatedDate.getFullYear()}`
+        + ` ${updatedDate.toLocaleTimeString('en-US')}`)
+      : ' ';
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -181,7 +182,7 @@ export default class ProductEdit extends React.Component {
             <tr>
               <td>Updated:</td>
               <td>
-                 {formattedUpdatedDate}
+                {formattedUpdatedDate}
               </td>
             </tr>
             <tr>
@@ -242,14 +243,14 @@ export default class ProductEdit extends React.Component {
         </table>
         {validationMessage}
         <Link to={`/products/${id - 1}`}>Back to Home</Link>
-       
-            <Toast
-                showing={toastVisible}
-                onDismiss={this.dismissToast}
-                bsStyle={toastType}
-            >
-                {toastMessage}
-            </Toast>
+
+        <Toast
+          showing={toastVisible}
+          onDismiss={this.dismissToast}
+          bsStyle={toastType}
+        >
+          {toastMessage}
+        </Toast>
       </form>
     );
   }

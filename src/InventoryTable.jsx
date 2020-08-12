@@ -20,13 +20,13 @@ const InventoryRow = withRouter(({
   );
   const smUpdateTooltip = (
     <Tooltip id="small-update-tooltip" placement="top">+1</Tooltip>
-  )
+  );
   const lgUpdateTooltip = (
     <Tooltip id="large-update-tooltip" placement="top">+5</Tooltip>
-  )
+  );
   const minUpdateTooltip = (
     <Tooltip id="minus-update-tooltip" placement="top">-1</Tooltip>
-  )
+  );
 
   const smallUpdateAmt = 1;
   const largeUpdateAmt = 5;
@@ -42,13 +42,12 @@ const InventoryRow = withRouter(({
     updateProduct(index, incrAmt);
   }
 
-  const updatedDate = product.updatedDate;
-  const formattedUpdatedDate = updatedDate 
-    ? updatedDate.toDateString() + ' ' + updatedDate.toTimeString().substr(0,8)
+  const { updatedDate, expirationDate } = product;
+  const formattedUpdatedDate = updatedDate
+    ? `${updatedDate.toDateString()} ${updatedDate.toTimeString().substr(0, 8)}`
     : ' ';
-  const expirationDate = product.expirationDate;
   const formattedExpiration = expirationDate
-    ? expirationDate.toDateString() + ' ' + expirationDate.toTimeString().substr(0,8) 
+    ? `${expirationDate.toDateString()} ${expirationDate.toTimeString().substr(0, 8)}`
     : ' ';
 
   const tableRow = (
@@ -113,7 +112,7 @@ export default function InventoryTable({ inventory, deleteProduct, updateProduct
       index={index}
     />
   ));
-  
+
   return (
     <Table bordered condensed hover responsive>
       <thead>

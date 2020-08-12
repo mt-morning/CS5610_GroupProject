@@ -1,10 +1,8 @@
 import React from 'react';
-import URLSearchParams from 'url-search-params';
 import { Route } from 'react-router-dom';
 import graphQLFetch from './graphQLFetch.js';
 import OrderTable from './OrderTable.jsx';
 import OrderDetail from './OrderDetail.jsx';
-import { Panel } from 'react-bootstrap';
 
 /**
  * Represent overall components making up orders display.
@@ -14,15 +12,7 @@ export default class OrderList extends React.Component {
     super();
     this.state = {
       orders: [],
-      displayDetails: false,
-    }
-    this.showDetails = this.showDetails.bind(this);
-  }
-
-  showDetails() {
-    this.setState({
-      displayDetails: !this.state.displayDetails
-    })
+    };
   }
 
   componentDidMount() {
@@ -55,8 +45,8 @@ export default class OrderList extends React.Component {
 
     if (data) {
       this.setState({ orders: data.orderList });
-      console.log(this.state.orders);
     } else {
+      // eslint-disable-next-line no-console
       console.log('Query returned no data/error');
     }
   }
@@ -66,15 +56,10 @@ export default class OrderList extends React.Component {
     const { match } = this.props;
     return (
       <React.Fragment>
-        {/* <Panel>
-          <Panel.Heading>
-            
-          </Panel.Heading>
-        </Panel> */}
         <OrderTable orders={orders} />
         <hr />
         <Route path={`${match.path}/:_id`} component={OrderDetail} />
       </React.Fragment>
-    )
+    );
   }
 }

@@ -1,21 +1,16 @@
+/* eslint-disable react/no-unused-state */
 /* eslint "react/prefer-stateless-function": "off" */
 
 import React from 'react';
 import {
-  ButtonToolbar,
   Col,
-  ControlLabel,
   FormControl,
   FormGroup,
-    Button,
-  ToggleButton,
-  ToggleButtonGroup
-} from "react-bootstrap";
-import graphQLFetch from "./graphQLFetch";
-
+  Button,
+} from 'react-bootstrap';
+import graphQLFetch from './graphQLFetch.js';
 
 export default class Login extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,15 +20,12 @@ export default class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   async handleSubmit(e) {
     e.preventDefault();
     const form = document.forms.loginForm;
 
-
-    let username = form.username.value;
-    let password = form.password.value;
-
+    const username = form.username.value;
+    const password = form.password.value;
 
     const query = `query ($username: String!, $password:String!) {
         user (username: $username, password: $password) {
@@ -43,40 +35,39 @@ export default class Login extends React.Component {
 
     const data = await graphQLFetch(query, { username, password });
 
-    if (data.user !== null ) {
+    if (data.user !== null) {
       this.setState({
         loggedIn: true,
-      })
-    }
-    else {
+      });
+    } else {
       this.setState({
         attempted: true,
-      })
+      });
     }
-    form.username.value = "";
-    form.password.value = "";
+    form.username.value = '';
+    form.password.value = '';
   }
 
   render() {
-
-    if ( this.state.loggedIn === true ) {
+    const { loggedIn } = this.state;
+    if (loggedIn === true) {
       return (
-          <div>
-            Congratulations! You have logged in successfully.
-          </div>
-      )
+        <div>
+          Congratulations! You have logged in successfully.
+        </div>
+      );
     }
 
     return (
-        <form onSubmit={this.handleSubmit} name="loginForm">
-          <FormGroup>
-            <Col sm={3}>
-              <FormControl type="text" name="username" placeholder="username"/>
-              <FormControl type="password" name="password" placeholder="password" />
-              <Button type="submit">Log-In</Button>
-            </Col>
-          </FormGroup>
-        </form>
+      <form onSubmit={this.handleSubmit} name="loginForm">
+        <FormGroup>
+          <Col sm={3}>
+            <FormControl type="text" name="username" placeholder="username" />
+            <FormControl type="password" name="password" placeholder="password" />
+            <Button type="submit">Log-In</Button>
+          </Col>
+        </FormGroup>
+      </form>
     );
   }
 }

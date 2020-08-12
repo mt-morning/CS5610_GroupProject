@@ -1,12 +1,11 @@
 import React from 'react';
-import graphQLFetch from './graphQLFetch.js';
-import store from './store.js';
 import {
   Modal, NavItem, Glyphicon, Tooltip, OverlayTrigger,
-  Form, FormGroup, FormControl, ControlLabel, 
-  Button, ButtonToolbar
+  Form, FormGroup, FormControl, ControlLabel,
+  Button, ButtonToolbar,
 } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
+import graphQLFetch from './graphQLFetch.js';
 
 class ProductAddNav extends React.Component {
   constructor(props) {
@@ -32,20 +31,21 @@ class ProductAddNav extends React.Component {
     this.hideModal();
 
     const form = document.forms.productAdd;
-    const quantity = parseInt(form.quantity.value); 
+    const quantity = parseInt(form.quantity.value, 10);
     // quantity can have negative value rn
 
-    const expirationDate = (form.expirationDate.value) 
-      ? new Date(form.expirationDate.value + ' ' + form.expirationTime.value) 
+    const expirationDate = (form.expirationDate.value)
+      ? new Date(`${form.expirationDate.value} ${form.expirationTime.value}`)
       : new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10);
     const product = {
       description: form.description.value,
+      // eslint-disable-next-line no-restricted-globals
       quantity: isNaN(quantity) ? 0 : quantity,
       createdDate: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
       category: form.category.value,
       information: form.information.value,
       expirationDate,
-    }
+    };
 
     const query = `mutation productAdd($product: ProductInputs!) {
       productAdd(product: $product) {
@@ -58,14 +58,14 @@ class ProductAddNav extends React.Component {
     // TODO: find a way to rerender without relying on routing back to home pg
     if (data) {
       const { history } = this.props;
-      history.push(`/`);
+      history.push('/');
     }
   }
 
   render() {
     const { showing } = this.state;
-    const defaultExpiration = new Date(
-      new Date().getTime() + 1000 * 60 * 60 * 12).toTimeString().substr(0, 8);
+    const currentTime = new Date().getTime() + (1000 * 60 * 60 * 12);
+    const defaultExpiration = new Date(currentTime).toTimeString().substr(0, 8);
 
     return (
       <React.Fragment>

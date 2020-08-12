@@ -1,24 +1,22 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import {
-  Button, Glyphicon, Tooltip, OverlayTrigger,
-} from 'react-bootstrap';
-import { Table } from "reactable";
+import { Link } from 'react-router-dom';
+import { Table } from 'reactable';
 
 /**
  * Implement inventory data with Reactable.
  */
 
-const ordersRow = (order, index) => {
+const ordersRow = (order) => {
   // const selectLocation = { pathname: `/orders/${order._id}`, search };
   const dueDate = order.due;
-  const due = dueDate 
-    ? dueDate.toDateString() + ' ' + dueDate.toTimeString().substr(0,8)
+  const due = dueDate
+    ? `${dueDate.toDateString()} ${dueDate.toTimeString().substr(0, 8)}`
     : ' ';
 
   return (
-    { ID: order._id, 
+    {
+      ID: order._id,
       Customer: order.customerName,
       Status: order.status,
       Paid: order.paid,
@@ -27,17 +25,16 @@ const ordersRow = (order, index) => {
       // Quantity: product.quantity,
       // "Created Date": (product.createdDate ? product.createdDate.toDateString() : ' ')
     }
-  )
-}
+  );
+};
 
 
 export default function OrderTable({ orders }) {
-
   const ordersRows = orders.map((order, index) => (
     ordersRow(order, index)
   ));
   return (
-    <Table 
+    <Table
       className="table"
       data={ordersRows}
       itemsPerPage={4}
@@ -45,5 +42,5 @@ export default function OrderTable({ orders }) {
       noDataText="No matching records found."
       filterable={['Customer', 'ID', 'Status']}
     />
-  )
-};
+  );
+}

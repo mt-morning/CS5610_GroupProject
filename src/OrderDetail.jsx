@@ -1,7 +1,7 @@
 import React from 'react';
-import graphQLFetch from './graphQLFetch.js';
-import { Table } from "reactable";
+import { Table } from 'reactable';
 import { Panel } from 'react-bootstrap';
+import graphQLFetch from './graphQLFetch.js';
 
 export default class OrderDetail extends React.Component {
   constructor() {
@@ -30,53 +30,56 @@ export default class OrderDetail extends React.Component {
           description quantity information
         } 
       }
-    }`
+    }`;
 
     const data = await graphQLFetch(query, { _id });
     if (data) {
       this.setState({ order: data.order });
     } else {
-      this.setState({ order: {} })
+      this.setState({ order: {} });
     }
   }
 
   render() {
     const { order: { created, notes, contact } } = this.state;
     const { order: { products } } = this.state;
-    const { match: { params: { _id } } } = this.props;
 
     const createdDate = created
-    ? created.toDateString() + ' ' + created.toTimeString().substr(0,8)
-    : ' ';
+      ? `${created.toDateString()} ${created.toTimeString().substr(0, 8)}`
+      : ' ';
 
     // render component with order details if we have received
     // an _id in the URL
     if (created !== undefined) {
-      const productRows = (product) => {
-        return (
-          {
-            Name: product.description,
-            Quantity: product.quantity,
-          }
-        )
-      }
-  
-      const orderedProducts = products.map((product, index) => (
+      const productRows = product => (
+        {
+          Name: product.description,
+          Quantity: product.quantity,
+        }
+      );
+
+      const orderedProducts = products.map(product => (
         productRows(product)
       ));
 
       return (
         <div>
-          <Panel bsStyle='info'>
+          <Panel bsStyle="info">
             <Panel.Heading>
               <Panel.Title>Contact Information and Order Details</Panel.Title>
             </Panel.Heading>
             <Panel.Body>
-              Created: {createdDate}
+              Created:
+              {' '}
+              {createdDate}
               <br />
-              Contact: {contact}
+              Contact:
+              {' '}
+              {contact}
               <br />
-              Note: {notes}
+              Note:
+              {' '}
+              {notes}
             </Panel.Body>
           </Panel>
           <Table
@@ -88,12 +91,12 @@ export default class OrderDetail extends React.Component {
             filterable={['Name', 'Quantity']}
           />
         </div>
-      )
+      );
     }
 
     // else: return no product details
     return (
-      <div></div>
-    )
+      <div />
+    );
   }
 }

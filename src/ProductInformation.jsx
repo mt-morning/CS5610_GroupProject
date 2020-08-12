@@ -38,14 +38,20 @@ export default class ProductInformation extends React.Component {
 
   render() {
     const { product: { information, createdDate } } = this.state;
-    const formattedCreated = createdDate 
-    ? createdDate.toDateString() + ' ' + createdDate.toTimeString().substr(0,8)
-    : ' ';
+    const formattedCreated = createdDate
+      ? `${createdDate.toDateString()} ${createdDate.toTimeString().substr(0, 8)}`
+      : ' ';
     return (
       <div>
         <h3>Information:</h3>
-        <pre>Details: {information}</pre>
-        <pre>Date created: {formattedCreated}</pre>
+        <pre>
+          Details:
+          {information}
+        </pre>
+        <pre>
+          Date created:
+          {formattedCreated}
+        </pre>
       </div>
     );
   }

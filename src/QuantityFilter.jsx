@@ -4,10 +4,9 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import URLSearchParams from 'url-search-params';
-import './fontawesome';
+import './fontawesome.js';
 
 class QuantityFilter extends React.Component {
-
   constructor({ location: { search } }) {
     super();
     const params = new URLSearchParams(search);
@@ -51,35 +50,26 @@ class QuantityFilter extends React.Component {
     });
   }
 
-
-
-
-  // TODO: replace select with React component for slider or selector
-  // TODO: replace hard coded values; incorporate lte or gte...?
   render() {
     const { quantity, changed } = this.state;
     return (
-        <div>
-          <div>
-            Filter by quantity:
-            {' '}
-            <select value={quantity} onChange={this.onChangeQuantityStatus}>
-              <option value="">(All Products)</option>
-              <option value="1">Low Stock (1)</option>
-              <option value="0">Out of Stock (0)</option>
-            </select>
-            {' '}
-            <Button bsStyle="primary" type="button" onClick={this.applyFilter}>
-              Apply
-            </Button>
-            {' '}
-            <Button type="button" onClick={this.showOriginalFilter} disabled={!changed}>
-              Reset
-            </Button>
-
-          </div>
-        </div>
-
+      <div>
+        Filter by quantity:
+        {' '}
+        <select value={quantity} onChange={this.onChangeQuantityStatus}>
+          <option value="">(All Products)</option>
+          <option value="1">Low Stock (1)</option>
+          <option value="0">Out of Stock (0)</option>
+        </select>
+        {' '}
+        <Button bsStyle="primary" type="button" onClick={this.applyFilter}>
+          Apply
+        </Button>
+        {' '}
+        <Button type="button" onClick={this.showOriginalFilter} disabled={!changed}>
+          Reset
+        </Button>
+      </div>
     );
   }
 }
