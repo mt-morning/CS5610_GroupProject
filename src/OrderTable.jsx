@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import {
   Button, Glyphicon, Tooltip, OverlayTrigger,
@@ -10,13 +10,20 @@ import { Table } from "reactable";
  * Implement inventory data with Reactable.
  */
 
-var Sample = Table;
-
 const ordersRow = (order, index) => {
+  // const selectLocation = { pathname: `/orders/${order._id}`, search };
+  const dueDate = order.due;
+  const due = dueDate 
+    ? dueDate.toDateString() + ' ' + dueDate.toTimeString().substr(0,8)
+    : ' ';
+
   return (
     { ID: order._id, 
       Customer: order.customerName,
-      Status: order.status, 
+      Status: order.status,
+      Paid: order.paid,
+      Due: due,
+      Details: <Link to={`/orders/${order._id}`}>Details</Link>,
       // Quantity: product.quantity,
       // "Created Date": (product.createdDate ? product.createdDate.toDateString() : ' ')
     }
@@ -30,7 +37,7 @@ export default function OrderTable({ orders }) {
     ordersRow(order, index)
   ));
   return (
-    <Sample 
+    <Table 
       className="table"
       data={ordersRows}
       itemsPerPage={4}
