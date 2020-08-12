@@ -10,6 +10,10 @@ export default class AccountCreate extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            accountCreated: false,
+            attempted: false,
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -18,7 +22,6 @@ export default class AccountCreate extends React.Component {
     async handleSubmit(e) {
         e.preventDefault();
         const form = document.forms.accountCreate;
-
 
         const user = {
             username: form.username.value,
@@ -36,6 +39,7 @@ export default class AccountCreate extends React.Component {
 
         const data = await graphQLFetch(query, { user });
         if (data) {
+            console.log("Success!");
             this.setState({ accountCreated: true });
         }
         form.username.value = "";
@@ -46,7 +50,24 @@ export default class AccountCreate extends React.Component {
 
 
   render() {
-    return (
+
+        if (this.state.accountCreated === true) {
+            return (
+                <div>
+                    Congratulations! Your account has been created.
+                </div>
+            )
+        }
+
+      if (this.state.attempted === true) {
+          return (
+              <div>
+                  Try to choose something more unique.
+              </div>
+          )
+      }
+
+      return (
           <form onSubmit={this.handleSubmit} name="accountCreate">
               <FormGroup>
                   <Col sm={3}>
