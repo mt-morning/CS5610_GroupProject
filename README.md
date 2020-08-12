@@ -1,7 +1,7 @@
 # Team Croissant: UI
 
 ## Current version: 
-Iter 2.0
+Iter 3.0
 - link to UI deployment: https://croissant-ui.herokuapp.com/products
 - Link to API repo: https://github.ccs.neu.edu/NEU-CS5610-SU20/GroupProject_Croissant_API
 - Please see repo https://github.ccs.neu.edu/trantbpham/CS5610-GroupProject for all the previous commits.
@@ -12,7 +12,10 @@ Iter 2.0
 - Tran Pham
 
 ## Iter 3.0 Notes:
-### Implementation assignments:
+
+### Screenshots:
+
+### Member Contibutions:
 - Alice:
   - add category as option for filter
     - use icons to represent categories
@@ -22,8 +25,8 @@ Iter 2.0
   - toasts in lieu of alerts: Tran
   - product edit: prev/next links broken when id is not contiguous
 - Miranda: 
-  - Quick update button
-  - reactable
+  - Added quick update buttons to products (representing +1, +5, -1)
+  - Used React library Reactable to display read-only orders, which 
   - last updated: add + format
 
 #### further goals:
