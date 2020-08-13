@@ -20,7 +20,8 @@ Iter 3.0
   - add category as option for filter
     - use icons to represent categories
     - allow for an accumulator sort of filter: all the checked/clicked categories are shown
-  - sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
+  - implement nominal sign-in page (user context across site incomplete)
+
 - Tran:
   - Implement toast
   - Update prev/next option to "back to home" option 
@@ -28,21 +29,15 @@ Iter 3.0
   
 - Miranda: 
   - Added quick update buttons to products (representing +1, +5, -1)
-  - Used React library Reactable to display read-only orders, which 
-  - last updated: add + format
-
-#### further goals:
-- expand about page (more info + version; talk about developing? idk whatever you want)
-- NULL CHECK
-- give an option to set expiration date (edit + add)
-- favicon
-- implement an order tracker
-  - allow for orders to be created based on what products are available 
-    - optional field for special notes?
-    - order should have created date, due date, customer name or ID or order number [thinking of square...]
-    - have cost? total cost? requires products to have an associated cost then...
-  - tie orders to products such that product quantity mutates with a FILLED order
-  - view past/future/current orders (filtering)
+  - Used React library Reactable to display read-only orders and the orders' product information
+    - one downside of using Reactable was my difficulty in implementing the routing the book uses
+      to display product information as the indexing used to get the product information relied on
+      separate InventoryRow components and index relative to the table. I ended up using a Link as
+      it was relatively easy to implement.
+    - the upside of using this library is how easily filter works as the implementer can simply
+      specify which columns are searchable.
+  - Added other fields to product: updatedDate and edited how dates are displayed. 
+    - Expiration date is still automatically set, but for 12 hours ahead.
 
 ## Iter 2.0 Notes: 
 
