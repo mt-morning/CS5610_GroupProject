@@ -12,15 +12,15 @@ Iter 3.0
 - Tran Pham
 
 ## Contents / Quick links:
-  - [Iter3](#Iter-3.0-Notes)
-    - [Iter3 Screenshots](#Screenshots-3.0)
-    - [Iter3 Member Contributions](#Member-Contributions-3.0)
-  - [Iter2](#Iter-2.0-Notes)
-    - [Iter2 Screenshots](#Screenshots-2.0)
-    - [Iter2 Member Contributions](#Member-Contributions-2.0)
-  - [Iter1](#Iter-1.0-Notes)
-    - [Iter1 Screenshots](#Screenshots-1.0)
-    - [Iter1 Member Contributions](#Member-Contributions-1.0)
+  - [Iter3](#iter-30-notes)
+    - [Iter3 Screenshots](#screenshots-30)
+    - [Iter3 Member Contributions](#member-contributions-30)
+  - [Iter2](#iter-20-notes)
+    - [Iter2 Screenshots](#screenshots-20)
+    - [Iter2 Member Contributions](#member-contributions-20)
+  - [Iter1](#iter-10-notes)
+    - [Iter1 Screenshots](#screenshots-10)
+    - [Iter1 Member Contributions](#member-contributions-10)
 
 ## Iter 3.0 Notes
 
