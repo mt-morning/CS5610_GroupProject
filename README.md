@@ -18,9 +18,9 @@ Iter 3.0
 ### Member Contibutions:
 - Alice:
   - add category as option for filter
-    - use icons to represent categories
-    - allow for an accumulator sort of filter: all the checked/clicked categories are shown
-  - implement nominal sign-in page (user context across site incomplete)
+    - use the font awesome library for category of product icons (muffin,  cookie, etc).
+    - created an accumulator sort of filter: all the checked/clicked categories are shown
+  - sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
 
 - Tran:
   - Implement toast
