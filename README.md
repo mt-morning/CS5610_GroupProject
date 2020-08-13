@@ -22,9 +22,9 @@ Iter 3.0
     - [Iter1 Screenshots](#Screenshots-1.0)
     - [Iter1 Member Contributions](#Member-Contributions-1.0)
 
-## Iter 3.0 Notes:
+## Iter 3.0 Notes
 
-### Screenshots 3.0:
+### Screenshots 3.0
 
 #### UI: products: homepage, toasts, add, tooltip
 ![homepage and product detail for cherry pie](resources/ReadMeImages/iter3/homepage.png)
@@ -53,7 +53,7 @@ Iter 3.0
 #### UI: About:
 ![sample about page](resources/ReadMeImages/iter3/about.png)
 
-### Member Contributions 3.0:
+### Member Contributions 3.0
 - Alice:
   - add category as option for filter
     - use the font awesome library for category of product icons (muffin,  cookie, etc).
@@ -77,9 +77,9 @@ Iter 3.0
   - Added other fields to product: updatedDate and edited how dates are displayed. 
     - Expiration date is still automatically set, but for 12 hours ahead.
 
-## Iter 2.0 Notes: 
+## Iter 2.0 Notes
 
-### Screenshots 2.0:
+### Screenshots 2.0
 
 #### UI: create, read
 ![upgraded product creation form utilizing bootstrap](resources/ReadMeImages/iter2/add.png)
@@ -95,7 +95,7 @@ Iter 3.0
 #### API/graphQL playground:
 ![successfully deployed API server showing functioning graphQL playground](resources/ReadMeImages/iter2/api.png)
 
-## Member Contributions 2.0:
+## Member Contributions 2.0
 
 ### Alice
 - Created create user and query user functionality in API
@@ -116,9 +116,9 @@ Iter 3.0
   - added category as another read field for inventory table
 - Fix filter for products and some errors (parseInt)
 
-## Iter 1.0 Notes:
+## Iter 1.0 Notes
 
-### Screenshots 1.0:
+### Screenshots 1.0
 #### API/Graphql playground:
 - basic retrieval from MongoDB server
 ![retrieval of all products from Mongo server](resources/ReadMeImages/iter1/iter1_api_inventoryquery.png)
@@ -171,7 +171,7 @@ Iter 3.0
 </details>
 
 
-## Member Contributions 1.0:
+## Member Contributions 1.0
 
 ### Alice
 I followed Pro MERN Stack 2's boilerplate starter code from chapters 4, 5, and 6. This included setting up most of the components and transferring state/props between them, creating the GraphQL schema, and creating the initial/local MongoDB connection. By the end of this section, we had the ability to add new products to the inventory and have them persist on refresh. The two main ways the code differed from book code is that the schema had different objects and operations and a product has different fields than an issue, requiring different methods to handle the data and data validation.
