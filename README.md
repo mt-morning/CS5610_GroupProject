@@ -58,10 +58,11 @@ Iter 3.0
   - add category as option for filter
     - use the font awesome library for category of product icons (muffin,  cookie, etc).
     - created an accumulator sort of filter: all the checked/clicked categories are shown
-  - sign in/landing page: Alice [Note for Miranda: might break add's "refresh"]
+  - sign in/landing page: research state and the passing of functions between Routes and 
+     its children components
 
 - Tran:
-  - Implement toast
+  - Implement toast for homepage and edit
   - Update prev/next option to "back to home" option 
   - Clean up Bootstrap for Product Edit page 
   
