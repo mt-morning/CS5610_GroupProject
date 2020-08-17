@@ -1,0 +1,104 @@
+scalar GraphQLDate
+
+type Product {
+    _id: ID!
+    id: Int!
+    description: String!
+    createdDate: GraphQLDate
+    expirationDate: GraphQLDate
+    updatedDate: GraphQLDate
+    quantity: Int!
+    category: Category
+    information: String
+}
+
+enum Category {
+    Muffin
+    Cupcake
+    Cake
+    Cookie
+    Pastry
+    Other
+}
+
+type User {
+    _id: ID!
+    username: String!
+    password: String!
+    role: Role!
+}
+
+input UserInputs {
+    username: String!
+    password: String!
+    role: Role! = User
+}
+
+enum Role {
+    Admin
+    User
+}
+
+enum Status {
+    unconfirmed
+    confirmed
+    unfilled
+    filled
+    completed
+    canceled
+}
+
+type Order {
+    _id: ID!
+    customerName: String!
+    due: GraphQLDate!
+    created: GraphQLDate
+    products: [Product!]!
+    paid: Boolean!
+    notes: String
+    status: Status!
+    contact: String
+}
+
+"Toned down Product used for input without server generated values."
+input ProductInputs {
+    description: String!
+    createdDate: GraphQLDate
+    expirationDate: GraphQLDate
+    updatedDate: GraphQLDate
+    quantity: Int
+    category: Category = Other
+    information: String
+}
+
+"""Inputs for productUpdate: all are optional. Whichever is specified will
+be set to the given value, undefined fields will remain unmodified."""
+input ProductUpdateInputs {
+    description: String
+    createdDate: GraphQLDate
+    expirationDate: GraphQLDate
+    updatedDate: GraphQLDate
+    quantity: Int
+    category: Category = Other
+    information: String
+}
+
+type Query {
+    about: String!
+    productList(quantity: Int, category: [Category]): [Product!]!
+    product(id: Int!): Product!
+    user(username: String!, password: String!): User
+    order(_id: ID, customerName: String): Order!
+    orderList(status: Status, paid: Boolean): [Order!]!
+}
+
+type Mutation {
+    setAboutMessage(message: String!): String
+    productAdd(product: ProductInputs!): Product!
+	productUpdate(id: Int!, changes: ProductUpdateInputs!): Product!
+	productDelete(id: Int!): Boolean!
+    userAdd(user: UserInputs!): User!
+    orderDelete(_id: ID!): Boolean!
+}
+
+
